@@ -1,0 +1,2 @@
+INSERT INTO tesdev.custom_style ("name","options","type",configs) VALUES ('polygon-thematics',NULL,'POLYGON','[{"type":"POLYGON","options":"{\"fillColor\":\"#ff0000\",\"borderColor\":\"#000000\",\"borderWidth\":2}","filter":"[{\"left\":{\"column\":\"polygon_id\"},\"right\":\"3300\",\"operation\":\">\"}]"}]');
+INSERT INTO tesdev.custom_style ("name","options","type",configs) VALUES ('polygonHump-custom',NULL,'POLYGON','[{"type":"POLYGON","options":"{\"fillColor\":\"#000000\",\"borderColor\":\"#000000\",\"borderWidth\":2}","filter":"[]"}]');
