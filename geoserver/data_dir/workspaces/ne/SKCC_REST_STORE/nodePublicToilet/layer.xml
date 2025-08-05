@@ -1,0 +1,17 @@
+<layer>
+  <name>nodePublicToilet</name>
+  <id>LayerInfoImpl-4235b3a:193510c9cc4:749e</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-4235b3a:193510c9cc4:748d</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-4235b3a:193510c9cc4:749d</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-22 01:35:55.942 UTC</dateCreated>
+  <dateModified>2024-11-22 01:36:32.352 UTC</dateModified>
+</layer>

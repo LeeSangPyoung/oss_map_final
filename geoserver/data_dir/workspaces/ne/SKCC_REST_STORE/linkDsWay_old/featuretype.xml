@@ -1,0 +1,58 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--57b35a39:193482836be:-7fff</id>
+  <name>linkDsWay_old</name>
+  <nativeName>linkDsWay</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>linkDsWay_old</title>
+  <keywords>
+    <string>features</string>
+    <string>linkDsWay</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>126.79612875060607</minx>
+    <maxx>127.15342090908447</maxx>
+    <miny>37.440088172544414</miny>
+    <maxy>37.68930039496051</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.79612875060607</minx>
+    <maxx>127.15342090908447</maxx>
+    <miny>37.440088172544414</miny>
+    <maxy>37.68930039496051</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>linkDsWay</name>
+        <sql>SELECT * FROM link_feature WHERE type = &apos;linkDsWay&apos;
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geom</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

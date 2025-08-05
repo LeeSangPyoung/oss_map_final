@@ -1,0 +1,17 @@
+<layer>
+  <name>gis_fclt_cnpt_bas_hs</name>
+  <id>LayerInfoImpl-ca185cc:19367b156d0:b8a</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-37b18cc6:14d5d036d48:-8000</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-ca185cc:19367b156d0:b89</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-27 05:32:59.577 UTC</dateCreated>
+  <dateModified>2025-01-08 00:22:38.689 UTC</dateModified>
+</layer>

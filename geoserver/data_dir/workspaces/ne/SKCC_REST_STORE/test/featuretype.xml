@@ -1,0 +1,57 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--8d1d17d:194f34b84fa:292a</id>
+  <name>test</name>
+  <nativeName>행정동</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>행정동</title>
+  <keywords>
+    <string>features</string>
+    <string>행정동</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>124.609766393904</minx>
+    <maxx>131.872749651675</maxx>
+    <miny>33.1123691724994</miny>
+    <maxy>38.6220343131331</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>124.609766393904</minx>
+    <maxx>131.872749651675</maxx>
+    <miny>33.1123691724994</miny>
+    <maxy>38.6220343131331</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>행정동</name>
+        <sql>select *&#xd;
+from DAWUL_AM_EMD_A
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geom</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

@@ -1,0 +1,17 @@
+<layer>
+  <name>gis_fclt_mtso_bas</name>
+  <id>LayerInfoImpl-ca185cc:19366e6599b:7adc</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-ca185cc:19366e6599b:78ca</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-ca185cc:19366e6599b:7adb</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-26 06:20:00.460 UTC</dateCreated>
+  <dateModified>2025-01-07 01:28:10.558 UTC</dateModified>
+</layer>

@@ -1,0 +1,61 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-4235b3a:193510c9cc4:74a5</id>
+  <name>polygonHump_bak</name>
+  <nativeName>polygonHump</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>polygonHump_bak</title>
+  <keywords>
+    <string>features</string>
+    <string>polygonHump</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>126.79830617909973</minx>
+    <maxx>127.17805576733055</maxx>
+    <miny>37.43498590280241</miny>
+    <maxy>37.69098610023268</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.79830617909973</minx>
+    <maxx>127.17805576733055</maxx>
+    <miny>37.43498590280241</miny>
+    <maxy>37.69098610023268</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>polygonHump</name>
+        <sql>SELECT polygon_id, &quot;type&quot;, property, geom&#xd;
+FROM tesdev.polygon_feature where type = &apos;polygonHump&apos;
+</sql>
+        <escapeSql>false</escapeSql>
+        <keyColumn>polygon_id</keyColumn>
+        <geometry>
+          <name>geom</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <internationalTitle/>
+  <internationalAbstract/>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

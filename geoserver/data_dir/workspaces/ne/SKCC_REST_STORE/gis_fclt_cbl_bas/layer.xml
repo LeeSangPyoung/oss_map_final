@@ -1,0 +1,17 @@
+<layer>
+  <name>gis_fclt_cbl_bas</name>
+  <id>LayerInfoImpl-4235b3a:193484c15ce:-1b0c</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-ca185cc:193621a15e5:622b</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-4235b3a:193484c15ce:-1b0d</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-20 06:44:11.409 UTC</dateCreated>
+  <dateModified>2025-01-13 08:30:50.791 UTC</dateModified>
+</layer>

@@ -1,0 +1,58 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-4235b3a:193510c9cc4:74a2</id>
+  <name>nodeRoadsideTrees</name>
+  <nativeName>nodeRoadsideTrees</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>nodeRoadsideTrees</title>
+  <keywords>
+    <string>features</string>
+    <string>nodeRoadsideTrees</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>126.9627049</minx>
+    <maxx>127.0270432</maxx>
+    <miny>37.547037</miny>
+    <maxy>37.5716671</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.9627049</minx>
+    <maxx>127.0270432</maxx>
+    <miny>37.547037</miny>
+    <maxy>37.5716671</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>nodeRoadsideTrees</name>
+        <sql>SELECT node_id, type, property, geom from node_feature where type = &apos;nodeRoadsideTrees&apos;
+</sql>
+        <escapeSql>false</escapeSql>
+        <keyColumn>node_id</keyColumn>
+        <geometry>
+          <name>geom</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+    <entry key="cachingEnabled">false</entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>
