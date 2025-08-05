@@ -1,0 +1,102 @@
+input[type="text"] {
+  width: 180px;
+  height: $default-height;
+  line-height: $default-height;
+  background-color: $white-color;
+  border: 1px solid $border-color;
+  border-radius: $radius-4;
+}
+
+input[type="text"]:focus {
+  border-color: $main-hover-color !important;
+  padding: 0 11px;
+  line-height: $default-height;
+}
+
+input[type="text"]:hover {
+  border-color: $main-hover-color !important;
+  height: $default-height;
+  padding: 0 11px;
+}
+
+input[type="checkbox"] {
+  position: relative;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: $white-color;
+    border-radius: $radius-2 !important;
+    border: 1px solid $black-color;
+    box-sizing: border-box;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    width: 3px;
+    height: 8px;
+    border: solid $sub-color-highlight;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    transition: opacity 0.25s ease;
+    opacity: 0;
+    z-index: 2;
+  }
+
+  &:checked {
+    &::before {
+      background: $white-color;
+      border-radius: $radius-2 !important;
+      border: 1px solid $black-color;
+      box-sizing: border-box;
+    }
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+input[type="radio"] {
+  position: relative;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 50%;  
+    top: 50%;
+    left: 50%;
+    transform: translate(-60%, -60%) scale(1.2);
+    background: $sub-color-highlight;
+    border-radius: 50%;
+    opacity: 0;
+  }
+
+  &:checked {
+    &::before {
+      background-color: $white-color;
+      border-color: $sub-color-highlight;
+    }
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}

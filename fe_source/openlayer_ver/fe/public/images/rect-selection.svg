@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 배경 원 -->
+  <circle cx="16" cy="16" r="15" fill="#404051" stroke="#666" stroke-width="1"/>
+  
+  <!-- 사각형 선택 영역 -->
+  <rect x="10" y="10" width="12" height="8" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="2,2"/>
+  
+  <!-- 선택 커서 (마우스 포인터) -->
+  <path d="M20 6 L22 8 L20 10 L18 8 Z" fill="#ffffff"/>
+  <path d="M20 8 L24 8" stroke="#ffffff" stroke-width="1" stroke-linecap="round"/>
+</svg>

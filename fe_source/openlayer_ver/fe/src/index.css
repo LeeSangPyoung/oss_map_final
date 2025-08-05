@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* DragBox 선택 영역 스타일 */
+.ol-dragbox {
+  border: 2px dashed #3b82f6;
+  background-color: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+}
+
+/* 입체적 하이라이트 애니메이션 */
+@keyframes hoverPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(0, 255, 255, 0.3);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 255, 255, 0.7);
+  }
+}
+
+@keyframes neonGlow {
+  0% {
+    filter: drop-shadow(0 0 5px #00ffff) drop-shadow(0 0 10px #00ffff);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px #00ffff) drop-shadow(0 0 20px #00ffff) drop-shadow(0 0 30px #00ffff);
+  }
+  100% {
+    filter: drop-shadow(0 0 5px #00ffff) drop-shadow(0 0 10px #00ffff);
+  }
+}
+
+@keyframes rotate3D {
+  0% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  25% {
+    transform: rotateY(90deg) rotateX(10deg);
+  }
+  50% {
+    transform: rotateY(180deg) rotateX(0deg);
+  }
+  75% {
+    transform: rotateY(270deg) rotateX(-10deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(0deg);
+  }
+}
+
+/* 하이라이트 피처에 적용할 클래스 */
+.hover-feature-highlight {
+  animation: hoverPulse 2s infinite, neonGlow 1.5s infinite;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.hover-feature-3d {
+  animation: rotate3D 4s infinite linear;
+  transform-style: preserve-3d;
+}

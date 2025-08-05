@@ -1,0 +1,15 @@
+%commonHoverIcon {
+
+  p.tooltip {
+    position: fixed !important;
+    top: $height-90 !important;
+  }
+
+  &:hover {
+    background-color: $main-color;
+
+    p.tooltip {
+      display: block;
+    }
+  }
+}

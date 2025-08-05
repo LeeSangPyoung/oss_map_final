@@ -1,0 +1,17 @@
+.Dialog-contents {
+    padding: 16px !important;
+}
+
+.Dialog {
+    background-color: $white-color !important;
+}
+
+.Dialog .Header .DialogBtn, .Dialog .Header .DialogBtn:hover, .Dialog .Header .DialogBtn:active {
+    top: 0;
+}
+
+.Dialog .Header {
+    background-color: $sub-color-popup-title !important;
+    height: $height-44;
+    line-height: $height-44;
+}

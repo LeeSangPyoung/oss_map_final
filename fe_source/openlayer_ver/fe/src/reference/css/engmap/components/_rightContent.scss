@@ -1,0 +1,26 @@
+@import "../extends/extendsRightContent";
+
+.right-contents > #right_header {
+  background-color: $main-color-menu-bar;
+  position: absolute;
+
+  #dsgmenu02 {
+    li.dsgmenu02_list_01 {
+      @include iconLeftMenu("../../resources/images/efdg/right_header/area-map-marker-line-svgrepo-com.svg");
+      @extend %commonHoverIcon;
+      
+    }
+    li.dsgmenu02_list_02 {
+      @include iconLeftMenu("../../resources/images/efdg/right_header/zoom-in-svgrepo-com.svg");
+      @extend %commonHoverIcon;
+    }
+  }
+}
+
+#engMap {
+  height: 100%;
+
+  .leaflet-top.leaflet-right {
+    top: $height-60;
+  }
+}

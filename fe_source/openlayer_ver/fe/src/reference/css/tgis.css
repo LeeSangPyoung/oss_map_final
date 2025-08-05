@@ -1,0 +1,397 @@
+/*윈도우의 크기에 따라 사이즈 조절 될수 있게 수정함. 전정학*/
+#map, #map .menu_list,#map .open_aside .menu_layer {
+	min-height: 800px !important;
+}
+
+#map.dsg-map {
+	min-height: 0 !important;
+}
+
+body {
+/*	overflow-y: hidden; */	
+}
+
+.leaflet-top {
+	top: 35px !important;
+}
+
+.float-left {
+	float: left;
+}
+
+#main {
+	width: 100%;
+	padding-top: 0px;
+}
+
+#map {
+	width: 100%;
+	height: 100%;
+	margin-top: 0px;
+}
+
+#map .map_view {
+	height: 100%;
+/* 	z-index:1; */
+}
+
+#map .map_view_area {
+	z-index: 1 !important;
+	height: auto;
+}
+
+#fake_map_view_area {
+	top: 35px;
+	z-index: 0;
+	position: absolute;
+	height: auto;
+}
+/*윈도우의 크기에 따라 사이즈 조절 될수 있게 수정함. 전정학*/
+
+
+.splitter_panel .hsplitter {
+	border-top: 1px;
+	border-bottom: 0px;
+	/* margin-top: 115px; */
+}
+
+#map .menu_box {
+	left: 54px;
+}
+
+#map .menu_list > li > a {
+	width:54px;
+}
+
+.Accordion li > div {
+	background: #fff;
+}
+
+#div-context {
+	width: 140px;
+	border: 1px solid #777;
+	z-index: 10000000;
+	background: #fff;
+	position:absolute;
+	top: 0;
+	left: 0;
+	height: auto;
+}
+
+#div-context ul {
+	padding: 0;
+	margin: 0;
+}
+
+#div-context ul > li > a {
+	color: #333;
+	padding: 6px 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal;
+	display: block;
+}
+
+#div-context ul > li > a:hover{
+	background: #e4e4e4;
+}
+
+.map_view_head .Groupbutton{
+	/* padding: 5px; */
+	padding: 0px;
+	margin-left: 0px;
+	transition: all 0.3s ease-in-out;
+}
+
+.map_view_head .Groupbutton.on {
+	margin-left: 290px;
+	transition: all 0.3s ease-in-out;
+}
+
+#map .facility_list {
+	padding: 4px !important;
+}
+
+#map .facility_edit {
+	left: 180px;
+	width: 300px;
+}
+
+#map .menu_layer_item.item_1 {
+	display: none;
+	position: relative;
+	overflow-y: visible;
+	overflow-x: visible;
+}
+
+#map.open_aside .menu_layer {
+	left: 55px;
+}
+
+#map .facility_edit.on {
+	border: 0px;
+}
+
+#map .select-edit-facility {
+	width: 160px;
+	top: 4px;
+	float:right;
+}
+
+#map .facility_list_item {
+	left: 310px;
+}
+
+#map .facility_edit.on .facility_btn {
+	float: left;
+}
+
+#map .facility_edit.on .facility_list {
+	float: left;
+	margin: 5px;
+	width: 150px;
+}
+
+#grid-dsg-search {
+	margin-top: 10px;
+}
+
+/* 툴바 메뉴에 따른 커서 */
+.mg-mode-box-zoom-in {
+	cursor: url(../images/cursor/zoom-in.cur), crosshair;
+}
+
+.mg-mode-box-zoom-out {
+	cursor: url(../images/cursor/zoom-out.cur), crosshair;
+}
+
+.mg-mode-measure-area {
+	cursor: url(../images/cursor/면적.cur), crosshair;
+}
+
+.mg-mode-measure-distance {
+	cursor: url(../images/cursor/거리.cur), crosshair;
+}
+
+#map .quick_layer {
+	width: 214px;
+}
+
+#multi-print-map {
+	width: 100%;
+	z-index:1;
+}
+
+#hidden-map {
+	width: 400px;
+	height: 400px;
+	position:absolute; 
+	top:0; 
+	left:0; 
+	z-index:0;
+}
+
+#div-print-attr {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	z-index:1;
+	background:#fff;
+}
+
+#div-multi-print-progress-bar {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 40%;
+	width: 300px;
+	z-index: 999999;
+}
+
+#div-draw-hidden-map-condition {
+	margin-top: 15px;
+}
+
+input.textinput:-ms-input-placeholder {
+	color: #999 !important;
+	
+}
+
+.alopexgrid-cell.bodycell.row-default-block-design {
+	background-color: #eeeef8 !important;
+	color: rgba(36,36,48,.6) !important;
+	font-weight: bold !important;
+}
+
+.alopexgrid-cell.bodycell.block-design-highlight {
+	background-color: rgb(224, 255, 255) !important;
+	/*color: black !important;*/
+	/*font-weight: bold !important;*/
+}
+
+.alopexgrid-cell.bodycell.dsg-row-highlight {
+	background-color: red !important;
+	color: black !important;
+	font-weight: bold !important;
+}
+
+.alopexgrid.alopexgrid-contextmenu-wrapper {
+	z-index: 1002;
+}
+
+.delete-all-non-stop {
+	width: 100%;
+	margin-top: 5px;
+}
+
+.alopexgrid .headercell.grid-header-style {
+	background: #FFF !important;
+	border: 0 !important;
+}
+
+.alopexgrid .headercell.bd-headerclass {
+	background: #e0ffff !important;
+}
+
+#div-grid-list .alopexgrid .cell {
+	border-right: 1px solid #d6d6df;
+}
+
+/*.img-label-on-off {
+	background:url(../images/labelTagOff.png);
+}
+
+.img-label-on-off .on{
+	background:url(../images/labelTagOn.png);
+}*/
+
+/* textsearchdel */
+.textsearchdel {
+  position: relative;
+  /* width: 130px; */ 
+  }
+
+.textsearchdel .textinput,
+.textsearchdel .textinput:hover,
+.textsearchdel .textinput:active,
+.textsearchdel .textinput:focus {
+  display: inline-block;
+  /* width: 130px; */
+  padding-right: 24px;
+  padding-left: 8px;
+  box-sizing: border-box; }
+
+.textsearchdel .search {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  border: none;
+  background: transparent url(../core_images/ico_search_purple.png) center center no-repeat; }
+  
+  .textsearchdel .del {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  margin-right: 15px;
+  border: none;
+  background: transparent url(../core_images/ico_x_purple.png) center center no-repeat; }
+  
+/* textsearchapply */
+.textsearchapply {
+  position: relative;
+  /* width: 130px; */ 
+  }
+
+.textsearchapply .textinput,
+.textsearchapply .textinput:hover,
+.textsearchapply .textinput:active,
+.textsearchapply .textinput:focus {
+  display: inline-block;
+  /* width: 130px; */
+  padding-right: 24px;
+  padding-left: 8px;
+  box-sizing: border-box; }
+
+.textsearchapply .search {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  border: none;
+  background: transparent url(../core_images/ico_search_purple.png) center center no-repeat; }
+  
+  .textsearchapply .apply {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  margin-right: 15px;
+  border: none;
+  background: transparent url(../core_images/ico_check_purple.png) center center no-repeat; }  
+  
+  /* 카카오 로드뷰: 이승현 */
+  .MapWalker {position:absolute;margin:-26px 0 0 -51px}
+  .MapWalker .figure {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -298px -114px no-repeat}
+  .MapWalker .figure0 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -298px -114px no-repeat}
+  .MapWalker .figure1 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -335px -114px no-repeat}
+  .MapWalker .figure2 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -372px -114px no-repeat}
+  .MapWalker .figure3 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -409px -114px no-repeat}
+  .MapWalker .figure4 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -446px -114px no-repeat}
+  .MapWalker .figure5 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -483px -114px no-repeat}
+  .MapWalker .figure6 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -520px -114px no-repeat}
+  .MapWalker .figure7 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -557px -114px no-repeat}
+  .MapWalker .figure8 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -2px -114px no-repeat}
+  .MapWalker .figure9 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -39px -114px no-repeat}
+  .MapWalker .figure10 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -76px -114px no-repeat}
+  .MapWalker .figure11 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -113px -114px no-repeat}
+  .MapWalker .figure12 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -150px -114px no-repeat}
+  .MapWalker .figure13 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -187px -114px no-repeat}
+  .MapWalker .figure14 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -224px -114px no-repeat}
+  .MapWalker .figure15 {position:absolute;width:25px;left:38px;top:-2px;
+	height:39px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -261px -114px no-repeat}
+
+  .MapWalker .angleBack {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -834px -2px no-repeat;}	
+  .MapWalker .angleBack0 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -834px -2px no-repeat;}
+  .MapWalker .angleBack1 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -938px -2px no-repeat;}
+  .MapWalker .angleBack2 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -1042px -2px no-repeat;}	
+  .MapWalker .angleBack3 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -1146px -2px no-repeat;}
+  .MapWalker .angleBack4 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -1250px -2px no-repeat;}
+  .MapWalker .angleBack5 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -1354px -2px no-repeat;}	
+  .MapWalker .angleBack6 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -1458px -2px no-repeat;}
+  .MapWalker .angleBack7 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -1562px -2px no-repeat;}
+  .MapWalker .angleBack8 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -2px -2px no-repeat;}	
+  .MapWalker .angleBack9 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -106px -2px no-repeat;}
+  .MapWalker .angleBack10 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -210px -2px no-repeat;}
+  .MapWalker .angleBack11 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -314px -2px no-repeat;}	
+  .MapWalker .angleBack12 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -418px -2px no-repeat;}
+  .MapWalker .angleBack13 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -522px -2px no-repeat;}
+  .MapWalker .angleBack14 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -626px -2px no-repeat;}
+  .MapWalker .angleBack15 {width:102px;height:52px;background:url(https://t1.daumcdn.net/localimg/localimages/07/2018/pc/roadview_minimap_wk_2018.png) -730px -2px no-repeat;}
+	  

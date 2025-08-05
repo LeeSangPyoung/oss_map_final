@@ -1,0 +1,116 @@
+@import "../mixins/iconLeftMenu";
+
+#engmap_left_menu {
+  background: $main-color-menu-bar;
+  font-family: Arial, "돋움", "돋움체", dotum, sans-serif !important;
+
+  #engmap_menu_btn.menu_btn {
+    background: url("../../resources/images/efdg/left_menu/menu-2-svgrepo-com.svg");
+  }
+  #engmap_menu_btn.menu_btn.on {
+    @include activeBgIcon($main-color);
+  }
+
+  li.left_list_01 {
+    @include iconLeftMenu("../../resources/images/efdg/left_menu/layer-svgrepo-com.svg");
+  };
+  li.left_list_02 {
+    @include iconLeftMenu("../../resources/images/efdg/left_menu/layers-svgrepo-com.svg");
+  };
+  li.left_list_03 {
+    @include iconLeftMenu("../../resources/images/efdg/left_menu/networking-share-svgrepo-com.svg");
+  };
+  li.left_list_04 {
+    @include iconLeftMenu("../../resources/images/efdg/left_menu/network-svgrepo-com.svg");
+  };
+  li.left_list_05 {
+    @include iconLeftMenu("../../resources/images/efdg/left_menu/info-circle-svgrepo-com.svg");
+  };
+  li.left_list_06 {
+    @include iconLeftMenu("../../resources/images/efdg/left_menu/warranty-svgrepo-com.svg");
+  }
+  li.on {
+    margin-top: $pm-8;
+    @include activeBgIcon(null);
+  }
+}
+
+#engmap_left-contents > #mapLayerTreeMenu {
+  .menu_layer_tit > h3 {
+    background-color: $main-color-menu-bar;
+  }
+
+  #div_tree_layer {
+    background-color: $white-color;
+
+    ul.af-tree-group {
+      a.af-tree-link {
+        color: $bg-color;
+      }
+    }
+  }
+}
+
+#engmap_left-contents > #networkLayerTreeMenu {
+  .menu_layer_tit > h3 {
+    background-color: $main-color-menu-bar;
+  }
+
+  #div_tree_layer {
+    background-color: $white-color;
+
+    ul.af-tree-group {
+      a.af-tree-link {
+        color: $bg-color;
+      }
+    }
+  }
+}
+
+#engmap_left-contents > #configBox, #engmap_left-contents > #AroundBox, #engmap_left-contents > #CoverageBox {
+  .menu_layer_tit > h3 {
+    background-color: $transparent-black-color;
+  }
+}
+
+#pathTraceMenuBox {
+  left: 64px;
+  top: 46px;
+  #pathTraceMenu {
+    border-top-right-radius: $border-6;
+    border-bottom-right-radius: $border-6;
+
+    :last-child {
+      border-bottom: none;
+    }
+
+    li {
+      position: relative;
+      &:hover {
+        a {
+          background: $title-background;
+          color: $title-text;
+        }
+
+        &::after {
+          display: none;
+        }
+      }
+
+      a {
+        background: $main-color-menu-bar;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        background: $title-background;
+        width: 90%;
+        left: 5%;
+        height: 1px;
+        z-index: 5;
+        opacity: 0.5;
+      }
+    }
+  }
+}

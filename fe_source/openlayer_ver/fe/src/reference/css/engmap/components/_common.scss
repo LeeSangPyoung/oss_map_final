@@ -1,0 +1,294 @@
+@font-face {
+    font-family: dotum, Arial, "돋움", "돋움체", sans-serif !important;
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+.Accordion, .Accordion *, .Button, .Button *, .Carousel, .Carousel *, .Checkbox, .Checkbox *, .Dateinput, .Dateinput *, .Datepicker, .Datepicker *, .Daterange, .Daterange *, .Dialog, .Dialog *, .Divselect, .Divselect *, .Dropdown, .Dropdown *, .Dropdownbutton, .Dropdownbutton *, .Group, .Group *, .Groupbutton, .Groupbutton *, .Icon, .Icon *, .List, .List *, .Navigationbar, .Navigationbar *, .Navmenu, .Navmenu *, .Paging, .Paging *, .Panel, .Panel *, .Progressbar, .Progressbar *, .Radio, .Radio *, .Searchinput, .Searchinput *, .Select, .Select *, .Slider, .Slider *, .Spinner, .Spinner *, .Switch, .Switch *, .Table, .Table *, .Tabs, .Tabs *, .Textarea, .Textarea *, .Textinput, .Textinput *, .Tooltip, .Tooltip *, .Tree, .Tree *, .Label, .Label *, .Quotation, .Quotation *, .Cite, .Cite *, .Mark, .Mark *, .Code, .Code *, .Small, .Small *, .Strong, .Strong *, .Del, .Del *, .Alink, .Alink *, .Splitter, .Splitter *, .Hierarchical, .Hierarchical *, .MultiSelect, .MultiSelect *, .Autocomplete, .Autocomplete * {
+    font-family: 'Dotum', sans-serif !important;
+}
+
+header .num, .step .step_box .step_name, .step .step_box .step_state, .step_state_name, .button_box .button, .button, .button9, .header-1, .header-1 b, .header-2, .header-2 b, .header-3, .header-4, .header-5, .tabs > ul li, .map_time, .map_info dd, .main_heading, .circle_box, .circle_box2, .input_id, .input_pw {
+    font-family: 'Moebius eng', 'Moebius kor', sans-serif !important;
+}
+
+[class^="fa-"],
+[class*=" fa-"] {
+  font-family: "FontAwesome" !important;
+}
+
+#right_header {
+    background-color: $white-color;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+#engmap_left_panel {
+    background-color: $white-color;
+}
+
+// Form
+.condition_box {
+    border: none;
+    margin-bottom: 0;
+    background: $white-color;
+    border-radius: $radius-4;
+    border: 1px solid $border-color;
+}
+
+.condition {
+    padding-top: 0;
+    border: none;
+    display: flex;
+    //gap: 10px;
+    flex-wrap: wrap;
+}
+
+.condition_ty2 {
+    padding-top: 5px;
+    border: none;
+    display: flex;
+    //gap: 10px;
+    flex-wrap: wrap;
+}
+
+.basic_condition {
+    display: flex;
+    flex-direction: column;
+    //gap: 10px;
+    padding: 10px;
+    .label {
+        padding-left: 0;
+        width: auto;
+        min-width: 74px;
+        line-height: $default-height;
+        padding-left: $pm-10;
+        height: $default-height;
+    }
+    &::after {
+        display: none !important;
+    }
+}
+
+.condition label {
+    display: flex;
+    //gap: 10px;
+}
+
+// override css "input" for class .Textinput.textinput
+.Textinput.textinput {
+    height: $default-height;
+    line-height: $default-height;
+    background-color: $white-color;
+    border: 1px solid $border-color;
+    border-radius: $radius-4;
+}
+
+.Textinput.textinput:hover, .Textinput.textinput:focus, .Textinput.textinput:active {
+    height: $default-height;
+    line-height: $default-height;
+    background-color: $white-color;
+    border-radius: $radius-4;
+    border-color: $main-hover-color;
+    padding: 0 10px;
+}
+
+// css Multiselect input
+.Multiselect .ui-multiselect-filter input, .MultiSelect .ui-multiselect-filter input {
+    width: 120px;
+}
+
+// css Multiselect select
+.MultiSelect.ui-multiselect {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.Multiselect + button {
+    height: $default-height !important;
+    padding-left: 10px !important;
+    line-height: $default-height !important;
+    background-color: $white-color !important;
+    border: 1px solid $border-color !important;
+    border-radius: $radius-4 !important;
+}
+
+.Multiselect + button:hover {
+    border-color: $main-hover-color !important;
+    cursor: pointer !important;
+}
+
+.Multiselect + button:before {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    display: block;
+    width: 0;
+    height: 0;
+    margin-top: -3px;
+    border-top: 5px solid #84848a;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: '';
+    background: none;
+}
+
+.MultiSelect .ui-icon-triangle-1-s {
+    display: none;
+}
+
+.Multiselect .ui-widget-header, .MultiSelect .ui-widget-header {
+    border: none;
+    background-color: $background-color;
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.Multiselect .ui-multiselect-checkboxes label, .MultiSelect .ui-multiselect-checkboxes label {
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+}
+
+// override css for "select" with class .Divselect.divselect
+.Divselect.divselect {
+    width: 180px;
+    height: $default-height;
+    line-height: $default-height;
+    border-radius: $radius-4;
+    background-color: $white-color;
+    border: 1px solid $border-color;
+    display: flex;
+    align-items: center;
+}
+
+.Divselect.divselect:hover {
+    width: 180px;
+    height: $default-height;
+    line-height: $default-height;
+    border-radius: $radius-4;
+    background-color: $white-color;
+    border-color: $main-hover-color;
+    display: flex;
+    align-items: center;
+}
+
+// override css for ".layer_table .Select"
+.layer_table .Select {
+    width: auto;
+    height: $default-height;
+    line-height: $default-height;
+    background-color: $white-color;
+    border-radius: $radius-4;
+    border: 1px solid $border-color;
+    position: relative;
+}
+
+.layer_table .Select::before {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    display: block;
+    width: 0;
+    height: 0;
+    margin-top: -3px;
+    border-top: 5px solid #84848a;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: '';
+    background: none;
+}
+
+.layer_table .Select:hover, .layer_table .Select:active, .layer_table .Select:focus {
+    width: auto;
+    height: $default-height;
+    line-height: $default-height;
+    background-color: $white-color;
+    border-radius: $radius-4;
+    border-color: $main-hover-color;
+}
+
+.ico_title {
+    border: 3px solid $sub-color-popup-title;
+}
+
+.table {
+    border-top: 2px solid $upper-line-color !important;
+    border-bottom: 1px solid $upper-line-color !important;
+    tr {
+        border: none !important;
+        background: $white-color !important;
+        height: 30px !important;
+        padding: 0 !important;
+        padding-left: $pm-10 !important;
+    }
+    td {
+        border: none !important;
+        background: $white-color !important;
+        border: 1px solid $border-color !important;
+        height: 30px !important;
+        padding: 0 !important;
+        padding-left: $pm-10 !important;
+    }
+    th {
+        border: none !important;
+        background: $background-color !important;
+        border: 1px solid $border-color !important;
+        height: 30px !important;
+        padding: 0 !important;
+        padding-left: $pm-10 !important;
+    }
+}
+
+.ico_down_green {
+    display: none;
+}
+
+.menu_layer_tit {
+    h3 {
+       height: $height-44;
+       line-height: $height-44;
+       color: #fff;
+       background-color: $main-color-window-title !important;
+    }
+}
+
+.no_data i {
+    color: $main-color !important;
+}
+
+.Margin-top-10 {
+    margin-top: 20px;
+}
+
+.alopexgrid .cell {
+    padding: 0 10px;
+}
+
+[id$="Form"] {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.condition_box::after {
+    display: none;
+}
+
+.cell {
+    height: 30px !important;
+}
+
+.header_box {
+    margin-bottom: $pm-10;
+}
+
+.ringEqp {
+    display: flex;
+    gap: $pm-10;
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>유선 엔지니어링 맵</title>
+  <!-- jQuery를 가장 먼저 로드 -->
+  <script type="text/javascript" src="./jquery.min.js"></script>
+  <!-- jQuery UI -->
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <!-- jQuery UI Multiselect Widget -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-multiselect-widget@3.0.0/jquery.multiselect.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery-ui-multiselect-widget@3.0.0/src/jquery.multiselect.min.js"></script>
+  <!-- splitter 플러그인 CSS -->
+  <link rel="stylesheet" href="./jquery.splitter.css">
+  <!-- jQuery Splitter 플러그인 JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/gh/arunskrish/jsplitter@1.4.0/jsplitter.min.js"></script>
+  <!-- alopex-ui를 jQuery 다음에 로드 -->
+  <script type="text/javascript" src="./alopex-ui.min.js"></script>
+  <!-- underscore.js (CDN) -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-min.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="./engmap.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="./index.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="./ol.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="./ol-ext.min.css" type="text/css" media="screen" />
+  <style>
+    /* EngMap.jsp의 <style> 전체 복사 (JSP 변수/서버 코드 제거, 경로 변환) */
+    .menu_layer_tree .Checkbox { margin: 4px 0 2px 2px; }
+    .alopexgrid .pager .page-button { display: inline-block; width: 22px; height: 23px; background:transparent !important; }
+    .leaflet-text-icon{ margin-top: 10px !important; }
+    .alopex_overlay { opacity: 0 !important; }
+    .alopexgrid-cell.bodycell.row-highlight-orange{ background-color : #F29661 !important; }
+    .context-menu { position: absolute; display: none; z-index: 9999; background: white; border: 1px solid #ccc; padding: 5px; list-style: none; margin: 0; font-size: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    .context-menu li { padding: 4px 10px; cursor: pointer; white-space: nowrap; }
+    .context-menu li:hover{ background-color: #eee; }
+    .context-menu img { width: 16px; vertical-align: middle; margin-right: 6px; }
+    /* ... (이하 EngMap.jsp의 style 전체를 실제로 복사) ... */
+  </style>
+  <!-- JS 라이브러리 -->
+  <script type="text/javascript" src="./ol.js"></script>
+  <script type="text/javascript" src="./ol-ext.min.js"></script>
+  <script type="text/javascript" src="./turf.min.js"></script>
+  <script type="text/javascript" src="./proj4.js"></script>
+  <script type="text/javascript" src="./mapgeo2.src.js"></script>
+  <script type="text/javascript" src="./Util.js"></script>
+  <script type="text/javascript" src="./LayerTreeControl.js"></script>
+  <script type="text/javascript" src="./NetworkLayerControl.js"></script>
+  <script type="text/javascript" src="./ZoomControl.js"></script>
+  <script type="text/javascript" src="./ExtnlCalnControl.js"></script>
+  <script type="text/javascript" src="./MtsoInvtSlmtControl.js"></script>
+  <script type="text/javascript" src="./TopologyMap.js"></script>
+  <script type="text/javascript" src="./TcpMessage.js"></script>
+  <script type="text/javascript" src="./TcpCommon.js"></script>
+  <script type="text/javascript" src="./EngMap.js"></script>
+</head>
+<body>
+  <div id="wrap">
+    <!-- header -->
+    <div id="header">
+      <h1><a href="#"></a></h1>
+      <h2 id="intgDsnTitle">유선 엔지니어링 맵</h2>
+    </div>
+    <!-- //header -->
+
+    <!-- menu open -->
+    <div id="pathTraceMenuBox" class="menu_box" style="width:224px;">
+      <ul id="pathTraceMenu" class="menu_box_list">
+        <li id="pathDsnRont"><a href="#">기간망 선번장</a></li>
+        <li id="pathDsnMw"><a href="#">M/W 구간</a></li>
+        <li id="pathMwLno"><a href="#">M/W 선번장</a></li>
+        <li id="pathMwPktTrf"><a href="#">M/W 선번 트래픽</a></li>
+        <li id="pathBckbnCoreTraffic"><a href="#">백본 CORE 대표 Traffic</a></li>
+        <li id="pathBckbnUpfTraffic"><a href="#">백본  UPF Traffic</a></li>
+      </ul>
+    </div>
+    <!--  //menu open -->
+
+    <!-- container -->
+    <div id="container">
+      <!--Splitter-->
+      <div id="splitter" class="splitter_panel">
+        <!-- left_panel -->
+        <div id="engmap_left_panel" class="left_panel" style="height:calc(100% - 45px); width:0px; background: #dce0e4; overflow:hidden" >
+          <div id="engmap_left_menu" class="left_menu menu_aside">
+            <a href="#" id="engmap_menu_btn" class="menu_btn">메뉴</a>
+            <ul>
+              <li class="left_list_01" id="leftBtnMapLayer"><a href="#">맵 레이어</a></li>
+              <li class="left_list_02" id="leftBtnNetworkLayer"><a href="#">망 레이어</a></li>
+              <li class="left_list_03" id="leftBtnNetworkTopo"><a href="#">망 구성도</a></li>
+              <li class="left_list_04" id="leftBtnConfig"><a href="#">구성정보</a></li>
+              <li class="left_list_05" id="leftBtnAround"><a href="#">주변정보</a></li>
+              <li class="left_list_06" id="leftBtnCoverage"><a href="#">커버리지</a></li>
+              <li class="left_list_07" id="leftBtnWreDsn"><a href="#">유선설계</a></li>
+              <li class="left_list_06" id="leftBtnMtsoInvt"><a href="#">국사설계</a></li>
+            </ul>
+          </div>
+          <!-- left-contents (이하 실제 메뉴별 컨텐츠는 다음 단계에서 추가) -->
+          <div id="engmap_left-contents" class="left-contents menu_layer">
+            <!-- ... (탭별 메뉴 컨텐츠는 다음 단계에서 추가) ... -->
+          </div>
+        </div>
+        <!-- //left_panel -->
+
+        <!-- right_panel -->
+        <div class="right_panel" style="width: 1857px;">
+          <button id="left-menu_btn" class="Button left-footer__open" style="position:absolute; left:0; top:50%; margin-top:-25px;  z-index: 500;">닫기</button>
+          <div class="right-contents">
+            <!-- right_header-->
+            <div id="right_header">
+              <div id="dsgmenu02" style="display:flex;align-items:center">
+                <ul style="position:absolute">
+                  <li id="wreLnFcltsCurst" class="new_facility_btn" style="float:right; margin-top: 4px; margin-right:5px;" >
+                    <button type="button" id="wreLnFcltsCurstBtn" title="[현황] 유선 선로 시설현황 - CogentA (skbroadband.com)" class="button_grey active_btn" style="line-height: 18px; padding: 4px 10px 4px 10px;">유선선로시설현황(LDAS)</button>
+                  </li>
+                  <li id="liExmaple" class="new_facility_btn" style="float:right; display:none; margin-top: 4px;" >
+                    <button type="button" id="btnExample" class="button_grey active_btn" style="line-height: 18px;padding: 4px 10px 4px 10px;">범례</button>
+                    <ul id="buttonExampleListByNetowkrLayer" class="Dropdown" style="display:none; position: absolute; left: calc(100%-100)px;"></ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <!-- //right_header-->
+            <!-- map -->
+            <div id="engMap" style="z-index:1" tabindex="0">
+              <ul id="map-contextmenu" class="context-menu"></ul>
+            </div>
+            <!-- 팝업 전체 -->
+            <div id="popup" class="ol-popup" style="display:none;">
+              <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+              <div id="popup-content"></div>
+            </div>
+          </div>
+        </div>
+        <!--//right_panel-->
+      </div>
+      <!--//Splitter-->
+    </div>
+    <!--//container-->
+  </div>
+  <iframe name="downloadIframe" style="display:none"></iframe>
+</body>
+</html> 

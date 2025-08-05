@@ -1,0 +1,9 @@
+button#btnCovReg {
+  @extend %commonButtonActive;
+}
+
+button#btnCovMod, button#btnNodeMod, button#btnNodeModCancel, button#btnNodeSave {
+  @extend %commonButtonActive;
+  border: 1px solid;
+  padding: 0;
+}

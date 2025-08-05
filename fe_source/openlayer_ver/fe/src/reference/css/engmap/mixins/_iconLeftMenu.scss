@@ -1,0 +1,26 @@
+@mixin iconLeftMenu($image-url) {
+  transition: all .3s;
+  position: relative;
+  text-indent: 0;
+  background: url($image-url) no-repeat;
+
+  &:hover {
+    a {
+      transform: scale(1.1);
+    }
+  }
+
+  a {
+    transition: all .3s;
+    background-color: transparent;
+    position: absolute;
+    width: 100%;
+    bottom: $pm-6;
+    color: $white-color;
+    text-align: center;
+  }
+}
+
+@mixin activeBgIcon($bg) {
+  background-color: if($bg != null, $bg, $sub-color-popup-title);
+}

@@ -1,0 +1,857 @@
+button#btnCovMod, button#btnNodeMod, button#btnNodeModCancel, button#btnNodeSave, button#btnCovReg, #left_panel #left-contents > .button_box button#networkToplogyMapView, #left_panel #left-contents > .button_box button#networkToplogyRegPopOpenBtn, #left_panel #left-contents > .button_box button#networkToplogyEditPopOpenBtn, #left_panel #left-contents #networkTopologySearchBtn, button.button_big.active_btn, #btnCovCopy, .button2:hover, .button2:focus, .color_gree:hover, .color_gree:focus, .button2.color_green:hover, .button2.color_green:focus, .button2, .color_gree, .button2.color_green {
+  background-color: #1677FF !important;
+  border-color: #1677FF !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 0 rgba(175, 5, 255, 0.1) !important;
+  transition: all 0.3s !important;
+  color: #fff !important;
+}
+button#btnCovMod:hover, button#btnNodeMod:hover, button#btnNodeModCancel:hover, button#btnNodeSave:hover, button#btnCovReg:hover, #left_panel #left-contents > .button_box button#networkToplogyMapView:hover, #left_panel #left-contents > .button_box button#networkToplogyRegPopOpenBtn:hover, #left_panel #left-contents > .button_box button#networkToplogyEditPopOpenBtn:hover, #left_panel #left-contents #networkTopologySearchBtn:hover, button.button_big.active_btn:hover, #btnCovCopy:hover, .button2:hover, .color_gree:hover, .button2.color_green:hover {
+  background-color: #63a4ff !important;
+  border-color: #63a4ff !important;
+}
+
+input[type=text] {
+  width: 180px;
+  height: 28px;
+  line-height: 28px;
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+
+}
+
+input[type=text]:focus {
+  border-color: #63a4ff !important;
+  padding: 0 11px;
+  line-height: 28px;
+}
+
+input[type=text]:hover {
+  border-color: #63a4ff !important;
+  height: 28px;
+  padding: 0 11px;
+}
+
+input[type=checkbox] {
+  position: relative;
+  cursor: pointer;
+}
+
+
+input[type=radio] {
+  position: relative;
+  cursor: pointer;
+}
+input[type=radio]::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+input[type=radio]::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-60%, -60%) scale(1.2);
+  background: #ed1941;
+  border-radius: 50%;
+  opacity: 0;
+}
+input[type=radio]:checked::before {
+  background-color: #fff;
+  border-color: #ed1941;
+}
+input[type=radio]:checked::after {
+  opacity: 1;
+}
+
+select {
+  width: 130px;
+  border: 1px solid #dcdcdc;
+  line-height: 28px;
+  border-radius: 4px;
+  height: 28px;
+}
+
+select, select:hover, select:active, select:focus {
+  border-color: #63a4ff;
+}
+
+.button2, .color_gree, .button2.color_green {
+  height: 28px !important;
+}
+
+.button2:hover, .button2:focus, .color_gree:hover, .color_gree:focus, .button2.color_green:hover, .button2.color_green:focus {
+  height: 28px !important;
+}
+
+.Button.button2.confirm_btn {
+  padding: 2px 8px !important;
+}
+
+.Button.button2.confirm_btn:before {
+  display: none !important;
+}
+
+button {
+  box-shadow: none !important;
+}
+
+button.button_big_grey {
+  border-radius: 6px;
+}
+button.button_big_grey:hover {
+  background-color: #000;
+}
+
+.scrollbar > .scrollhandle {
+  border-radius: 6px;
+}
+
+#header {
+  background: #2c2c3b;
+}
+
+#engmap_left_menu {
+  background: #333341;
+  font-family: Arial, "돋움", "돋움체", dotum, sans-serif !important;
+}
+#engmap_left_menu #engmap_menu_btn.menu_btn {
+  background: url("../../../resources/images/engmap/left_menu/menu-2-svgrepo-com.svg");
+}
+#engmap_left_menu #engmap_menu_btn.menu_btn.on {
+  background-color: #1677FF;
+}
+#engmap_left_menu li.left_list_01 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/layer-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_01:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_01 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.left_list_02 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/layers-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_02:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_02 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.left_list_03 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/networking-share-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_03:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_03 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.left_list_04 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/network-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_04:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_04 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.left_list_05 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/info-circle-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_05:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_05 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.left_list_06 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/warranty-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_06:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_06 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.left_list_07 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/left_menu/networking-share-svgrepo-com.svg") no-repeat;
+}
+#engmap_left_menu li.left_list_07:hover a {
+  transform: scale(1.1);
+}
+#engmap_left_menu li.left_list_07 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+#engmap_left_menu li.on {
+  margin-top: 8px;
+  background-color: #383fae;
+}
+
+#engmap_left-contents > #mapLayerTreeMenu .menu_layer_tit > h3 {
+  background-color: #333341;
+}
+#engmap_left-contents > #mapLayerTreeMenu #div_tree_layer {
+  background-color: #fff;
+}
+#engmap_left-contents > #mapLayerTreeMenu #div_tree_layer ul.af-tree-group a.af-tree-link {
+  color: #001529;
+}
+
+#engmap_left-contents > #networkLayerTreeMenu .menu_layer_tit > h3 {
+  background-color: #333341;
+}
+#engmap_left-contents > #networkLayerTreeMenu #div_tree_layer {
+  background-color: #fff;
+}
+#engmap_left-contents > #networkLayerTreeMenu #div_tree_layer ul.af-tree-group a.af-tree-link {
+  color: #001529;
+}
+
+#engmap_left-contents > #configBox .menu_layer_tit > h3, #engmap_left-contents > #AroundBox .menu_layer_tit > h3, #engmap_left-contents > #CoverageBox .menu_layer_tit > h3 {
+  background-color: rgba(0, 0, 0, 0.3098039216);
+}
+
+#pathTraceMenuBox {
+  left: 64px;
+  top: 46px;
+}
+#pathTraceMenuBox #pathTraceMenu {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+#pathTraceMenuBox #pathTraceMenu :last-child {
+  border-bottom: none;
+}
+#pathTraceMenuBox #pathTraceMenu li {
+  position: relative;
+}
+#pathTraceMenuBox #pathTraceMenu li:hover a {
+  background: #f2f2f2;
+  color: #242430;
+}
+#pathTraceMenuBox #pathTraceMenu li:hover::after {
+  display: none;
+}
+#pathTraceMenuBox #pathTraceMenu li a {
+  background: #333341;
+}
+#pathTraceMenuBox #pathTraceMenu li::after {
+  content: "";
+  position: absolute;
+  background: #f2f2f2;
+  width: 90%;
+  left: 5%;
+  height: 1px;
+  z-index: 5;
+  opacity: 0.5;
+}
+
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_02 p.tooltip, .right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_01 p.tooltip {
+  position: fixed !important;
+  top: 90px !important;
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_02:hover, .right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_01:hover {
+  background-color: #1677FF;
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_02:hover p.tooltip, .right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_01:hover p.tooltip {
+  display: block;
+}
+
+.right-contents > #right_header {
+  background-color: #333341;
+  position: absolute;
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_01 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/right_header/area-map-marker-line-svgrepo-com.svg") no-repeat;
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_01:hover a {
+  transform: scale(1.1);
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_01 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_02 {
+  transition: all 0.3s;
+  position: relative;
+  text-indent: 0;
+  background: url("../../../resources/images/engmap/right_header/zoom-in-svgrepo-com.svg") no-repeat;
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_02:hover a {
+  transform: scale(1.1);
+}
+.right-contents > #right_header #dsgmenu02 li.dsgmenu02_list_02 a {
+  transition: all 0.3s;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 6px;
+  color: #fff;
+  text-align: center;
+}
+
+#engMap {
+  height: 100%;
+}
+#engMap .leaflet-top.leaflet-right {
+  top: 60px;
+}
+
+@font-face {
+  font-family: dotum, Arial, "돋움", "돋움체", sans-serif !important;
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+.Accordion, .Accordion *, .Button, .Button *, .Carousel, .Carousel *, .Checkbox, .Checkbox *, .Dateinput, .Dateinput *, .Datepicker, .Datepicker *, .Daterange, .Daterange *, .Dialog, .Dialog *, .Divselect, .Divselect *, .Dropdown, .Dropdown *, .Dropdownbutton, .Dropdownbutton *, .Group, .Group *, .Groupbutton, .Groupbutton *, .Icon, .Icon *, .List, .List *, .Navigationbar, .Navigationbar *, .Navmenu, .Navmenu *, .Paging, .Paging *, .Panel, .Panel *, .Progressbar, .Progressbar *, .Radio, .Radio *, .Searchinput, .Searchinput *, .Select, .Select *, .Slider, .Slider *, .Spinner, .Spinner *, .Switch, .Switch *, .Table, .Table *, .Tabs, .Tabs *, .Textarea, .Textarea *, .Textinput, .Textinput *, .Tooltip, .Tooltip *, .Tree, .Tree *, .Label, .Label *, .Quotation, .Quotation *, .Cite, .Cite *, .Mark, .Mark *, .Code, .Code *, .Small, .Small *, .Strong, .Strong *, .Del, .Del *, .Alink, .Alink *, .Splitter, .Splitter *, .Hierarchical, .Hierarchical *, .MultiSelect, .MultiSelect *, .Autocomplete, .Autocomplete * {
+  font-family: Arial, "돋움", "돋움체", dotum, sans-serif !important;
+}
+
+header .num, .step .step_box .step_name, .step .step_box .step_state, .step_state_name, .button_box .button, .button, .button9, .header-1, .header-1 b, .header-2, .header-2 b, .header-3, .header-4, .header-5, .tabs > ul li, .map_time, .map_info dd, .main_heading, .circle_box, .circle_box2, .input_id, .input_pw {
+  font-family: "Moebius eng", "Moebius kor", sans-serif !important;
+}
+
+[class^=fa-],
+[class*=" fa-"] {
+  font-family: "FontAwesome" !important;
+}
+
+#right_header {
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+}
+
+#engmap_left_panel {
+  background-color: #fff;
+}
+
+.condition_box {
+  border: none;
+  margin-bottom: 0;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #dcdcdc;
+}
+
+.condition {
+  padding-top: 0;
+  border: none;
+  display: flex;
+  /*gap: 10px;*/
+  flex-wrap: wrap;
+}
+
+.condition_ty2 {
+  padding-top: 5px;
+  border: none;
+  display: flex;
+  /*gap: 10px;*/
+  flex-wrap: wrap;
+}
+
+.basic_condition {
+  display: flex;
+  flex-direction: column;
+  /*gap: 10px;*/
+  padding: 10px;
+}
+.basic_condition .label {
+  padding-left: 0;
+  width: auto;
+  min-width: 85px;
+  line-height: 28px;
+  padding-left: 10px;
+  height: 28px;
+}
+.basic_condition::after {
+  display: none !important;
+}
+
+.condition label {
+  display: flex;
+  /* gap: 10px; */
+}
+
+.Textinput.textinput {
+  height: 28px;
+  line-height: 28px;
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+}
+
+.Textinput.textinput:hover, .Textinput.textinput:focus, .Textinput.textinput:active {
+  height: 28px;
+  line-height: 28px;
+  background-color: #fff;
+  border-radius: 4px;
+  border-color: #63a4ff;
+  padding: 0 10px;
+}
+
+.Multiselect .ui-multiselect-filter input, .MultiSelect .ui-multiselect-filter input {
+  width: 120px;
+}
+
+.MultiSelect.ui-multiselect {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.Multiselect + button {
+  height: 28px !important;
+  padding-left: 10px !important;
+  line-height: 28px !important;
+  background-color: #fff !important;
+  border: 1px solid #dcdcdc !important;
+  border-radius: 4px !important;
+}
+
+.Multiselect + button:hover {
+  border-color: #63a4ff !important;
+  cursor: pointer !important;
+}
+
+.Multiselect + button:before {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  display: block;
+  width: 0;
+  height: 0;
+  margin-top: -3px;
+  border-top: 5px solid #84848a;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: "";
+  background: none;
+}
+
+.MultiSelect .ui-icon-triangle-1-s {
+  display: none;
+}
+
+.Multiselect .ui-widget-header, .MultiSelect .ui-widget-header {
+  border: none;
+  background-color: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Multiselect .ui-multiselect-checkboxes label, .MultiSelect .ui-multiselect-checkboxes label {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.Divselect.divselect {
+  width: 180px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 4px;
+  background-color: #fff;
+  border: 1px solid #dcdcdc;
+  display: flex;
+  align-items: center;
+}
+
+.Divselect.divselect:hover {
+  width: 180px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 4px;
+  background-color: #fff;
+  border-color: #63a4ff;
+  display: flex;
+  align-items: center;
+}
+
+.layer_table .Select {
+  width: auto;
+  height: 28px;
+  line-height: 28px;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dcdcdc;
+  position: relative;
+}
+
+.layer_table .Select::before {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  display: block;
+  width: 0;
+  height: 0;
+  margin-top: -3px;
+  border-top: 5px solid #84848a;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  content: "";
+  background: none;
+}
+
+.layer_table .Select:hover, .layer_table .Select:active, .layer_table .Select:focus {
+  width: auto;
+  height: 28px;
+  line-height: 28px;
+  background-color: #fff;
+  border-radius: 4px;
+  border-color: #63a4ff;
+}
+
+.ico_title {
+  border: 3px solid #383fae;
+}
+
+.table {
+  border-top: 2px solid #393944 !important;
+  border-bottom: 1px solid #393944 !important;
+}
+.table tr {
+  border: none !important;
+  background: #fff !important;
+  height: 30px !important;
+  padding: 0 !important;
+  padding-left: 10px !important;
+}
+.table td {
+  border: none !important;
+  background: #fff !important;
+  border: 1px solid #dcdcdc !important;
+  height: 30px !important;
+  padding: 0 !important;
+  padding-left: 10px !important;
+}
+.table th {
+  border: none !important;
+  background: #f2f2f2 !important;
+  border: 1px solid #dcdcdc !important;
+  height: 30px !important;
+  padding: 0 !important;
+  padding-left: 10px !important;
+}
+
+.ico_down_green {
+  display: none;
+}
+
+.menu_layer_tit h3 {
+  height: 44px;
+  line-height: 44px;
+  color: #fff;
+  background-color: #686872 !important;
+}
+
+.no_data i {
+  color: #1677FF !important;
+}
+
+.Margin-top-5 {
+  margin-top: 5px;
+}
+
+.alopexgrid .cell {
+  padding: 0 10px;
+}
+
+[id$=Form] {
+  display: flex;
+  flex-direction: column;
+}
+
+.condition_box::after {
+  display: none;
+}
+
+.cell {
+  height: 30px !important;
+}
+
+.header_box {
+  margin-bottom: 10px;
+}
+
+.ringEqp {
+  display: flex;
+  gap: 10px;
+}
+
+#left_panel {
+  background-color: #fff !important;
+  color: #000;
+}
+#left_panel #left-contents {
+  position: relative;
+  height: 100%;
+}
+#left_panel #left-contents .menu_layer_item {
+  background-color: #fff !important;
+  border-bottom: 1px solid #686872;
+  background-color: #686872 !important;
+}
+#left_panel #left-contents .menu_layer_item h4 {
+  font-size: 18px;
+}
+#left_panel #left-contents .layer_header.header_position {
+  margin: 10px 8px;
+}
+#left_panel #left-contents .layer_header.header_position .header_title {
+  color: #000;
+  text-transform: capitalize;
+}
+#left_panel #left-contents .layer_table .af-select,
+#left_panel #left-contents .layer_table .ui-multiselect,
+#left_panel #left-contents .layer_table .Textinput {
+  width: 100% !important;
+}
+#left_panel #left-contents .layer_table table tbody th {
+  background: #dcdcdc;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid {
+  padding: 6px;
+  min-height: max-content;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper {
+  height: auto !important;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.headercell {
+  position: static;
+  background: #fff;
+  border-bottom: none;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.headercell .column-title {
+  color: #000;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.bodycell {
+  position: relative;
+  cursor: pointer;
+  top: 0 !important;
+  left: 0 !important;
+  border-bottom: none;
+  background: #fff;
+  color: #000;
+  border-top-color: #dcdcdc;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.bodycell:hover::after {
+  background-color: rgba(0, 0, 0, 0.3098039216);
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.bodycell::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s;
+  z-index: -1;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.bodycell.selected {
+  color: #fff;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .wrapper .cell.bodycell.selected::after {
+  background-color: #1677FF;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .pager.alopexgrid-pager {
+  position: static !important;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  column-gap: 16px;
+  padding: 8px;
+  height: auto;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .pager.alopexgrid-pager .page-button {
+  background: #fff;
+}
+#left_panel #left-contents #netowrkTopologyTreeGrid .pager.alopexgrid-pager .pager-left {
+  position: static;
+}
+#left_panel #left-contents > .button_box {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+}
+.alopexgrid .wrapper {
+  border-radius: 4px;
+  border: 1px solid #dcdcdc;
+}
+
+.alopexgrid .pager {
+  height: initial;
+  //display: flex;
+  margin-bottom: 10px;
+}
+
+.alopexgrid .headercell, .alopexgrid .headercell.cell-header-lastrow.cell-header-firstrow {
+  border: none;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.alopexgrid .bodycell {
+  border-right: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.alopexgrid .bodycell.cell-fixcol.cell-fixcol-lastcolumn {
+  border-right: 1px solid #dcdcdc;
+}
+
+.tabs {
+  padding: 5px 5px;
+  margin-top: 0;
+}
+
+.tabs > ul > li, .tabs > .Scroller > ul > li, .tabs > ul > li:hover, .tabs > .Scroller > ul > li:hover, .tabs > ul > li:active, .tabs > .Scroller > ul > li:active {
+  background-color: #f2f2f2;
+  height: 32px;
+  line-height: 32px;
+  color: #242430;
+}
+
+.tabs > ul > li.Selected, .tabs > .Scroller > ul > li.Selected, .tabs > ul > li.Selected:hover, .tabs > .Scroller > ul > li.Selected:hover {
+  border: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+  color: #383fae;
+  background-color: #fff;
+}
+
+.button2, .color_gree, .button2.color_green {
+  height: 28px !important;
+  margin-left: 10px;
+}
+
+.button2:hover, .button2:focus, .color_gree:hover, .color_gree:focus, .button2.color_green:hover, .button2.color_green:focus {
+  height: 28px !important;
+}
+
+.Button.button2.confirm_btn {
+  padding: 2px 8px !important;
+}
+
+.Button.button2.confirm_btn:before {
+  display: none !important;
+}
+
+button {
+  box-shadow: none !important;
+}
+
+button.button_big_grey {
+  border-radius: 6px;
+}
+button.button_big_grey:hover {
+  background-color: #000;
+}
+
+button#btnCovMod, button#btnNodeMod, button#btnNodeModCancel, button#btnNodeSave {
+  border: 1px solid;
+  padding: 0;
+}
+
+.Dialog-contents {
+  padding: 16px !important;
+}
+
+.Dialog {
+  background-color: #fff !important;
+}
+
+.Dialog .Header .DialogBtn, .Dialog .Header .DialogBtn:hover, .Dialog .Header .DialogBtn:active {
+  top: 0;
+}
+
+.Dialog .Header {
+  background-color: #383fae !important;
+  height: 44px;
+  line-height: 44px;
+}
+
+/*# sourceMappingURL=index.css.map */

@@ -1,0 +1,135 @@
+#left_panel {
+  background-color: $white-color !important;
+  color: $black-color;
+
+  #left-contents {
+    position: relative;
+    height: 100%;
+
+    .menu_layer_item {
+      background-color: $white-color !important;
+      border-bottom: 1px solid $main-color-window-title;
+      background-color: $main-color-window-title !important;
+
+      h4 {
+        font-size: $font-size-18;
+      }
+    }
+
+    .layer_header.header_position {
+      margin: $pm-10 $pm-8;
+      .header_title {
+        color: $black-color;
+        text-transform: capitalize;
+      }
+    }
+
+    .layer_table {
+      .af-select,
+      .ui-multiselect,
+      .Textinput {
+        width: 100% !important;
+      }
+
+      table {
+
+        tbody {
+          th {
+            background: $border-color;
+          }
+        }
+      }
+    }
+
+    #networkTopologySearchBtn {
+      @extend %commonButtonActive;
+    }
+
+    #netowrkTopologyTreeGrid {
+      padding: $pm-6;
+      min-height: max-content;
+
+      .wrapper {
+        height: auto !important;
+
+        .cell.headercell {
+          position: static;
+          background: $white-color;
+          border-bottom: none;
+          
+          .column-title {
+            color: $black-color;
+          }
+        }
+
+        .cell.bodycell {
+          position: relative;
+          cursor: pointer;
+          top: 0 !important;
+          left: 0 !important;
+          border-bottom: none;
+          background: $white-color;
+          color: $black-color;
+          border-top-color: $border-color;
+
+          &:hover {
+            &::after {
+              background-color: $transparent-black-color;
+            }
+          }
+
+          &::after {
+            content: "";
+            box-sizing: border-box;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s;
+            z-index: -1;
+          }
+        }
+
+        .cell.bodycell.selected {
+          color: $white-color;
+
+          &::after {
+            background-color: $main-color;
+          }
+        }
+      }
+
+      .pager.alopexgrid-pager {
+        position: static !important;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        column-gap: $pm-16;
+        padding: $pm-8;
+        height: auto;
+
+        .page-button {
+          background: $white-color;
+        }
+
+        .pager-left {
+          position: static;
+        }
+      }
+    }
+  }
+
+  #left-contents > .button_box {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+    transform: translateX(-50%);
+
+    button#networkToplogyMapView, button#networkToplogyInsertPopOpenBtn, button#networkToplogyEditPopOpenBtn {
+      @extend %commonButtonActive;
+    }
+  }
+}

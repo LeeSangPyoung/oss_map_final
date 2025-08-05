@@ -1,0 +1,113 @@
+@CHARSET "UTF-8";
+
+@page {
+	size : A4;
+	margin : 0;
+}
+table {
+	width: 95%;
+	border-collapse:collapse;
+	text-align: center;
+}
+.printDiv {
+	font-family:"돋움";
+	margin: 30px 0px 0px 0px;
+	font-size: 10pt;
+}
+.printCmplItem {
+	font-family:"돋움";
+	font-size: 11pt;	
+}
+.printDiv2 {
+	font-family:"돋움";
+	margin: 0 auto;
+	font-size: 8pt;
+}
+#top_button{
+	position: absolute;
+	right: 10px;
+}
+#top_button > .button2 {
+	background-color:#fff; 
+	width:30px;
+	height:28px; 
+	margin-right: 12px;
+}
+#flowGrid tr td {
+	width: 5px;
+	height: 20px;
+}
+.mini-input {
+	font-family:"돋움";
+	margin: 0 auto;
+	font-size: 9pt;
+}
+.mini-tr {
+	font-family:"돋움";
+	margin: 0 auto;
+	font-size: 9pt;
+}
+.mini-top {
+	text-align: left;
+	font-size: 8pt;
+}
+.mini-title {
+	font-size: 16pt;
+	font-weight: 900;
+	font-family:"HY견고딕";
+}
+.mini-title2 {
+	font-size: 14pt;
+	font-weight: 900;
+	font-family:"HY견고딕";
+}
+.mini-title3 {
+	font-size: 16pt;
+	font-family:"HY견고딕";
+}
+.mini-title4 {
+	font-size: 14pt;
+	font-family:"HY견고딕";
+}
+.submitDoc {
+	font-family: "돋움체";
+	font-size: 8pt;
+	width: 91px;
+}
+.bottomA4size {
+	text-align:right;
+	font-size: 8pt;
+}
+.inspectionTable-title{
+	font-size: 20pt;
+}
+.insDoc-header-none {
+	border: none;
+}
+.font-size-8 {
+	font-size: 8pt;
+}
+.font-size-9 {
+	font-size: 9pt;
+}
+.font-size-10 {
+	font-size: 10pt;
+}
+.font-size-11 {
+	font-size: 11pt;
+}
+.font-weight-900 {
+	font-weight: 900;
+}
+.border-top-none {
+	border-top: none;
+}
+.border-bottom-none {
+	border-bottom: none;
+}
+.border-left-none {
+	border-left: none;
+}
+.border-right-none {
+	border-right: none;
+}

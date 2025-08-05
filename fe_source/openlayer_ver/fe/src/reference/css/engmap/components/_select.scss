@@ -1,0 +1,11 @@
+select {
+    width: 130px;
+    border: 1px solid $border-color;
+    line-height: $default-height;
+    border-radius: $radius-4;
+    height: $default-height;
+}
+
+select, select:hover, select:active, select:focus {
+    border-color: $main-hover-color;
+}

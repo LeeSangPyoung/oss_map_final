@@ -1,0 +1,13 @@
+services:
+  fe:
+    image: 'gis-ui-fe:1.0'
+    ports:
+      - "5445:5173"
+    volumes:
+      - ./.env.dev:/app/.env.dev
+    networks:
+      - gis_networks
+
+networks:
+  gis_networks:
+    driver: bridge

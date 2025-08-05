@@ -1,0 +1,181 @@
+.alopexgrid .bodycell.alopexgrid-cell.channelDescrCss > input{
+	border-color:red;
+}
+
+.alopexgrid .cell.headercell.alopexgrid-cell.guard {
+	border-left: 4px solid #FF5050;
+	border-right: 1px #FFF;
+}
+
+.alopexgrid .cell.bodycell.alopexgrid-cell.guard {
+	border-left: 4px solid #FF5050;
+	border-right: 1px #FFF;
+}
+
+.alopexgrid .cell.bodycell.alopexgrid-cell.nodeSelectBackground {
+	background-color:#F06E6E;
+}
+
+.alopexgrid .cell.bodycell.row-heightlight {
+	color: blue;
+}
+
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder0 {
+/* 	border-top: 2px solid #FFAF0A; */
+/* 	border-bottom: 2px solid #FFAF0A; */
+	border: 2px solid #FFAF0A;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder0.left {
+	border-left: 2px solid #FFAF0A;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder0.right {
+	border-right: 2px solid #FFAF0A;
+}
+
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder1 {
+/* 	border-top: 2px solid #FF3232; */
+/* 	border-bottom: 2px solid #FF3232; */
+	border: 2px solid #FF3232;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder1.left {
+	border-left: 2px solid #FF3232;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder1.right {
+	border-right: 2px solid #FF3232;
+}
+
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder2 {
+/* 	border-top: 2px solid #6E9FED; */
+/* 	border-bottom: 2px solid #6E9FED; */
+	border: 2px solid #6E9FED;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder2.left {
+	border-left: 2px solid #6E9FED;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorder2.right {
+	border-right: 2px solid #6E9FED;
+}
+
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght0 {
+/* 	border-top: 2px solid #E56D29; */
+/* 	border-bottom: 2px solid #E56D29; */
+	border: 2px solid #E56D29;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght0.left {
+	border-left: 2px solid #E56D29;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght0.right {
+	border-right: 2px solid #E56D29;
+}
+
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght1 {
+/* 	border-top: 2px solid #9E0ADD; */
+/* 	border-bottom: 2px solid #9E0ADD; */
+	border: 2px solid #9E0ADD;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght1.left {
+	border-left: 2px solid #9E0ADD;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght1.right {
+	border-right: 2px solid #9E0ADD;
+}
+
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght2 {
+/* 	border-top: 2px solid #8A0A8A; */
+/* 	border-bottom: 2px solid #8A0A8A; */
+	border: 2px solid #8A0A8A;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght2.left {
+	border-left: 2px solid #8A0A8A;
+}
+.alopexgrid .bodycell.alopexgrid-cell.orgBorderRght2.right {
+	border-right: 2px solid #8A0A8A;
+}
+
+/* 선번구성도 */
+.panel {
+  margin-top:10px;
+  background-color:#fff;
+  border:1px solid transparent;
+  border-radius:4px;
+  -webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);
+  box-shadow:0 1px 1px rgba(0,0,0,.05)
+}
+
+.panel-default{border-color:#ddd}
+
+/* 기간망 구성도 */
+.ne-table {
+  width: 100%;
+  font-size: 10px;
+  font-weight: bold;
+  color: #242430;
+  line-height: 14px;
+/*   border: none; */
+/*   border-collapse: collapse;  */
+  border: 1px solid #333;
+}
+
+ .ne-table tr {
+ 	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: 20px;
+	color: rgba(36, 36, 48, 0.6);
+	line-height: 14px;
+	vertical-align: middle;
+	text-align: center;
+/* 	border-left: none; */
+	background: #eeeef8; 
+}
+  
+.ne-table td {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: 20px;
+/* 	padding: 7px 5px 6px; */
+/* 	border-left: none; */
+	font-size: 10px;
+	line-height: 14px; 
+	vertical-align: middle;
+	text-align: center;
+	word-break: normal;
+}
+
+.ront-table {
+	width: 100%;
+  	font-size: 10px;
+  	font-weight: bold;
+  	color: #242430;
+  	line-height: 14px;
+  	border: none;
+  	border-collapse: collapse; 
+}
+
+ .ront-table tr {
+ 	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	height: 20px;
+	color: rgba(36, 36, 48, 0.6);
+	line-height: 14px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+/* 시뮬레이션 선번구성도 */
+.simulation-panel {
+  margin-top:0px;
+  background-color:##ffffcc;
+  border:1px solid transparent;
+  border-radius:4px;
+  -webkit-box-shadow:0 1px 1px rgba(0,0,0,.05);
+  box-shadow:0 1px 1px rgba(0,0,0,.05);
+}
+
+.w80{ width: 80px !important;}
+.w180{ width: 180px !important;}
+.wa{ width: auto !important; }
+.simTab{ width:133.4px !important;}
+

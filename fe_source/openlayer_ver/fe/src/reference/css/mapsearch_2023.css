@@ -1,0 +1,293 @@
+html, body, #map {margin: 0; width: 100%; height: 100%}
+
+#leftImage {
+	cursor: pointer;
+}
+
+#map {
+	z-index: 0;
+}
+
+#zoomLevel {
+	display: scroll;
+	position: fixed;
+	z-index: 1;
+	padding: 10px;
+	border-radius: 6px;
+	font-size: 10px;
+	border: 1px solid #aaa;
+	background-color: #BCBEC1;
+	min-width: 45px;
+	max-width: 45px;
+	min-height: 10px;
+	max-height: 10px;
+	top: 40px;
+	right: 5px;
+}
+
+#btnZoomIn, #btnZoomOut, #traffic{
+	display: scroll;
+	position: fixed;
+	z-index: 1;
+	padding: 10px;
+	border-radius: 6px;
+	font-size: 13px;
+	border: 1pxsolid #aaa;
+	background-color: #BCBEC1;
+	background-image: -moz-linear-gradient(#EFEFF0, #BCBEC1);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#EFEFF0), to(#BCBEC1));
+	background-image: -webkit-linear-gradient(#EFEFF0, #BCBEC1);
+	background-image: -o-linear-gradient(#EFEFF0, #BCBEC1);
+	background-image: -ms-linear-gradient(#EFEFF0, #BCBEC1);
+	background-image: linear-gradient(#EFEFF0, #BCBEC1);
+}
+
+#btnZoomIn {
+	min-width: 50px;
+	max-width: 50px;
+	top: 80px;
+	right: 5px;
+}
+
+#btnZoomOut {
+	min-width: 50px;
+	max-width: 50px;
+	top: 120px;
+	right: 5px;
+}
+
+#menuContainer {
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	z-index: 4;
+	position: fixed;
+	padding: 0;
+	margin: 0;
+	bottom: 1%;
+	left: 0%;
+	width: 100%;
+	height: 680px;
+	background: white;
+	border: 1px;
+	border-style: solid;
+	transition: margin 0.6s ease-in;
+	-webkit-transition: margin 0.6s ease-in;
+	-moz-transition: margin 0.6s ease-in;
+	-o-transition: margin 0.6s ease-in;
+}
+
+#tab {
+	float: left;
+	height: 680px;
+	border: 1px solid;
+	display: inline-block;
+}
+
+#leftImageDiv {
+	height: 680px;
+	float: right;
+}
+
+#leftImage {
+	position: absolute;
+	top: 50%;
+	margin-top: -25px;
+	margin-left: 3px;
+	left: 96%;
+}
+
+#leftTab {
+	width: 515px;
+	float: left;
+	border: 1px solid;
+}
+
+#menuContainer2 {
+	border-top-left-radius: 15px;
+	border-bottom-left-radius: 15px;
+	z-index: 4;
+	position: fixed;
+	padding: 0;
+	margin: 0;
+	bottom: 1%;
+	right: 0%;
+	width: 100%;
+	height: 680px;
+	background: white;
+	border: 1px;
+	border-style: solid;
+	transition: margin 0.6s ease-in;
+	-webkit-transition: margin 0.6s ease-in;
+	-moz-transition: margin 0.6s ease-in;
+	-o-transition: margin 0.6s ease-in;
+}
+
+#tab2 {
+	float: right;
+	height: 680px;
+	border: 1px solid;
+	display: inline-block;
+}
+
+#rightImageDiv {
+	height: 680px;
+	float: left;
+}
+
+#rightImage {
+	position: absolute;
+	top: 50%;
+	margin-top: -25px;
+}
+
+#rightTab {
+	width: 325px;
+	float: right;
+	border: 1px solid;
+}
+
+.tabs > ul > li,
+.tabs > .Scroller > ul > li,
+.tabs > ul > li:hover,
+.tabs > .Scroller > ul > li:hover,
+.tabs > ul > li:active,
+.tabs > .Scroller > ul > li:active {
+  position: relative;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 110px;
+  height: 24px;
+  margin: 0;
+  margin-left: -1px;
+  padding: 2px 8px;
+  font-size: 13px;
+  font-weight: normal;
+  color: #323232;
+  text-align: center;
+  line-height: 24px;
+  vertical-align: middle;
+  border: none;
+  border-bottom: 1px solid #bcbdbe;
+  border-left: 0;
+  background: #ebecee;
+  cursor: pointer;
+  text-decoration: none; 
+}
+
+#rangeRingGridCheckFalse {
+	float: right;
+}
+
+.textinput,
+.textinput:hover,
+.textinput:focus,
+.textinput:active {
+  position: relative;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 130px;
+  height: 24px;
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 20px;
+  border: 1px solid #b2b2b2;
+  border-radius: 0;
+  background: #fff;
+  -webkit-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s; 
+}
+
+.condition {
+  float: left;
+  width: 100%;
+  border-left: 1px solid #9c9fa2;
+  padding-top: 2px; 
+}
+
+.label {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 80px;
+  padding-left: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: rgba(36, 36, 48, 0.6);
+  line-height: 20px;
+  border-radius: 0; 
+}
+
+.menuDiv {
+	z-index: 6;
+	position: fixed;
+	margin-top: -2px;
+	background: white;
+	border: 1px solid;
+	display: none;
+}
+
+#layerDivMenu{
+	left: 122px;
+	width: 95px;
+}
+
+#rangeMenu {
+	left: 170px;
+	width: 70px;
+}
+
+#ringTypMenu {
+	left: 305px;
+	width: 125px; 
+}
+
+#mangTypMenu {
+	left: 351px;
+	width: 125px; 
+}
+
+#mtsoDivMenu {
+	left: 395px;
+	width: 125px;
+}
+
+#eqpDivMenu {
+	left: 454px;
+	width: 90px;
+}
+
+.menuCheck {
+	font-size: 13px;
+	font-style: bold;
+}
+
+#divSktDiv {
+	left: 194px;
+	width: 120px;
+}
+
+#divSkbDiv {
+	left: 194px;
+	width: 120px;
+}
+
+#divTnDiv {
+	left: 194px;
+	width: 120px;
+}
+
+#divCommDiv {
+	left: 194px;
+	width: 120px;
+}
+
+.menuDivSpan {
+	width: 75%;
+	display: inline-block;
+}

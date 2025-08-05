@@ -1,0 +1,52 @@
+@CHARSET "UTF-8";
+#top_button{
+	position: absolute;
+	right: 30px;
+}
+@page {
+	size   : A4 portrait;
+	margin : 0;
+}
+/* print - table css */
+#bizPmgmt,#supervisor,#safePic,#twinAprvDiv,#manager{
+  border : none;
+  border : 1px solid #d6d6df;
+}
+.Table-wrapper{
+  border : none;
+  }
+
+/* Form-type */
+.table.Form-type tbody th{
+  border : 1px solid #d6d6df;
+}
+.table.Form-type tbody tr{
+  border : 1px solid #d6d6df;
+}
+.table.Form-type tbody td {
+  border : 1px solid #d6d6df;
+}
+
+/* Form-type2 */
+.table.Form-type2 thead th {
+  background-image: none;
+  border : 1px solid #d6d6df;
+  }
+.table.Form-type2 tbody td {
+  border : 1px solid #d6d6df;
+  }
+  
+/* child */
+.table.Form-type tbody tr:first-child th, .Form-type tbody tr:first-child td{
+  border : 1px solid #d6d6df;
+}
+.table tbody tr:first-child > th, .table tbody tr:first-child > td{
+  border : 1px solid #d6d6df;
+}
+.table.Form-type tr:first-child{
+  border : 1px solid #d6d6df;
+}
+.table tbody tr > th, .table tbody tr > td {
+  border : 1px solid #d6d6df;
+}
+/* 기존 */

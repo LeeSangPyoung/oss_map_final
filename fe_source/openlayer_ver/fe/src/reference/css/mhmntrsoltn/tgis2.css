@@ -1,0 +1,192 @@
+/*윈도우의 크기에 따라 사이즈 조절 될수 있게 수정함. 전정학*/
+body {
+	overflow-y: hidden;
+	overflow-x: hidden;
+	box-sizing: border-box;
+	font-family: Arial, dotum, sans-serif;
+	vertical-align: middle;
+}
+
+.float-left {
+	float: left;
+}
+
+#main {
+	width: 100%;
+	padding-top: 0px;
+}
+
+#map {
+	width: 100%;
+	height: 100%;
+	margin-top: 0px;
+}
+
+#map .map_view {
+	height: 100%;
+}
+
+#map .map_view_area {
+	top: 35px;
+	z-index: 1 !important;
+	height: auto;
+}
+
+#fake_map_view_area {
+	top: 35px;
+	z-index: 0;
+	position: absolute;
+	height: auto;
+}
+/*윈도우의 크기에 따라 사이즈 조절 될수 있게 수정함. 전정학*/
+
+
+.splitter_panel .hsplitter {
+	border-top: 0px;
+	border-bottom: 0px;
+}
+
+#map .menu_box {
+	left: 54px;
+}
+
+#map .menu_list > li > a {
+	width:54px;
+}
+
+.Accordion li > div {
+	background: #fff;
+}
+
+#div-context {
+	width: 140px;
+	border: 1px solid #777;
+	z-index: 10000000;
+	background: #fff;
+	position:absolute;
+	top: 0;
+	left: 0;
+	height: auto;
+}
+
+#div-context ul {
+	padding: 0;
+	margin: 0;
+}
+
+#div-context ul > li > a {
+	color: #333;
+	padding: 6px 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal;
+	display: block;
+}
+
+#div-context ul > li > a:hover{
+	background: #e4e4e4;
+}
+
+.map_view_head .Groupbutton{
+	padding: 5px;
+	margin-left: 0px;
+	transition: all 0.3s ease-in-out;
+}
+
+.map_view_head .Groupbutton.on {
+	margin-left: 290px;
+	transition: all 0.3s ease-in-out;
+}
+
+#map .facility_list {
+	padding: 4px !important;
+}
+
+#map .facility_edit {
+	left: 290px;
+	width: 300px;
+}
+
+#map .menu_layer_item.item_1 {
+	display: none;
+	position: relative;
+	overflow-y: visible;
+	overflow-x: visible;
+}
+
+#map .facility_edit.on {
+	border: 0px;
+}
+
+#map .select-edit-facility {
+	width: 160px;
+	top: 4px;
+	float:right;
+}
+
+#map .facility_list_item {
+	left: 310px;
+}
+
+#map .facility_edit.on .facility_btn {
+	float: left;
+}
+
+#map .facility_edit.on .facility_list {
+	float: left;
+	margin: 5px;
+	width: 150px;
+}
+
+#grid-dsg-search {
+	margin-top: 10px;
+}
+
+/* 툴바 메뉴에 따른 커서 */
+.mg-mode-box-zoom-in {
+	cursor: url(../images/cursor/zoom-in.cur), crosshair;
+}
+
+.mg-mode-box-zoom-out {
+	cursor: url(../images/cursor/zoom-out.cur), crosshair;
+}
+
+.mg-mode-measure-area {
+	cursor: url(../images/cursor/면적.cur), crosshair;
+}
+
+.mg-mode-measure-distance {
+	cursor: url(../images/cursor/거리.cur), crosshair;
+}
+
+#map .quick_layer {
+	width: 214px;
+}
+
+#multi-print-map {
+	width: 100%;
+	height: 650px;
+}
+
+#hidden-map {
+	width: 400px;
+	height: 400px;
+}
+
+
+/* jquery layout css 수정 */
+.outer-center, .middle-center, .outer-west, .middle-west, .inner-south {
+	padding: 0;
+}
+
+.ui-layout-pane {
+	border: 1px solid #bbb;
+	border-left: 0px;
+	border-top: 0px;
+	overflow: visible;
+}
+
+.inner-north {
+	z-index: 1 !important;
+}

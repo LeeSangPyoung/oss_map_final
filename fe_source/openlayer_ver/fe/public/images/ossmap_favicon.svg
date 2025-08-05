@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="32" cy="32" r="32" fill="#22344A"/>
+  <circle cx="32" cy="32" r="20" stroke="#fff" stroke-width="3" fill="none"/>
+  <circle cx="32" cy="32" r="10" stroke="#fff" stroke-width="2" fill="none"/>
+  <path d="M32 18 A14 14 0 0 1 46 32" stroke="#fff" stroke-width="2" fill="none"/>
+  <circle cx="32" cy="32" r="3.5" fill="#fff"/>
+  <text x="32" y="44" text-anchor="middle" font-size="13" fill="#fff" font-family="Arial, sans-serif" font-weight="bold">OS</text>
+</svg> 

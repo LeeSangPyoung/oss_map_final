@@ -1,0 +1,19 @@
+// override tabs class
+.tabs {
+    padding: 20px 30px;
+    margin-top: 0;
+}
+
+.tabs > ul > li, .tabs > .Scroller > ul > li, .tabs > ul > li:hover, .tabs > .Scroller > ul > li:hover, .tabs > ul > li:active, .tabs > .Scroller > ul > li:active {
+    background-color: $title-background;
+    height: 32px;
+    line-height: 32px;
+    color: $title-text;
+}
+
+.tabs > ul > li.Selected, .tabs > .Scroller > ul > li.Selected, .tabs > ul > li.Selected:hover, .tabs > .Scroller > ul > li.Selected:hover {
+    border: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    color: $sub-color-popup-title;
+    background-color: $white-color;
+}

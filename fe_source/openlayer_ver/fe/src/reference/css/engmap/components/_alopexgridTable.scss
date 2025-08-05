@@ -1,0 +1,26 @@
+// Table library alopexgrid
+
+.alopexgrid .wrapper {
+    border-radius: $radius-4;
+    border: 1px solid $border-color;
+}
+
+.alopexgrid .pager {
+    height: initial;
+    //display: flex;
+    margin-bottom: $pm-10;
+}
+
+.alopexgrid .headercell, .alopexgrid .headercell.cell-header-lastrow.cell-header-firstrow {
+    border: none;
+    border-bottom: 1px solid $border-color;
+}
+
+.alopexgrid .bodycell {
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+}
+
+.alopexgrid .bodycell.cell-fixcol.cell-fixcol-lastcolumn {
+    border-right: 1px solid $border-color;
+}

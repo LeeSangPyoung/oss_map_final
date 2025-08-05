@@ -1,0 +1,35 @@
+// button
+.button2, .color_gree, .button2.color_green {
+  @extend %commonButtonActive;
+  height: $default-height !important;
+}
+
+.button2:hover, .button2:focus, .color_gree:hover, .color_gree:focus, .button2.color_green:hover, .button2.color_green:focus {
+  @extend %commonButtonActive;
+  height: $default-height !important;
+  margin-left: 10px;
+}
+
+.Button.button2.confirm_btn {
+  padding: 2px 8px !important;
+}
+
+.Button.button2.confirm_btn:before {
+  display: none !important;
+}
+
+button {
+  box-shadow: none !important;
+}
+
+button.button_big.active_btn, #btnCovCopy {
+  @extend %commonButtonActive;
+}
+
+button.button_big_grey {
+  border-radius: $border-6;
+
+  &:hover {
+    background-color: $black-color;
+  }
+}
