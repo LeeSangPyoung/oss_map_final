@@ -1,0 +1,72 @@
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  application:
+    name: be
+  web:
+    resources:
+      add-mappings: false
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+        batch_versioned_data: true
+    # httpss://vladmihalcea.com/the-open-session-in-view-anti-pattern/
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+    database: POSTGRESQL
+
+  liquibase:
+    change-log: classpath:db/db.changelog-master.yaml
+    enabled: false
+
+  datasource:
+    #    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:postgres}
+    #    username: ${DB_USER:postgres}
+    #    password: ${DB_PASSWORD:postgres}
+    #dev server
+    url: jdbc:postgresql://127.0.0.1:5433/tesd
+    username: ${DB_USER:tesapp}
+    password: ${DB_PASSWORD:experdb12#}
+
+server:
+  port: 8082
+  servlet:
+    context-path: /gis/
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: never
+
+graphql:
+  servlet:
+    exception-handlers-enabled: true
+
+logbook:
+  exclude:
+    - /health
+  filter.enabled: true
+
+management:
+  endpoint:
+    health:
+      show-components: when_authorized
+  endpoints:
+    web:
+      base-path: /
+
+geoserver:
+  host: ${GEO_HOST:http://127.0.0.1:8089}
+  workspace: ${GEO_WORKSPACE:ne}
+  storeName: ${GEO_STORENAME:SKCC_REST_STORE}
+  token: ${GEO_TOKEN:YWRtaW46Z2Vvc2VydmVy}
+
+#springdoc:
+#  api-docs.path: '/v3/api-docs'
