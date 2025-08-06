@@ -3695,6 +3695,7 @@ export default function MainPage() {
     else if (state.codeBlockType === 'setLayerStyleDefault') return setLayerStyleDefaultSample;
     else if (state.codeBlockType === 'setThematics') return setThematicsSample;
     else if (state.codeBlockType === 'select') return selectSample;
+    else if (state.codeBlockType === 'advancedSelect') return advancedSelectSample;
     else if (state.codeBlockType === 'trailDistance') return trailDistanceSample;
     else if (state.codeBlockType === 'trailArea') return trailAreaSample;
     else if (state.codeBlockType === 'trailSimple') return trailSimpleSample;
@@ -4362,6 +4363,7 @@ export default function MainPage() {
             else if (state.codeBlockType === 'setLayerStyleDefault') codeSample = setLayerStyleDefaultSample;
             else if (state.codeBlockType === 'setThematics') codeSample = setThematicsSample;
             else if (state.codeBlockType === 'select') codeSample = selectSample;
+            else if (state.codeBlockType === 'advancedSelect') codeSample = advancedSelectSample;
             else if (state.codeBlockType === 'trailDistance') codeSample = trailDistanceSample;
             else if (state.codeBlockType === 'trailArea') codeSample = trailAreaSample;
             else if (state.codeBlockType === 'trailSimple') codeSample = trailSimpleSample;
