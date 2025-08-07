@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Checkbox, Collapse, Button, Tooltip } from 'antd';
 import { FiLayers, FiEye, FiEyeOff, FiSettings } from 'react-icons/fi';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
 import { useMapbase } from '~/store/useMapbase';
 
 const { Panel } = Collapse;

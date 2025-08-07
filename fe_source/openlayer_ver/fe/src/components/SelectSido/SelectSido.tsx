@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import React, { memo, useMemo } from 'react';
-import { useGetSidoByCode } from '~/packages/Home/services/useGetSidoByCode';
+import { useGetSidoByCode } from '~/assets/Home/services/useGetSidoByCode';
 
 interface Props {
   onSelectSido?: (value: string | undefined) => void;

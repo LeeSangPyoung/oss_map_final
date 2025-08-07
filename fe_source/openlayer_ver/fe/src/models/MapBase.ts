@@ -1,9 +1,9 @@
 import { FeatureBase, LatLng } from './Coords';
-import { CustomVectorTileLayer } from '~/packages/OpenLayer/utils/customTileLayer';
-import { CustomVectorLayer } from '~/packages/OpenLayer/utils/customVectorLayer';
+import { CustomVectorTileLayer } from '~/assets/OpenLayer/utils/customTileLayer';
+import { CustomVectorLayer } from '~/assets/OpenLayer/utils/customVectorLayer';
 import { MenuItem } from './MenuItem';
 import { Type } from 'ol/format/Feature';
-import { ModeDraw, ModeOptions, ModeSelector } from './ModeDraw';
+import { ModeDraw, ModeOptions, ModeSelector, ModeState, ActiveMode, SelectMode, DrawMode, MeasurementMode, EditMode } from './ModeDraw';
 import { LayerStyles, StylesDraw } from './Styles';
 import { Map } from 'ol';
 import VectorLayer from 'ol/layer/Vector';
@@ -42,6 +42,9 @@ export interface MapBase<T> extends MapBaseMethod {
   editFeature?: FeatureBase;
   defaultStyles: LayerStyles[];
   isDrawing?: boolean;
+  
+  // 새로운 모드 관리 구조
+  modeState?: ModeState;
 }
 
 export interface MapBaseMethod {
@@ -75,6 +78,17 @@ export interface MapBaseMethod {
   setLayerData: (data: LayerModel[]) => void;
   setDefaultStyles: (data: LayerStyles[]) => void;
   resetMapAll: () => void;
+  
+  // 새로운 모드 관리 메서드들
+  setActiveMode?: (mode: ActiveMode) => void;
+  setSelectMode?: (mode: SelectMode) => void;
+  setPointDrawMode?: (mode: DrawMode) => void;
+  setLineDrawMode?: (mode: DrawMode) => void;
+  setPolygonDrawMode?: (mode: DrawMode) => void;
+  setMeasurementMode?: (mode: MeasurementMode) => void;
+  setEditMode?: (mode: EditMode) => void;
+  deactivateAllModes?: () => void;
+  getCurrentModeState?: () => ModeState;
 }
 
 export interface MyMapRef extends Map {

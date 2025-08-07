@@ -8,12 +8,12 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 // import { useMapHistory } from '~/hooks/useHistoryMapBox';
 import { centerPoint, featuresList } from '~/utils/common';
 import { useContextMenu } from 'react-contexify';
-import ClickMenu from '~/packages/Home/components/ClickMenu';
+import ClickMenu from '~/assets/Home/components/ClickMenu';
 import { MenuItem } from '~/models/MenuItem';
-import { clearSelectedLayer, initializeSelectionBox } from '~/packages/Home/components/InteractiveSelectionMapBox';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-import { useGetLayerStyles } from '~/packages/Home/services/useGetStylesLayers';
-import { postTilesInfoApi } from '~/packages/Home/services/useFetchTiles';
+import { clearSelectedLayer, initializeSelectionBox } from '~/assets/Home/components/InteractiveSelectionMapBox';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+import { useGetLayerStyles } from '~/assets/Home/services/useGetStylesLayers';
+import { postTilesInfoApi } from '~/assets/Home/services/useFetchTiles';
 import { env } from '~/env';
 import DragCircleMode, { withCircleSupport } from 'mapboxgl-draw-circle-drag';
 import {
@@ -36,9 +36,9 @@ import {
   deleteUserLayer,
   getStyle,
   resetLayerStyle,
-} from '~/packages/Home/components/MapBoxControlFunctions';
+} from '~/assets/Home/components/MapBoxControlFunctions';
 import { LayerModel } from '~/models/Layer';
-import LayerConfigModal from '~/packages/Home/components/LayerConfigModal';
+import LayerConfigModal from '~/assets/Home/components/LayerConfigModal';
 import { Button } from 'antd';
 
 type LayerType = 'symbol' | 'fill' | 'raster' | 'circle' | 'line' | 'background' | 'heatmap' | 'hillshade';

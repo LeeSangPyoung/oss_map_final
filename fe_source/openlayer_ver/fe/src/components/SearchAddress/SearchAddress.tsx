@@ -1,6 +1,6 @@
 import { Input, message } from 'antd';
 import React, { useState } from 'react';
-import { useSearchAddress } from '~/packages/OpenLayer/services/useSearchAddress';
+import { useSearchAddress } from '~/assets/OpenLayer/services/useSearchAddress';
 import { useMapbase } from '~/store/useMapbase';
 
 export default function SearchAddress() {

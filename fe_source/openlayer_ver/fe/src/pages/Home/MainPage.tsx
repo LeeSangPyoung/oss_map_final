@@ -6,10 +6,10 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import proj4 from 'proj4';
 import { useMapHistoryStore } from '~/store/useHistoryStore';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-import { useGetLayerStyles } from '~/packages/Home/services/useGetStylesLayers';
-import { createImageLayer } from '~/packages/OpenLayer/utils/mvtLayers';
-import { createVectorLayer } from '~/packages/OpenLayer/utils/mvtLayers';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+import { useGetLayerStyles } from '~/assets/Home/services/useGetStylesLayers';
+import { createImageLayer } from '~/assets/OpenLayer/utils/mvtLayers';
+import { createVectorLayer } from '~/assets/OpenLayer/utils/mvtLayers';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
@@ -21,7 +21,7 @@ import RenderFeature from 'ol/render/Feature';
 import ImageLayer from 'ol/layer/Image';
 import { ImageWMS } from 'ol/source';
 import { Button } from 'antd';
-import { getListFeaturesInPixel, updateFeatureViaWFS } from '~/packages/OpenLayer/services/getFeatures';
+import { getListFeaturesInPixel, updateFeatureViaWFS } from '~/assets/OpenLayer/services/getFeatures';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
@@ -30,31 +30,31 @@ import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import CircleStyle from 'ol/style/Circle';
-import { useTrailArea, activateTrailDistanceMode, activateTrailAreaMode, activateAreaDrawRectMode, activateAreaDrawCircleMode, activateAreaDrawPolygonMode, activateTrailDrawPointMode, activateTrailDrawLineMode, activateAdvancedTrailDrawLineMode, activateTrailDrawPolygonMode, activateAdvancedTrailDrawPolygonMode, activateAdvancedTrailDrawPointMode } from '~/packages/Drawing';
+import { useTrailArea, activateTrailDistanceMode, activateTrailAreaMode, activateAreaDrawRectMode, activateAreaDrawCircleMode, activateAreaDrawPolygonMode, activateTrailDrawPointMode, activateTrailDrawLineMode, activateAdvancedTrailDrawLineMode, activateTrailDrawPolygonMode, activateAdvancedTrailDrawPolygonMode, activateAdvancedTrailDrawPointMode } from '~/assets/Drawing';
 // CodeExamplePanel import 제거 (fe5 방식으로 되돌림)
 import { getMenuIcon, menuItems, treeData, moveMenu, highlightMoveMenu, blueMoveMenu } from '~/components/MenuSidebar/menuData';
-import { useTrailDistance } from '~/packages/Drawing';
+import { useTrailDistance } from '~/assets/Drawing';
 
 
-import { useAreaDraw } from '~/packages/Drawing/hooks/useAreaDraw';
-import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/packages/Drawing/hooks/useTrailDraw';
-import { useAdvancedTrailDrawPolygon } from '~/packages/Drawing/hooks/useAdvancedTrailDrawPolygon';
-import { useAdvancedTrailDrawPoint } from '~/packages/Drawing/hooks/useAdvancedTrailDrawPoint';
+import { useAreaDraw } from '~/assets/Drawing/hooks/useAreaDraw';
+import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/assets/Drawing/hooks/useTrailDraw';
+import { useAdvancedTrailDrawPolygon } from '~/assets/Drawing/hooks/useAdvancedTrailDrawPolygon';
+import { useAdvancedTrailDrawPoint } from '~/assets/Drawing/hooks/useAdvancedTrailDrawPoint';
 import { Modify, Snap, Translate } from 'ol/interaction';
 
 import { Collection } from 'ol';
-import { useRectangleSelection } from '~/packages/Selection';
-import { useCircleSelection } from '~/packages/Selection';
-import { usePolygonSelection } from '~/packages/Selection';
-import { useBasicSelect, useAdvancedSelect, activateSelectMode, activateAdvancedSelectMode, activateRectSelectionMode, activateCircleSelectionMode, activatePolygonSelectionMode, clearSelectLayer } from '~/packages/Selection';
-import { activateTrailEditMode, activateTrailDeleteMode } from '~/packages/Editing';
-import { useLayerDelete, deleteSelectedFeature } from '~/packages/LayerControl';
+import { useRectangleSelection } from '~/assets/Selection';
+import { useCircleSelection } from '~/assets/Selection';
+import { usePolygonSelection } from '~/assets/Selection';
+import { useBasicSelect, useAdvancedSelect, activateSelectMode, activateAdvancedSelectMode, activateRectSelectionMode, activateCircleSelectionMode, activatePolygonSelectionMode, clearSelectLayer } from '~/assets/Selection';
+import { activateTrailEditMode, activateTrailDeleteMode } from '~/assets/Editing';
+import { useLayerDelete, deleteSelectedFeature } from '~/assets/LayerControl';
 
 import { ModeSelector } from '~/models/ModeDraw';
 import LayerControl from '~/components/LayerControl';
 
 // 새로 만든 훅들 import
-import { useMapPan, useMapScale, useMapInfo, useMapHistory, useMapExport } from '~/packages/Navigation';
+import { useMapPan, useMapScale, useMapInfo, useMapHistory, useMapExport } from '~/assets/Navigation';
 
 import {
   getScreenCenterPointSample,
@@ -80,14 +80,14 @@ import {
   initUserLayerSample,
   deleteUserLayerSample,
   entireAreaUserLayerSample
-} from '~/packages/codeSampleManage';
-import { selectSample, advancedSelectSample, rectSelectionSample, circleSelectionSample, polygonSelectionSample, clearSelectLayerSample, getSelectedFeaturesSample } from '~/packages/codeSampleManage/samples/selectionSamples';
-import { areaDrawRectSample, areaDrawCircleSample, areaDrawPolygonSample, trailDrawPointSample, advancedTrailDrawPointSample, trailDrawPolygonSample, advancedTrailDrawPolygonSample, trailDistanceSample, trailAreaSample, trailSimpleSample, trailDrawLineSample, advancedTrailDrawLineSample, getTrailCoordinateSample } from '~/packages/codeSampleManage/samples/drawingSamples';
+} from '~/assets/codeSampleManage';
+import { selectSample, advancedSelectSample, rectSelectionSample, circleSelectionSample, polygonSelectionSample, clearSelectLayerSample, getSelectedFeaturesSample } from '~/assets/codeSampleManage/samples/selectionSamples';
+import { areaDrawRectSample, areaDrawCircleSample, areaDrawPolygonSample, trailDrawPointSample, advancedTrailDrawPointSample, trailDrawPolygonSample, advancedTrailDrawPolygonSample, trailDistanceSample, trailAreaSample, trailSimpleSample, trailDrawLineSample, advancedTrailDrawLineSample, getTrailCoordinateSample } from '~/assets/codeSampleManage/samples/drawingSamples';
 
-import { trailEditSample, trailDeleteSample } from '~/packages/codeSampleManage/samples/editingSamples';
-import { setLayerOpacitySample, getLayerOpacitySample, resetLayerOpacitySample, setLayerDisplayLevelSample, setLayerStyleSample, setLayerStyleDefaultSample, setThematicsSample } from '~/packages/codeSampleManage/samples/layerStyleSamples';
-import { copyViewSample, exportMapImageSample } from '~/packages/codeSampleManage/samples/mapInfoSamples';
-import { defaultContextMenuSample, editContextMenuSample } from '~/packages/codeSampleManage/samples/contextMenuSamples';
+import { trailEditSample, trailDeleteSample } from '~/assets/codeSampleManage/samples/editingSamples';
+import { setLayerOpacitySample, getLayerOpacitySample, resetLayerOpacitySample, setLayerDisplayLevelSample, setLayerStyleSample, setLayerStyleDefaultSample, setThematicsSample } from '~/assets/codeSampleManage/samples/layerStyleSamples';
+import { copyViewSample, exportMapImageSample } from '~/assets/codeSampleManage/samples/mapInfoSamples';
+import { defaultContextMenuSample, editContextMenuSample } from '~/assets/codeSampleManage/samples/contextMenuSamples';
 import {
   getLayerSample,
   getExternalLayerNameSample,
@@ -98,7 +98,7 @@ import {
   viewLayerInfoSample,
   toggleDisplayHideSample,
   refreshLayerSample
-} from '~/packages/codeSampleManage/samples/layerManagementSamples';
+} from '~/assets/codeSampleManage/samples/layerManagementSamples';
 
 
 import { useCodeExecution } from '../../hooks/useCodeExecution';
@@ -464,7 +464,7 @@ export default function MainPage() {
     }
     
     try {
-      const { insertFeatureViaWFS } = await import('~/packages/OpenLayer/services/getFeatures');
+      const { insertFeatureViaWFS } = await import('~/assets/OpenLayer/services/getFeatures');
       
       // EPSG:5179에서 EPSG:4326으로 좌표 변환
       const transform = state.mapRef.current?.getView().getProjection().getCode() === 'EPSG:5179' ? 
@@ -597,7 +597,7 @@ export default function MainPage() {
               // 전역 정리 함수 호출 (Advanced Trail Draw Point는 제외)
       const currentMode = useMapbase.getState().drawMode?.mode;
       if (currentMode !== 'advanced-trail-draw-point') {
-        const { TrailDrawPointService } = await import('~/packages/Drawing');
+        const { TrailDrawPointService } = await import('~/assets/Drawing');
         TrailDrawPointService.cleanupAll();
       }
         
@@ -612,7 +612,7 @@ export default function MainPage() {
             useMapbase.getState().setMode('trail-draw', { geoType: 'Point' });
             
             // 새로운 서비스 강제 활성화
-            const { activateTrailDrawPointMode } = await import('~/packages/Drawing');
+            const { activateTrailDrawPointMode } = await import('~/assets/Drawing');
             activateTrailDrawPointMode({
               showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -645,7 +645,7 @@ export default function MainPage() {
       if (cleanupMode !== 'advanced-trail-draw-point') {
         console.log('🔍 일반 Trail Draw Point 모드 - 정리 및 재설정');
         // 일반 Trail Draw Point 정리
-        const { TrailDrawPointService } = await import('~/packages/Drawing');
+        const { TrailDrawPointService } = await import('~/assets/Drawing');
         TrailDrawPointService.cleanupAll();
         
         // Trail Draw Point 모드 다시 활성화
@@ -663,7 +663,7 @@ export default function MainPage() {
         }
         
         // Advanced Trail Draw Point Service 다시 활성화
-        const { activateAdvancedTrailDrawPointMode } = await import('~/packages/Drawing');
+        const { activateAdvancedTrailDrawPointMode } = await import('~/assets/Drawing');
         activateAdvancedTrailDrawPointMode({
           showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
           setDrawnFeature: (feature: any) => {
@@ -691,7 +691,7 @@ export default function MainPage() {
         return;
       }
 
-      const { insertFeatureViaWFS } = await import('~/packages/OpenLayer/services/getFeatures');
+      const { insertFeatureViaWFS } = await import('~/assets/OpenLayer/services/getFeatures');
       
       // 좌표 변환 - Line은 기존 방식 유지 (변환 없이 그대로 사용)
       const transform = (coord: number[]) => coord; // 변환 없이 그대로 사용
@@ -803,7 +803,7 @@ export default function MainPage() {
         state.mapRef.current?.render();
         
         // 전역 정리 함수 호출
-        const { TrailDrawLineCleanup } = await import('~/packages/Drawing');
+        const { TrailDrawLineCleanup } = await import('~/assets/Drawing');
         TrailDrawLineCleanup.cleanupAll();
         
         // 잠시 대기 후 모드 재설정 (정리 완료 보장)
@@ -817,7 +817,7 @@ export default function MainPage() {
             useMapbase.getState().setMode('trail-draw', { geoType: 'LineString' });
             
             // 새로운 서비스 강제 활성화
-            const { activateTrailDrawLineMode } = await import('~/packages/Drawing');
+            const { activateTrailDrawLineMode } = await import('~/assets/Drawing');
             activateTrailDrawLineMode({
               showLineTypeSelectorPopup: showLineTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -856,7 +856,7 @@ export default function MainPage() {
       state.drawnFeatureRef.current = null; // 그린 feature 참조 초기화
       
       // 전역 정리 함수 호출
-      const { TrailDrawLineCleanup } = await import('~/packages/Drawing');
+      const { TrailDrawLineCleanup } = await import('~/assets/Drawing');
       TrailDrawLineCleanup.cleanupAll();
       
       // 현재 모드 확인
@@ -889,7 +889,7 @@ export default function MainPage() {
         return;
       }
 
-      const { insertFeatureViaWFS } = await import('~/packages/OpenLayer/services/getFeatures');
+      const { insertFeatureViaWFS } = await import('~/assets/OpenLayer/services/getFeatures');
       
       // 좌표 변환 - Polygon도 Point처럼 EPSG:5179에서 EPSG:4326으로 변환
       const transform = async (coord: number[]) => {
@@ -1033,7 +1033,7 @@ export default function MainPage() {
         state.mapRef.current?.render();
         
         // 전역 정리 함수 호출
-        const { TrailDrawPolygonCleanup } = await import('~/packages/Drawing');
+        const { TrailDrawPolygonCleanup } = await import('~/assets/Drawing');
         TrailDrawPolygonCleanup.cleanupAll();
         
         // 잠시 대기 후 모드 재설정 (정리 완료 보장)
@@ -1047,7 +1047,7 @@ export default function MainPage() {
             useMapbase.getState().setMode('trail-draw', { geoType: 'Polygon' });
             
             // 새로운 서비스 강제 활성화
-            const { activateTrailDrawPolygonMode } = await import('~/packages/Drawing');
+            const { activateTrailDrawPolygonMode } = await import('~/assets/Drawing');
             activateTrailDrawPolygonMode({
               showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -1077,7 +1077,7 @@ export default function MainPage() {
       state.drawnFeatureRef.current = null; // 그린 feature 참조 초기화
       
       // 전역 정리 함수 호출 (Advanced Trail Draw Polygon은 제외)
-      const { TrailDrawPolygonCleanup } = await import('~/packages/Drawing');
+      const { TrailDrawPolygonCleanup } = await import('~/assets/Drawing');
       TrailDrawPolygonCleanup.cleanupAll();
     }
   };

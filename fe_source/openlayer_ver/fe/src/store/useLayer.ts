@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { Vector as VectorSource } from 'ol/source';
 import { useMapbase } from './useMapbase';
-import { CustomVectorLayer } from '~/packages/OpenLayer/utils/customVectorLayer';
-import { createLayerWithName } from '~/packages/OpenLayer/services/getLayerName';
+import { CustomVectorLayer } from '~/assets/OpenLayer/utils/customVectorLayer';
+import { createLayerWithName } from '~/assets/OpenLayer/services/getLayerName';
 
 export interface LayerStore {
   layers: Map<string, CustomVectorLayer>; // Map lưu các layer theo tên

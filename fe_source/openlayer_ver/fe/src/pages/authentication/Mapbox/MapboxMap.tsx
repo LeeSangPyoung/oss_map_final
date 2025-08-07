@@ -1,10 +1,10 @@
 import mapboxgl, { Map, LngLat } from 'mapbox-gl';
 import React, { useState, useEffect, useRef } from 'react';
 import Toolbar from '~/components/Toolbar/Toolbar';
-import BottomControl from '~/packages/Tango/components/BottomControl';
-import RightControl from '~/packages/Tango/components/RightControl';
+import BottomControl from '~/assets/Tango/components/BottomControl';
+import RightControl from '~/assets/Tango/components/RightControl';
 import { initialConfig } from '~/pages/Mapbox/MapboxPage';
-import { AutoCompleteSearch } from '~/packages/Tango/components/AutoCompleteSearch';
+import { AutoCompleteSearch } from '~/assets/Tango/components/AutoCompleteSearch';
 import { Slider } from 'antd';
 import { env } from '~/env';
 import { mockLocations } from '~/utils/common';

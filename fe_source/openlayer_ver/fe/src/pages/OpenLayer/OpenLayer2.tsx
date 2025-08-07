@@ -1,8 +1,8 @@
 // /* eslint-disable react-hooks/exhaustive-deps */
 // import { Collection, Feature, Map } from 'ol';
 // import { useEffect, useRef } from 'react';
-// import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-// import { mapDawulayerBase, onTransformLayer } from '~/packages/OpenLayer/utils/dawulerLayer';
+// import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+// import { mapDawulayerBase, onTransformLayer } from '~/assets/OpenLayer/utils/dawulerLayer';
 // import { useMapHistoryStore } from '~/store/useHistoryStore';
 // import { useMapbase } from '~/store/useMapbase';
 // import { isEmpty, get, includes, delay, omit } from 'lodash';
@@ -12,24 +12,24 @@
 // import VectorLayer from 'ol/layer/Vector';
 // import { FeatureBase } from '~/models/Coords';
 // import VectorSource from 'ol/source/Vector';
-// import { createSelectedStyle } from '~/packages/OpenLayer/utils/selectedStyle';
-// import { useTrailDistance } from '~/packages/OpenLayer/hooks/useTrailDistance';
-// import { useTrailArea } from '~/packages/OpenLayer/hooks/useTrailArea';
-// import { useRectangelSelection } from '~/packages/OpenLayer/hooks/useRectangleSelection';
-// import { useGetLayerStyles } from '~/packages/Home/services/useGetStylesLayers';
-// import { useSelectionCircle } from '~/packages/OpenLayer/hooks/useCircleSelection';
-// import { usePolygonSelection } from '~/packages/OpenLayer/hooks/usePolygonSelection';
-// import { useTrailSimple } from '~/packages/OpenLayer/hooks/useTrailSimple';
+// import { createSelectedStyle } from '~/assets/OpenLayer/utils/selectedStyle';
+// import { useTrailDistance } from '~/assets/OpenLayer/hooks/useTrailDistance';
+// import { useTrailArea } from '~/assets/OpenLayer/hooks/useTrailArea';
+// import { useRectangelSelection } from '~/assets/OpenLayer/hooks/useRectangleSelection';
+// import { useGetLayerStyles } from '~/assets/Home/services/useGetStylesLayers';
+// import { useSelectionCircle } from '~/assets/OpenLayer/hooks/useCircleSelection';
+// import { usePolygonSelection } from '~/assets/OpenLayer/hooks/usePolygonSelection';
+// import { useTrailSimple } from '~/assets/OpenLayer/hooks/useTrailSimple';
 // import { Fill, Stroke, Style } from 'ol/style';
 // import CircleStyle from 'ol/style/Circle';
 // import { LineString, Point } from 'ol/geom';
 // import proj4 from 'proj4';
 // import { centerPointOL, listButton, listButton2 } from '~/utils/common';
-// import { useAreaDraw } from '~/packages/OpenLayer/hooks/useAreaDraw';
-// import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/packages/OpenLayer/hooks/useTrailDraw';
-// import { useMapSelection } from '~/packages/OpenLayer/hooks/useMapSelection';
+// import { useAreaDraw } from '~/assets/OpenLayer/hooks/useAreaDraw';
+// import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/assets/OpenLayer/hooks/useTrailDraw';
+// import { useMapSelection } from '~/assets/OpenLayer/hooks/useMapSelection';
 // import { ModeDraw, ModeOptions, ModeSelector } from '~/models/ModeDraw';
-// import { CustomVectorLayer } from '~/packages/OpenLayer/utils/customVectorLayer';
+// import { CustomVectorLayer } from '~/assets/OpenLayer/utils/customVectorLayer';
 // import { Draw, Modify } from 'ol/interaction';
 // import useDeepCompareEffect from '~/hooks/useDeepCompareEffect';
 

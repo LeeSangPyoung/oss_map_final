@@ -6,23 +6,24 @@ import ImageLayer from 'ol/layer/Image';
 import OSM from 'ol/source/OSM';
 import { fromLonLat, get as getProjection, transform } from 'ol/proj';
 import { useMapbase } from '~/store/useMapbase';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-import { useGetLayerStyles } from '~/packages/Home/services/useGetStylesLayers';
-import { createImageLayer } from '~/packages/OpenLayer/utils/mvtLayers';
-import { createVectorLayer } from '~/packages/OpenLayer/utils/mvtLayers';
-import { updateFeatureViaWFS } from '~/packages/OpenLayer/services/getFeatures';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+import { useGetLayerStyles } from '~/assets/Home/services/useGetStylesLayers';
+import { createImageLayer } from '~/assets/OpenLayer/utils/mvtLayers';
+import { createVectorLayer } from '~/assets/OpenLayer/utils/mvtLayers';
+import { updateFeatureViaWFS } from '~/assets/OpenLayer/services/getFeatures';
 import LayerControl from '~/components/LayerControl';
 import { FiMousePointer, FiMove, FiMaximize2, FiMinimize2, FiRotateCw, FiLayers, FiCircle, FiMapPin, FiSquare, FiHexagon, FiArrowUpRight, FiHome, FiRotateCcw, FiArrowUp, FiArrowDown, FiArrowLeft, FiArrowRight, FiTarget, FiSettings, FiMinus, FiBarChart } from 'react-icons/fi';
-import { useBasicSelect, useAdvancedSelect, activateSelectMode, activateAdvancedSelectMode, activateRectSelectionMode, activateCircleSelectionMode, activatePolygonSelectionMode, useRectangleSelection, useCircleSelection, usePolygonSelection } from '~/packages/Selection';
-import { useLayerDelete } from '~/packages/LayerControl';
-import { useMapPan, useMapHistory } from '~/packages/Navigation';
-import { useLayerOpacity } from '~/packages/LayerStyle';
+import { useBasicSelect, useAdvancedSelect, activateSelectMode, activateAdvancedSelectMode, activateRectSelectionMode, activateCircleSelectionMode, activatePolygonSelectionMode, useRectangleSelection, useCircleSelection, usePolygonSelection } from '~/assets/Selection';
+import { useLayerDelete } from '~/assets/LayerControl';
+import { useMapPan, useMapHistory } from '~/assets/Navigation';
+import { useLayerOpacity } from '~/assets/LayerStyle';
 import { useMapHistoryStore } from '~/store/useHistoryStore';
-import { useTrailDrawPoint } from '~/packages/Drawing/hooks/useTrailDraw';
-import { useAdvancedTrailDrawPoint } from '~/packages/Drawing/hooks/useAdvancedTrailDrawPoint';
-import { useTrailDistance } from '~/packages/Drawing/hooks/useTrailDistance';
-import { useTrailArea } from '~/packages/Drawing/hooks/useTrailArea';
-import { activateTrailDrawPointMode, TrailDrawPointService, activateTrailDrawLineMode, TrailDrawLineService, activateAdvancedTrailDrawLineMode, AdvancedTrailDrawLineService } from '~/packages/Drawing';
+import { useTrailDrawPoint } from '~/assets/Drawing/hooks/useTrailDraw';
+import { useAdvancedTrailDrawPoint } from '~/assets/Drawing/hooks/useAdvancedTrailDrawPoint';
+import { useTrailDistance } from '~/assets/Drawing/hooks/useTrailDistance';
+import { useTrailArea } from '~/assets/Drawing/hooks/useTrailArea';
+import { activateTrailDistanceMode, activateTrailAreaMode } from '~/assets/Drawing';
+import { activateTrailDrawPointMode, TrailDrawPointService, activateTrailDrawLineMode, TrailDrawLineService, activateAdvancedTrailDrawLineMode, AdvancedTrailDrawLineService, activateAdvancedTrailDrawPointMode, AdvancedTrailDrawPointService, activateTrailDrawPolygonMode, TrailDrawPolygonService, activateAdvancedTrailDrawPolygonMode, AdvancedTrailDrawPolygonService } from '~/assets/Drawing';
 import { Feature } from 'ol';
 import { Point, LineString, Polygon, MultiLineString } from 'ol/geom';
 import VectorLayer from 'ol/layer/Vector';
@@ -31,12 +32,13 @@ import { Style, Fill, Stroke } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import { getLength } from 'ol/sphere';
-import { formatLength2 } from '~/packages/OpenLayer/utils/common';
+import { formatLength2 } from '~/assets/OpenLayer/utils/common';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
-import { EditContextMenuService } from '~/packages/ContextMenu';
-import { activateTrailEditMode, activateTrailDeleteMode } from '~/packages/Editing';
-import { Modify, Snap, Translate } from 'ol/interaction';
+import { EditContextMenuService } from '~/assets/ContextMenu';
+import { activateTrailEditMode, activateTrailDeleteMode } from '~/assets/Editing';
+import { Modify, Snap, Translate, Draw } from 'ol/interaction';
+import LayerGroup from 'ol/layer/Group';
 
 // geometry 변환 함수 (메인 페이지에서 가져옴)
 function createOLGeometry(geojson: any) {
@@ -117,7 +119,7 @@ const OSSMAPPage: React.FC = () => {
   const [hasMoved, setHasMoved] = useState(false);
 
   // 선택 도구 상태들
-  const [activeTool, setActiveTool] = useState<'select' | 'advancedSelect' | 'rectSelect' | 'circleSelect' | 'polygonSelect' | 'drawPoint' | 'advancedDrawPoint' | 'drawLine' | 'advancedDrawLine' | 'trailDistance' | 'trailArea' | 'pan' | 'zoomIn' | 'zoomOut' | 'reset' | 'rotate'>('select');
+  const [activeTool, setActiveTool] = useState<'select' | 'advancedSelect' | 'rectSelect' | 'circleSelect' | 'polygonSelect' | 'drawPoint' | 'advancedDrawPoint' | 'drawLine' | 'advancedDrawLine' | 'drawPolygon' | 'advancedDrawPolygon' | 'trailDistance' | 'trailArea' | 'pan' | 'zoomIn' | 'zoomOut' | 'reset' | 'rotate'>('select');
   const activeToolRef = useRef(activeTool);
   useEffect(() => {
     activeToolRef.current = activeTool;
@@ -133,6 +135,9 @@ const OSSMAPPage: React.FC = () => {
   
   const [showLineDropdown, setShowLineDropdown] = useState(false);
   const [currentLineTool, setCurrentLineTool] = useState<'drawLine' | 'advancedDrawLine'>('drawLine');
+  
+  const [showPolygonDropdown, setShowPolygonDropdown] = useState(false);
+  const [currentPolygonTool, setCurrentPolygonTool] = useState<'drawPolygon' | 'advancedDrawPolygon'>('drawPolygon');
   const [currentRotateTool, setCurrentRotateTool] = useState<'rotateCw' | 'rotateCcw'>('rotateCw');
   const [showRotateDropdown, setShowRotateDropdown] = useState(false);
   const [currentZoomTool, setCurrentZoomTool] = useState<'zoomIn' | 'zoomOut'>('zoomIn');
@@ -184,6 +189,15 @@ const OSSMAPPage: React.FC = () => {
   const [selectedLineType, setSelectedLineType] = useState<string>('');
   const [availableLineTypes] = useState([
     { value: 'lineBusinessPlan', label: 'lineBusinessPlan (Line)' }
+  ]);
+
+  // 폴리곤 그리기 상태들 (MainPage와 동일)
+  const [showPolygonTypeSelector, setShowPolygonTypeSelector] = useState(false);
+  const [drawnPolygonCoordinate, setDrawnPolygonCoordinate] = useState<number[] | null>(null);
+  const [drawnPolygonPixel, setDrawnPolygonPixel] = useState<number[] | null>(null);
+  const [selectedPolygonType, setSelectedPolygonType] = useState<string>('');
+  const [availablePolygonTypes] = useState([
+    { value: 'polygonHump', label: 'polygonHump (Polygon)' }
   ]);
 
   // 레이어 데이터 가져오기
@@ -248,6 +262,21 @@ const OSSMAPPage: React.FC = () => {
   useEffect(() => {
     console.log('🔧 측정 모드 상태 변경:', { activeTool, isMeasurementModeActive });
   }, [activeTool, isMeasurementModeActive]);
+
+  // MainPage 방식의 useEffect 추가 (모드 변경 시 자동 활성화)
+  useEffect(() => {
+    if (useMapbase.getState().drawMode?.mode === 'trail-distance') {
+      console.log('🔧 OSSMAP trail-distance 모드 감지 - startDrawing 호출');
+      trailDistance.startDrawing();
+    }
+  }, [useMapbase.getState().drawMode?.mode]);
+
+  useEffect(() => {
+    if (useMapbase.getState().drawMode?.mode === 'trail-area') {
+      console.log('🔧 OSSMAP trail-area 모드 감지 - startDrawing 호출');
+      trailArea.startDrawing();
+    }
+  }, [useMapbase.getState().drawMode?.mode]);
 
   // mapRef.current와 layerData가 모두 준비된 후 선택 기능 강제 활성화
   useEffect(() => {
@@ -430,6 +459,31 @@ const OSSMAPPage: React.FC = () => {
       console.log('=== OSSMAP 라인 타입 선택기 상태 설정 완료 ===');
     } catch (error) {
       console.error('OSSMAP showLineTypeSelectorPopup에서 오류 발생:', error);
+    }
+  };
+
+  // 폴리곤 타입 선택기 표시 함수 (MainPage와 동일)
+  const showPolygonTypeSelectorPopup = (coordinate: number[], pixel: number[]) => {
+    console.log('=== OSSMAP showPolygonTypeSelectorPopup 호출됨 ===');
+    console.log('좌표:', coordinate);
+    console.log('픽셀:', pixel);
+    
+    try {
+      setDrawnPolygonCoordinate(coordinate);
+      console.log('drawnPolygonCoordinate 설정 완료');
+      
+      setDrawnPolygonPixel(pixel);
+      console.log('drawnPolygonPixel 설정 완료');
+      
+      setSelectedPolygonType(''); // 선택된 값 초기화
+      console.log('selectedPolygonType 초기화 완료');
+      
+      setShowPolygonTypeSelector(true);
+      console.log('showPolygonTypeSelector true 설정 완료');
+      
+      console.log('=== OSSMAP 폴리곤 타입 선택기 상태 설정 완료 ===');
+    } catch (error) {
+      console.error('OSSMAP showPolygonTypeSelectorPopup에서 오류 발생:', error);
     }
   };
 
@@ -1009,7 +1063,105 @@ const OSSMAPPage: React.FC = () => {
   const handleSelectToolSelect = (tool: 'select' | 'advancedSelect' | 'rectSelect' | 'circleSelect' | 'polygonSelect') => {
     setCurrentSelectTool(tool);
     setShowSelectDropdown(false);
-    handleToolSelect(tool);
+    
+    console.log('🔄 Select 도구 선택:', tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
+    // 기존 모든 훅 비활성화
+    try {
+      basicSelect.deactivate();
+      advancedSelect.deactivate();
+      // Drawing 훅들은 cleanup 함수로 정리
+      TrailDrawPointService.cleanupAll();
+      AdvancedTrailDrawPointService.cleanupAll();
+      TrailDrawLineService.cleanupAll();
+      AdvancedTrailDrawLineService.cleanupAll();
+      TrailDrawPolygonService.cleanupAll();
+      AdvancedTrailDrawPolygonService.cleanupAll();
+      console.log('✅ 기존 훅들 비활성화 완료');
+    } catch (error) {
+      console.log('⚠️ 기존 훅 비활성화 중 오류:', error);
+    }
+    
+    // 새로운 모드 관리 구조 사용
+    const mapbase = useMapbase.getState();
+    
+    // Select 모드 설정 및 훅 활성화
+    switch (tool) {
+      case 'select':
+        mapbase.setSelectMode?.('basic');
+        // 기존 선택 인터랙션들 정리 (사각형, 원형, 폴리곤 선택)
+        const map = mapRef.current;
+        if (map) {
+          const interactions = map.getInteractions().getArray();
+          interactions.forEach(interaction => {
+            const id = interaction.get('id');
+            if (id === 'rect-selection' || id === 'circle-selection' || id === 'polygon-selection') {
+              map.removeInteraction(interaction);
+              console.log('🗑️ 기존 선택 인터랙션 제거:', id);
+            }
+          });
+        }
+        basicSelect.activate();
+        console.log('✅ 기본 Select 모드 활성화');
+        break;
+      case 'advancedSelect':
+        mapbase.setSelectMode?.('advanced');
+        // 기존 선택 인터랙션들 정리 (사각형, 원형, 폴리곤 선택)
+        const map2 = mapRef.current;
+        if (map2) {
+          const interactions = map2.getInteractions().getArray();
+          interactions.forEach(interaction => {
+            const id = interaction.get('id');
+            if (id === 'rect-selection' || id === 'circle-selection' || id === 'polygon-selection') {
+              map2.removeInteraction(interaction);
+              console.log('🗑️ 기존 선택 인터랙션 제거:', id);
+            }
+          });
+        }
+        // Advanced Select 활성화 (비동기로 Vector 레이어 생성)
+        advancedSelect.activate().then(() => {
+          console.log('✅ 고급 Select 모드 활성화 완료');
+        }).catch((error) => {
+          console.error('❌ 고급 Select 모드 활성화 오류:', error);
+        });
+        break;
+      case 'rectSelect':
+        mapbase.setSelectMode?.('rect');
+        // Drawing 훅들 추가 정리 (Selection 훅의 checkInteraction이 Drawing 인터랙션을 제거하지 않음)
+        TrailDrawPointService.cleanupAll();
+        AdvancedTrailDrawPointService.cleanupAll();
+        TrailDrawLineService.cleanupAll();
+        AdvancedTrailDrawLineService.cleanupAll();
+        startRectSelection(layerData);
+        console.log('✅ 사각형 Select 모드 활성화');
+        break;
+      case 'circleSelect':
+        mapbase.setSelectMode?.('circle');
+        // Drawing 훅들 추가 정리
+        TrailDrawPointService.cleanupAll();
+        AdvancedTrailDrawPointService.cleanupAll();
+        TrailDrawLineService.cleanupAll();
+        AdvancedTrailDrawLineService.cleanupAll();
+        startCircleSelection(layerData);
+        console.log('✅ 원형 Select 모드 활성화');
+        break;
+      case 'polygonSelect':
+        mapbase.setSelectMode?.('polygon');
+        // Drawing 훅들 추가 정리
+        TrailDrawPointService.cleanupAll();
+        AdvancedTrailDrawPointService.cleanupAll();
+        TrailDrawLineService.cleanupAll();
+        AdvancedTrailDrawLineService.cleanupAll();
+        startPolygonSelection(layerData);
+        console.log('✅ 폴리곤 Select 모드 활성화');
+        break;
+    }
+    
+    // UI 상태 업데이트
+    setActiveToolWithLog(tool);
   };
 
   // point 드롭다운 토글 핸들러
@@ -1021,7 +1173,64 @@ const OSSMAPPage: React.FC = () => {
   const handlePointToolSelect = (tool: 'drawPoint' | 'advancedDrawPoint') => {
     setCurrentPointTool(tool);
     setShowPointDropdown(false);
-    handleToolSelect(tool);
+    
+    console.log('🔄 Point 도구 선택:', tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
+    // 기존 모든 훅 비활성화
+    try {
+      basicSelect.deactivate();
+      advancedSelect.deactivate();
+      // Drawing 훅들은 cleanup 함수로 정리
+      TrailDrawPointService.cleanupAll();
+      AdvancedTrailDrawPointService.cleanupAll();
+      TrailDrawLineService.cleanupAll();
+      AdvancedTrailDrawLineService.cleanupAll();
+      TrailDrawPolygonService.cleanupAll();
+      AdvancedTrailDrawPolygonService.cleanupAll();
+      
+      // 측정 도구에서 전환 시 레이어 정리
+      if (activeTool === 'trailDistance' || activeTool === 'trailArea') {
+        console.log('🔧 측정 도구에서 Point 도구로 전환 - 측정 레이어 정리');
+        cleanupMeasurementLayers();
+      }
+      
+      console.log('✅ 기존 훅들 비활성화 완료');
+    } catch (error) {
+      console.log('⚠️ 기존 훅 비활성화 중 오류:', error);
+    }
+    
+    // 새로운 모드 관리 구조 사용
+    const mapbase = useMapbase.getState();
+    
+    // Point Draw 모드 설정 및 훅 활성화
+    switch (tool) {
+      case 'drawPoint':
+        mapbase.setPointDrawMode?.('basic');
+        activateTrailDrawPointMode({
+          showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
+          setDrawnFeature: (feature: any) => {
+            drawnFeatureRef.current = feature;
+          }
+        });
+        console.log('✅ 기본 Point Draw 모드 활성화');
+        break;
+      case 'advancedDrawPoint':
+        mapbase.setPointDrawMode?.('advanced');
+        activateAdvancedTrailDrawPointMode({
+          showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
+          setDrawnFeature: (feature: any) => {
+            drawnFeatureRef.current = feature;
+          }
+        });
+        console.log('✅ 고급 Point Draw 모드 활성화');
+        break;
+    }
+    
+    // UI 상태 업데이트
+    setActiveToolWithLog(tool);
   };
 
   // line 드롭다운 토글 핸들러
@@ -1033,7 +1242,133 @@ const OSSMAPPage: React.FC = () => {
   const handleLineToolSelect = (tool: 'drawLine' | 'advancedDrawLine') => {
     setCurrentLineTool(tool);
     setShowLineDropdown(false);
-    handleToolSelect(tool);
+    
+    console.log('🔄 Line 도구 선택:', tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
+    // 기존 모든 훅 비활성화
+    try {
+      basicSelect.deactivate();
+      advancedSelect.deactivate();
+      // Drawing 훅들은 cleanup 함수로 정리
+      TrailDrawPointService.cleanupAll();
+      AdvancedTrailDrawPointService.cleanupAll();
+      TrailDrawLineService.cleanupAll();
+      AdvancedTrailDrawLineService.cleanupAll();
+      TrailDrawPolygonService.cleanupAll();
+      AdvancedTrailDrawPolygonService.cleanupAll();
+      
+      // 측정 도구에서 전환 시 레이어 정리
+      if (activeTool === 'trailDistance' || activeTool === 'trailArea') {
+        console.log('🔧 측정 도구에서 Line 도구로 전환 - 측정 레이어 정리');
+        cleanupMeasurementLayers();
+      }
+      
+      console.log('✅ 기존 훅들 비활성화 완료');
+    } catch (error) {
+      console.log('⚠️ 기존 훅 비활성화 중 오류:', error);
+    }
+    
+    // 새로운 모드 관리 구조 사용
+    const mapbase = useMapbase.getState();
+    
+    // Line Draw 모드 설정 및 훅 활성화
+    switch (tool) {
+      case 'drawLine':
+        mapbase.setLineDrawMode?.('basic');
+        activateTrailDrawLineMode({
+          showLineTypeSelectorPopup: showLineTypeSelectorPopup,
+          setDrawnFeature: (feature: any) => {
+            drawnFeatureRef.current = feature;
+          }
+        });
+        console.log('✅ 기본 Line Draw 모드 활성화');
+        break;
+      case 'advancedDrawLine':
+        mapbase.setLineDrawMode?.('advanced');
+        activateAdvancedTrailDrawLineMode({
+          showLineTypeSelectorPopup: showLineTypeSelectorPopup,
+          setDrawnFeature: (feature: any) => {
+            drawnFeatureRef.current = feature;
+          }
+        });
+        console.log('✅ 고급 Line Draw 모드 활성화');
+        break;
+    }
+    
+    // UI 상태 업데이트
+    setActiveToolWithLog(tool);
+  };
+
+  // polygon 드롭다운 토글 핸들러
+  const handlePolygonDropdownToggle = () => {
+    setShowPolygonDropdown(!showPolygonDropdown);
+  };
+
+  // polygon 도구 선택 핸들러
+  const handlePolygonToolSelect = (tool: 'drawPolygon' | 'advancedDrawPolygon') => {
+    setCurrentPolygonTool(tool);
+    setShowPolygonDropdown(false);
+    
+    console.log('🔄 Polygon 도구 선택:', tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
+    // 기존 모든 훅 비활성화
+    try {
+      basicSelect.deactivate();
+      advancedSelect.deactivate();
+      // Drawing 훅들은 cleanup 함수로 정리
+      TrailDrawPointService.cleanupAll();
+      AdvancedTrailDrawPointService.cleanupAll();
+      TrailDrawLineService.cleanupAll();
+      AdvancedTrailDrawLineService.cleanupAll();
+      TrailDrawPolygonService.cleanupAll();
+      AdvancedTrailDrawPolygonService.cleanupAll();
+      
+      // 측정 도구에서 전환 시 레이어 정리
+      if (activeTool === 'trailDistance' || activeTool === 'trailArea') {
+        console.log('🔧 측정 도구에서 Polygon 도구로 전환 - 측정 레이어 정리');
+        cleanupMeasurementLayers();
+      }
+      
+      console.log('✅ 기존 훅들 비활성화 완료');
+    } catch (error) {
+      console.log('⚠️ 기존 훅 비활성화 중 오류:', error);
+    }
+    
+    // 새로운 모드 관리 구조 사용
+    const mapbase = useMapbase.getState();
+    
+    // Polygon Draw 모드 설정 및 훅 활성화
+    switch (tool) {
+      case 'drawPolygon':
+        mapbase.setPolygonDrawMode?.('basic');
+        activateTrailDrawPolygonMode({
+          showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
+          setDrawnFeature: (feature: any) => {
+            drawnFeatureRef.current = feature;
+          }
+        });
+        console.log('✅ 기본 Polygon Draw 모드 활성화');
+        break;
+      case 'advancedDrawPolygon':
+        mapbase.setPolygonDrawMode?.('advanced');
+        activateAdvancedTrailDrawPolygonMode({
+          showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
+          setDrawnFeature: (feature: any) => {
+            drawnFeatureRef.current = feature;
+          }
+        });
+        console.log('✅ 고급 Polygon Draw 모드 활성화');
+        break;
+    }
+    
+    // UI 상태 업데이트
+    setActiveToolWithLog(tool);
   };
 
   const handleRotateDropdownToggle = () => {
@@ -1045,6 +1380,10 @@ const OSSMAPPage: React.FC = () => {
 
   const handleRotateToolSelect = (tool: 'rotateCw' | 'rotateCcw') => {
     setCurrentRotateTool(tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
     // 드롭다운을 닫지 않음 - 연속 회전을 위해
     
     if (tool === 'rotateCw') {
@@ -1076,6 +1415,10 @@ const OSSMAPPage: React.FC = () => {
 
   const handleZoomToolSelect = (tool: 'zoomIn' | 'zoomOut') => {
     setCurrentZoomTool(tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
     // 드롭다운을 닫지 않음 - 연속 줌을 위해
     
     if (tool === 'zoomIn') {
@@ -1098,6 +1441,10 @@ const OSSMAPPage: React.FC = () => {
 
   const handleMoveToolSelect = (tool: 'panUp' | 'panDown' | 'panLeft' | 'panRight' | 'panCoordinate' | 'panPrevious' | 'panForward') => {
     setCurrentMoveTool(tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
     // 드롭다운을 닫지 않음 - 연속 이동을 위해
     
     switch (tool) {
@@ -1172,7 +1519,32 @@ const OSSMAPPage: React.FC = () => {
   const handleMeasurementToolSelect = (tool: 'trailDistance' | 'trailArea') => {
     setCurrentMeasurementTool(tool);
     setShowMeasurementDropdown(false);
-    handleToolSelect(tool);
+    
+    // 팝업 정리
+    cleanupDrawingPopups();
+    
+    // 측정 도구 간 전환 시 레이어 정리
+    if ((activeTool === 'trailDistance' && tool === 'trailArea') || 
+        (activeTool === 'trailArea' && tool === 'trailDistance')) {
+      console.log('🔧 측정 도구 간 전환 - 측정 결과 정리');
+      cleanupMeasurementLayers();
+    }
+    
+    // MainPage 방식으로 수정: useMapbase의 setMode 사용
+    const mapbase = useMapbase.getState();
+    
+    // Measurement 모드 설정 (MainPage와 동일한 방식)
+    switch (tool) {
+      case 'trailDistance':
+        mapbase.setMode('trail-distance');
+        break;
+      case 'trailArea':
+        mapbase.setMode('trail-area');
+        break;
+    }
+    
+    // UI 상태 업데이트
+    setActiveToolWithLog(tool);
   };
 
   // 좌표 입력 모달 핸들러들
@@ -1905,7 +2277,7 @@ const OSSMAPPage: React.FC = () => {
     // 측정 모드 완전 OFF
     setIsMeasurementModeActive(false);
     
-    // 측정 도구 레이어 직접 제거
+    // 측정 도구 레이어 직접 제거 (강화)
     if (mapRef.current) {
       const layers = mapRef.current.getLayers().getArray();
       layers.forEach((layer) => {
@@ -1915,9 +2287,23 @@ const OSSMAPPage: React.FC = () => {
           console.log(`🔧 측정 도구 레이어 제거됨: ${layerId}`);
         }
       });
+      
+      // LayerGroup 내부의 레이어도 확인하여 제거
+      layers.forEach((layer) => {
+        if (layer instanceof LayerGroup) {
+          const groupLayers = layer.getLayers().getArray();
+          groupLayers.forEach((groupLayer) => {
+            const groupLayerId = groupLayer.get('id');
+            if (groupLayerId === 'trail-distance' || groupLayerId === 'trail-area') {
+              layer.getLayers().remove(groupLayer);
+              console.log(`🔧 LayerGroup 내 측정 도구 레이어 제거됨: ${groupLayerId}`);
+            }
+          });
+        }
+      });
     }
     
-    // 측정 도구 인터랙션 완전 제거
+    // 측정 도구 인터랙션 완전 제거 (강화)
     const interactions = mapRef.current?.getInteractions().getArray() || [];
     interactions.forEach((interaction: any) => {
       const interactionId = interaction.get('id');
@@ -1927,23 +2313,30 @@ const OSSMAPPage: React.FC = () => {
       }
     });
     
-    // 측정 도구 인터랙션 강제 제거
+    // Draw 인터랙션 강제 제거 (측정 도구 관련)
     const allInteractions = mapRef.current?.getInteractions().getArray() || [];
     allInteractions.forEach((interaction: any) => {
-      const interactionName = interaction.get('name') || '';
-      if (interactionName.includes('draw') || interactionName.includes('trail')) {
-        mapRef.current?.removeInteraction(interaction);
-        console.log('🔧 측정 관련 인터랙션 강제 제거됨:', interactionName);
+      if (interaction instanceof Draw) {
+        const interactionName = interaction.get('name') || '';
+        const interactionId = interaction.get('id') || '';
+        if (interactionName.includes('draw') || interactionName.includes('trail') || 
+            interactionId.includes('trail-distance') || interactionId.includes('trail-area')) {
+          mapRef.current?.removeInteraction(interaction);
+          console.log('🔧 측정 관련 Draw 인터랙션 강제 제거됨:', interactionName || interactionId);
+        }
       }
     });
+    
+    // useMapbase 모드도 초기화
+    useMapbase.getState().setMode('select');
   }
     
-    // 측정 도구 간 전환할 때도 측정 결과 정리
+    // 측정 도구 간 전환할 때도 측정 결과 정리 (강화)
     if ((activeTool === 'trailDistance' && tool === 'trailArea') || 
         (activeTool === 'trailArea' && tool === 'trailDistance')) {
       console.log('🔧 측정 도구 간 전환 - 측정 결과 정리');
       
-      // 측정 도구 레이어 직접 제거
+      // 측정 도구 레이어 직접 제거 (강화)
       if (mapRef.current) {
         const layers = mapRef.current.getLayers().getArray();
         layers.forEach((layer) => {
@@ -1953,7 +2346,33 @@ const OSSMAPPage: React.FC = () => {
             console.log(`🔧 측정 도구 레이어 제거됨: ${layerId}`);
           }
         });
+        
+        // LayerGroup 내부의 레이어도 확인하여 제거
+        layers.forEach((layer) => {
+          if (layer instanceof LayerGroup) {
+            const groupLayers = layer.getLayers().getArray();
+            groupLayers.forEach((groupLayer) => {
+              const groupLayerId = groupLayer.get('id');
+              if (groupLayerId === 'trail-distance' || groupLayerId === 'trail-area') {
+                layer.getLayers().remove(groupLayer);
+                console.log(`🔧 LayerGroup 내 측정 도구 레이어 제거됨: ${groupLayerId}`);
+              }
+            });
+          }
+        });
       }
+      
+      // 측정 도구 인터랙션 완전 제거 (강화)
+      const interactions = mapRef.current?.getInteractions().getArray() || [];
+      interactions.forEach((interaction: any) => {
+        if (interaction instanceof Draw) {
+          const interactionId = interaction.get('id');
+          if (interactionId && (interactionId.includes('trail-distance') || interactionId.includes('trail-area'))) {
+            mapRef.current?.removeInteraction(interaction);
+            console.log(`🔧 측정 도구 Draw 인터랙션 제거됨: ${interactionId}`);
+          }
+        }
+      });
       
       setIsMeasurementModeActive(false);
     }
@@ -2200,10 +2619,13 @@ const OSSMAPPage: React.FC = () => {
             console.log('🔧 회전 모드 활성화');
             break;
           case 'trailDistance':
-            // 길이 측정 모드
+            // 길이 측정 모드 (MainPage 방식으로 수정)
             console.log('🔧 OSSMAP 길이 측정 모드 활성화');
             console.log('🔧 이전 activeTool:', activeTool);
             console.log('🔧 이전 isMeasurementModeActiveRef.current:', isMeasurementModeActiveRef.current);
+            
+            // MainPage 방식: useMapbase의 setMode 사용
+            useMapbase.getState().setMode('trail-distance');
             
             // 첫 번째 측정이 아닌 경우에만 정리 (연속 측정을 위해)
             if (activeTool !== 'trailDistance') {
@@ -2215,18 +2637,19 @@ const OSSMAPPage: React.FC = () => {
             
             setIsMeasurementModeActive(true);
             console.log('🔧 setIsMeasurementModeActive(true) 호출됨');
-            trailDistance.startDrawing();
-            console.log('🔧 trailDistance.startDrawing() 호출됨');
             break;
           case 'trailArea':
-            // 면적 측정 모드
+            // 면적 측정 모드 (MainPage 방식으로 수정)
             console.log('🔧 OSSMAP 면적 측정 모드 활성화');
+            
+            // MainPage 방식: useMapbase의 setMode 사용
+            useMapbase.getState().setMode('trail-area');
+            
             // 첫 번째 측정이 아닌 경우에만 정리 (연속 측정을 위해)
             if (activeTool !== 'trailArea') {
               cleanupDrawnFeature(); // 이전 측정 결과 정리
             }
             setIsMeasurementModeActive(true);
-            trailArea.startDrawing();
             break;
         }
       } catch (error) {
@@ -2279,7 +2702,7 @@ const OSSMAPPage: React.FC = () => {
     }
     
     try {
-      const { insertFeatureViaWFS } = await import('~/packages/OpenLayer/services/getFeatures');
+      const { insertFeatureViaWFS } = await import('~/assets/OpenLayer/services/getFeatures');
       
       // EPSG:5179에서 EPSG:4326으로 좌표 변환
       const transform = mapRef.current?.getView().getProjection().getCode() === 'EPSG:5179' ? 
@@ -2337,7 +2760,7 @@ const OSSMAPPage: React.FC = () => {
             // Trail Draw Point 모드 다시 활성화
             useMapbase.getState().setMode('trail-draw', { geoType: 'Point' });
             
-            const { activateTrailDrawPointMode } = await import('~/packages/Drawing');
+            const { activateTrailDrawPointMode } = await import('~/assets/Drawing');
             activateTrailDrawPointMode({
               showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -2350,23 +2773,18 @@ const OSSMAPPage: React.FC = () => {
             
             // Advanced Trail Draw Point Service 정리
             try {
-              const { AdvancedTrailDrawPointService } = await import('~/packages/Drawing/services/advancedTrailDrawPointService');
+              const { AdvancedTrailDrawPointService } = await import('~/assets/Drawing/services/advancedTrailDrawPointService');
               AdvancedTrailDrawPointService.cleanupAll();
               console.log('🔧 AdvancedTrailDrawPointService 정리 완료');
             } catch (error) {
               console.log('🔧 AdvancedTrailDrawPointService 정리 중 오류:', error);
             }
             
-            // all-features-layer 제거 (새로고침으로 인한 문제 해결)
-            const layers = mapRef.current?.getLayers().getArray() || [];
-            const allFeaturesLayer = layers.find((layer: any) => layer.get('name') === 'all-features-layer');
-            if (allFeaturesLayer && mapRef.current) {
-              mapRef.current.removeLayer(allFeaturesLayer);
-              console.log('🔍 OSSMAP all-features-layer 제거됨');
-            }
+            // 레이어 리로드 후 Vector 데이터가 사라졌으므로 다시 생성
+            console.log('🔍 OSSMAP Advanced Trail Draw Point - Vector 데이터 재생성');
             
-            // Advanced Trail Draw Point Service 다시 활성화
-            const { activateAdvancedTrailDrawPointMode } = await import('~/packages/Drawing');
+            // Advanced Trail Draw Point Service 다시 활성화 (Vector 데이터 재생성 포함)
+            const { activateAdvancedTrailDrawPointMode } = await import('~/assets/Drawing');
             activateAdvancedTrailDrawPointMode({
               showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -2409,6 +2827,14 @@ const OSSMAPPage: React.FC = () => {
     console.log('selectedLineType 설정 완료');
   };
 
+  // 폴리곤 타입 선택 핸들러들 (MainPage와 동일)
+  const handlePolygonTypeSelect = (polygonType: string) => {
+    console.log('=== OSSMAP handlePolygonTypeSelect 호출됨 ===');
+    console.log('선택된 폴리곤 타입:', polygonType);
+    setSelectedPolygonType(polygonType);
+    console.log('selectedPolygonType 설정 완료');
+  };
+
   // 라인 저장 함수 (MainPage와 동일)
   const saveDrawnLine = async (lineType: string) => {
     try {
@@ -2427,7 +2853,7 @@ const OSSMAPPage: React.FC = () => {
         return;
       }
 
-      const { insertFeatureViaWFS } = await import('~/packages/OpenLayer/services/getFeatures');
+      const { insertFeatureViaWFS } = await import('~/assets/OpenLayer/services/getFeatures');
       
       // 좌표 변환 - Line은 기존 방식 유지 (변환 없이 그대로 사용)
       const transform = (coord: number[]) => coord; // 변환 없이 그대로 사용
@@ -2505,7 +2931,7 @@ const OSSMAPPage: React.FC = () => {
             // Trail Draw Line 모드 다시 활성화
             useMapbase.getState().setMode('trail-draw', { geoType: 'LineString' });
             
-            const { activateTrailDrawLineMode } = await import('~/packages/Drawing');
+            const { activateTrailDrawLineMode } = await import('~/assets/Drawing');
             activateTrailDrawLineMode({
               showLineTypeSelectorPopup: showLineTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -2524,16 +2950,11 @@ const OSSMAPPage: React.FC = () => {
               console.log('🔧 AdvancedTrailDrawLineService 정리 중 오류:', error);
             }
             
-            // all-features-layer 제거 (새로고침으로 인한 문제 해결)
-            const layers = mapRef.current?.getLayers().getArray() || [];
-            const allFeaturesLayer = layers.find((layer: any) => layer.get('name') === 'all-features-layer');
-            if (allFeaturesLayer && mapRef.current) {
-              mapRef.current.removeLayer(allFeaturesLayer);
-              console.log('🔍 OSSMAP all-features-layer 제거됨');
-            }
+            // 레이어 리로드 후 Vector 데이터가 사라졌으므로 다시 생성
+            console.log('🔍 OSSMAP Advanced Trail Draw Line - Vector 데이터 재생성');
             
-            // Advanced Trail Draw Line Service 다시 활성화
-            const { activateAdvancedTrailDrawLineMode } = await import('~/packages/Drawing');
+            // Advanced Trail Draw Line Service 다시 활성화 (Vector 데이터 재생성 포함)
+            const { activateAdvancedTrailDrawLineMode } = await import('~/assets/Drawing');
             activateAdvancedTrailDrawLineMode({
               showLineTypeSelectorPopup: showLineTypeSelectorPopup,
               setDrawnFeature: (feature: any) => {
@@ -2566,13 +2987,181 @@ const OSSMAPPage: React.FC = () => {
     }
   };
 
+  // 폴리곤 저장 함수 (MainPage와 동일)
+  const saveDrawnPolygon = async (polygonType: string) => {
+    try {
+      console.log('=== OSSMAP saveDrawnPolygon 호출됨 ===');
+      console.log('polygonType:', polygonType);
+      
+      if (!mapRef.current) {
+        console.error('mapRef가 null입니다.');
+        return;
+      }
+
+      // 그린 feature가 있는지 확인
+      if (!drawnFeatureRef.current) {
+        console.error('그린 feature를 찾을 수 없습니다.');
+        alert('그린 Polygon을 찾을 수 없습니다. 다시 그려주세요.');
+        return;
+      }
+
+      const { insertFeatureViaWFS } = await import('~/assets/OpenLayer/services/getFeatures');
+      
+      // 좌표 변환 - Polygon도 Point처럼 EPSG:5179에서 EPSG:4326으로 변환
+      const transform = async (coord: number[]) => {
+        try {
+          const { transform } = await import('ol/proj');
+          const transformedCoord = transform(coord, 'EPSG:5179', 'EPSG:4326');
+          return transformedCoord;
+        } catch (error) {
+          console.error('좌표 변환 오류:', error);
+          return coord; // 변환 실패시 원본 좌표 반환
+        }
+      };
+      
+      // 그린 feature에서 좌표 추출
+      const geometry = drawnFeatureRef.current.getGeometry();
+      if (!geometry || geometry.getType() !== 'Polygon') {
+        console.error('Polygon geometry를 찾을 수 없습니다.');
+        alert('Polygon geometry를 찾을 수 없습니다.');
+        return;
+      }
+      
+      const coords = geometry.getCoordinates();
+      if (!coords || coords.length === 0) {
+        console.error('유효하지 않은 Polygon 좌표입니다.');
+        alert('유효하지 않은 Polygon 좌표입니다.');
+        return;
+      }
+      
+      console.log('그린 Polygon 좌표:', coords);
+      
+      // 좌표 변환 (비동기 처리)
+      const polygonCoordinates = await Promise.all(
+        coords.map(async (ring: number[][]) => 
+          Promise.all(ring.map(async (coord: number[]) => await transform(coord)))
+        )
+      );
+      console.log('변환된 좌표:', polygonCoordinates);
+      
+      const geometryData = {
+        type: 'Polygon',
+        coordinates: polygonCoordinates
+      };
+      
+      const properties = {
+        property: `새로운 ${polygonType} ${new Date().toLocaleString()}`
+      };
+      
+      console.log('Inserting geometry:', geometryData);
+      console.log('Properties:', properties);
+      
+      const result = await insertFeatureViaWFS(polygonType, geometryData, properties);
+      
+      // 성공 여부 확인
+      const resultStr = String(result);
+      if (resultStr.includes('totalInserted="1"') || resultStr.includes('<wfs:totalInserted>1</wfs:totalInserted>') || resultStr.includes('FeatureId') || resultStr.includes('SUCCESS')) {
+        alert('폴리곤이 성공적으로 저장되었습니다!');
+        
+        // 레이어 새로고침 (WMS + Vector Tile)
+        const layers = mapRef.current?.getLayers().getArray() || [];
+        layers.forEach(layer => {
+          if (layer instanceof TileLayer || layer instanceof ImageLayer) {
+            const source = layer.getSource();
+            if (source && source.refresh) {
+              source.refresh();
+            }
+          } else if (layer.get('layerName') === polygonType && 'getSource' in layer) {
+            // Vector Tile 레이어인 경우 타일 캐시 무효화 및 강제 새로고침
+            const source = (layer as any).getSource();
+            if (source && source.clear) {
+              source.clear();
+              // 타일을 강제로 다시 로드
+              source.refresh();
+            }
+          }
+        });
+        
+        // 성공 후 그린 피처 정리 및 모드 재설정
+        setTimeout(async () => {
+          // 그린 피처 정리
+          cleanupDrawnFeature();
+          console.log('🔧 저장 완료 후 그린 피처 정리 완료');
+          
+          if (activeTool === 'drawPolygon') {
+            // 일반 Trail Draw Polygon 모드 다시 활성화
+            console.log('🔍 OSSMAP 일반 Trail Draw Polygon 모드 - 정리 및 재설정');
+            TrailDrawPolygonService.cleanupAll();
+            
+            // Trail Draw Polygon 모드 다시 활성화
+            useMapbase.getState().setMode('trail-draw', { geoType: 'Polygon' });
+            
+            const { activateTrailDrawPolygonMode } = await import('~/assets/Drawing');
+            activateTrailDrawPolygonMode({
+              showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
+              setDrawnFeature: (feature: any) => {
+                drawnFeatureRef.current = feature;
+              }
+            });
+          } else if (activeTool === 'advancedDrawPolygon') {
+            // Advanced Trail Draw Polygon 모드 다시 활성화
+            console.log('🔍 OSSMAP Advanced Trail Draw Polygon 모드 - 다시 활성화');
+            
+            // Advanced Trail Draw Polygon Service 정리
+            try {
+              const { AdvancedTrailDrawPolygonService } = await import('~/assets/Drawing/services/advancedTrailDrawPolygonService');
+              AdvancedTrailDrawPolygonService.cleanupAll();
+              console.log('🔧 AdvancedTrailDrawPolygonService 정리 완료');
+            } catch (error) {
+              console.log('🔧 AdvancedTrailDrawPolygonService 정리 중 오류:', error);
+            }
+            
+            // 레이어 리로드 후 Vector 데이터가 사라졌으므로 다시 생성
+            console.log('🔍 OSSMAP Advanced Trail Draw Polygon - Vector 데이터 재생성');
+            
+            // Advanced Trail Draw Polygon Service 다시 활성화 (Vector 데이터 재생성 포함)
+            const { activateAdvancedTrailDrawPolygonMode } = await import('~/assets/Drawing');
+            activateAdvancedTrailDrawPolygonMode({
+              showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
+              setDrawnFeature: (feature: any) => {
+                drawnFeatureRef.current = feature;
+              }
+            });
+          }
+        }, 100);
+      } else {
+        alert('저장에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error: any) {
+      console.error('폴리곤 저장 중 오류:', error);
+      alert(`저장 중 오류가 발생했습니다: ${error.message}`);
+    } finally {
+      // 상태 초기화 (MainPage와 동일)
+      setShowPolygonTypeSelector(false);
+      setSelectedPolygonType('');
+      setDrawnPolygonCoordinate(null);
+      setDrawnPolygonPixel(null);
+      drawnFeatureRef.current = null; // 그린 feature 참조 초기화
+      
+      // Trail Draw Polygon Service 정리
+      try {
+        TrailDrawPolygonService.cleanupAll();
+        console.log('🔧 TrailDrawPolygonService 정리 완료');
+      } catch (error) {
+        console.log('🔧 TrailDrawPolygonService 정리 중 오류:', error);
+      }
+    }
+  };
+
   // 저장 버튼 클릭 처리
   const handleSaveClick = () => {
     console.log('=== OSSMAP handleSaveClick 호출됨 ===');
     console.log('현재 selectedNodeType:', selectedNodeType);
     console.log('현재 selectedLineType:', selectedLineType);
+    console.log('현재 selectedPolygonType:', selectedPolygonType);
     console.log('현재 drawnPointCoordinate:', drawnPointCoordinate);
     console.log('현재 drawnLineCoordinate:', drawnLineCoordinate);
+    console.log('현재 drawnPolygonCoordinate:', drawnPolygonCoordinate);
     
     if (selectedNodeType) {
       console.log('노드 타입이 선택됨, 확인 다이얼로그 표시');
@@ -2592,6 +3181,15 @@ const OSSMAPPage: React.FC = () => {
       } else {
         console.log('사용자가 저장을 취소함');
       }
+    } else if (selectedPolygonType) {
+      console.log('폴리곤 타입이 선택됨, 확인 다이얼로그 표시');
+      const shouldSave = confirm('저장하시겠습니까?');
+      if (shouldSave) {
+        console.log('사용자가 저장을 확인함, saveDrawnPolygon 호출');
+        saveDrawnPolygon(selectedPolygonType);
+      } else {
+        console.log('사용자가 저장을 취소함');
+      }
     } else {
       console.log('타입이 선택되지 않음');
     }
@@ -2606,6 +3204,100 @@ const OSSMAPPage: React.FC = () => {
   // 사용자 의도 추적을 위한 ref
   const userIntentRef = useRef<'none' | 'measurement' | 'selection' | 'drawing'>('none');
   const lastUserActionRef = useRef<number>(0);
+
+  // 팝업 정리 공통 함수
+  const cleanupDrawingPopups = () => {
+    // 라인 그리기 팝업 정리
+    if (showLineTypeSelector) {
+      console.log('🔧 라인 그리기 팝업 정리');
+      setShowLineTypeSelector(false);
+      setDrawnLineCoordinate(null);
+      setDrawnLinePixel(null);
+      setSelectedLineType('');
+      drawnFeatureRef.current = null;
+    }
+    
+    // 포인트 그리기 팝업 정리
+    if (showNodeTypeSelector) {
+      console.log('🔧 포인트 그리기 팝업 정리');
+      setShowNodeTypeSelector(false);
+      setDrawnPointCoordinate(null);
+      setDrawnPointPixel(null);
+      setSelectedNodeType('');
+      drawnFeatureRef.current = null;
+    }
+    
+    // 폴리곤 그리기 팝업 정리
+    if (showPolygonTypeSelector) {
+      console.log('🔧 폴리곤 그리기 팝업 정리');
+      setShowPolygonTypeSelector(false);
+      setDrawnPolygonCoordinate(null);
+      setDrawnPolygonPixel(null);
+      setSelectedPolygonType('');
+      drawnFeatureRef.current = null;
+    }
+  };
+
+  // 측정 도구 레이어 정리 함수
+  const cleanupMeasurementLayers = () => {
+    console.log('🔧 측정 도구 레이어 정리 시작');
+    
+    if (mapRef.current) {
+      const layers = mapRef.current.getLayers().getArray();
+      
+      // 일반 레이어에서 측정 도구 레이어 제거
+      layers.forEach((layer) => {
+        const layerId = layer.get('id');
+        if (layerId === 'trail-distance' || layerId === 'trail-area') {
+          mapRef.current?.removeLayer(layer);
+          console.log(`🔧 측정 도구 레이어 제거됨: ${layerId}`);
+        }
+      });
+      
+      // LayerGroup 내부의 레이어도 확인하여 제거
+      layers.forEach((layer) => {
+        if (layer instanceof LayerGroup) {
+          const groupLayers = layer.getLayers().getArray();
+          groupLayers.forEach((groupLayer) => {
+            const groupLayerId = groupLayer.get('id');
+            if (groupLayerId === 'trail-distance' || groupLayerId === 'trail-area') {
+              layer.getLayers().remove(groupLayer);
+              console.log(`🔧 LayerGroup 내 측정 도구 레이어 제거됨: ${groupLayerId}`);
+            }
+          });
+        }
+      });
+      
+      // 측정 도구 인터랙션 제거 (강화)
+      const interactions = mapRef.current.getInteractions().getArray();
+      interactions.forEach((interaction: any) => {
+        if (interaction instanceof Draw) {
+          const interactionId = interaction.get('id');
+          const interactionName = interaction.get('name');
+          
+          // 측정 도구 관련 Draw 인터랙션 제거
+          if (interactionId && (interactionId.includes('trail-distance') || interactionId.includes('trail-area'))) {
+            mapRef.current?.removeInteraction(interaction);
+            console.log(`🔧 측정 도구 Draw 인터랙션 제거됨: ${interactionId}`);
+          }
+          // 또는 측정 도구에서 생성된 Draw 인터랙션 (id가 없는 경우)
+          else if (interactionName && (interactionName.includes('trail-distance') || interactionName.includes('trail-area'))) {
+            mapRef.current?.removeInteraction(interaction);
+            console.log(`🔧 측정 도구 Draw 인터랙션 제거됨: ${interactionName}`);
+          }
+          // 또는 모든 Draw 인터랙션 제거 (더 강력한 방법)
+          else {
+            mapRef.current?.removeInteraction(interaction);
+            console.log(`🔧 모든 Draw 인터랙션 제거됨`);
+          }
+        }
+      });
+    }
+    
+    // 측정 모드 비활성화
+    setIsMeasurementModeActive(false);
+    console.log('🔧 측정 도구 레이어 정리 완료');
+  };
 
   return (
     <div style={{ 
@@ -3219,6 +3911,121 @@ const OSSMAPPage: React.FC = () => {
                     style={{ width: '16px', height: '16px' }}
                   />
                   고급 라인 그리기
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Polygon 드롭다운 도구 */}
+          <div style={{ position: 'relative' }} className="polygon-dropdown-container">
+            <button
+              onClick={handlePolygonDropdownToggle}
+              style={{
+                width: '40px',
+                height: '40px',
+                border: 'none',
+                borderRadius: '6px',
+                background: (activeTool === 'drawPolygon' || activeTool === 'advancedDrawPolygon') ? '#007bff' : '#f8f9fa',
+                color: (activeTool === 'drawPolygon' || activeTool === 'advancedDrawPolygon') ? 'white' : '#333',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '16px',
+                transition: 'all 0.2s ease',
+                position: 'relative'
+              }}
+              title={currentPolygonTool === 'drawPolygon' ? "폴리곤 그리기" : "고급 폴리곤 그리기"}
+            >
+              {currentPolygonTool === 'drawPolygon' ? (
+                <FiHexagon style={{ width: '20px', height: '20px' }} />
+              ) : (
+                <div style={{ position: 'relative' }}>
+                  <FiHexagon style={{ width: '20px', height: '20px' }} />
+                  <div style={{
+                    position: 'absolute',
+                    top: '-2px',
+                    right: '-2px',
+                    width: '8px',
+                    height: '8px',
+                    backgroundColor: '#ff6b35',
+                    borderRadius: '50%',
+                    border: '1px solid white'
+                  }} />
+                </div>
+              )}
+            </button>
+
+            {/* 드롭다운 메뉴 */}
+            {showPolygonDropdown && (
+              <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: '0',
+                background: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '6px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                zIndex: 1001,
+                marginTop: '4px',
+                minWidth: '180px',
+                animation: 'slideDown 0.2s ease-out'
+              }}>
+                <button
+                  onClick={() => handlePolygonToolSelect('drawPolygon')}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px',
+                    color: '#333',
+                    transition: 'background-color 0.2s ease',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <FiHexagon style={{ width: '16px', height: '16px' }} />
+                  폴리곤 그리기
+                </button>
+                <button
+                  onClick={() => handlePolygonToolSelect('advancedDrawPolygon')}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px',
+                    color: '#333',
+                    transition: 'background-color 0.2s ease',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <div style={{ position: 'relative' }}>
+                    <FiHexagon style={{ width: '16px', height: '16px' }} />
+                    <div style={{
+                      position: 'absolute',
+                      top: '-2px',
+                      right: '-2px',
+                      width: '6px',
+                      height: '6px',
+                      backgroundColor: '#ff6b35',
+                      borderRadius: '50%',
+                      border: '1px solid white'
+                    }} />
+                  </div>
+                  고급 폴리곤 그리기
                 </button>
               </div>
             )}
@@ -4023,20 +4830,15 @@ const OSSMAPPage: React.FC = () => {
                   cleanupDrawnFeature();
                   
                   // Advanced Trail Draw Point Service 완전 정리
-                  import('~/packages/Drawing/services/advancedTrailDrawPointService').then(({ AdvancedTrailDrawPointService }) => {
+                  import('~/assets/Drawing/services/advancedTrailDrawPointService').then(({ AdvancedTrailDrawPointService }) => {
                     AdvancedTrailDrawPointService.cleanupAll();
                     console.log('🔧 AdvancedTrailDrawPointService 완전 정리됨');
                     
-                    // all-features-layer 제거
-                    const layers = mapRef.current?.getLayers().getArray() || [];
-                    const allFeaturesLayer = layers.find((layer: any) => layer.get('name') === 'all-features-layer');
-                    if (allFeaturesLayer && mapRef.current) {
-                      mapRef.current.removeLayer(allFeaturesLayer);
-                      console.log('🔧 all-features-layer 제거됨');
-                    }
+                    // all-features-layer 제거하지 않음 (Advanced Select Vector 레이어 보존)
+                    console.log('🔧 Advanced Select Vector 레이어 보존');
                     
                     // Advanced Trail Draw Point 모드 다시 활성화
-                    import('~/packages/Drawing').then(({ activateAdvancedTrailDrawPointMode }) => {
+                    import('~/assets/Drawing').then(({ activateAdvancedTrailDrawPointMode }) => {
                       activateAdvancedTrailDrawPointMode({
                         showNodeTypeSelectorPopup: showNodeTypeSelectorPopup,
                         setDrawnFeature: (feature: any) => {
@@ -4153,12 +4955,12 @@ const OSSMAPPage: React.FC = () => {
                   cleanupDrawnFeature();
                   
                   // Trail Draw Line Service 완전 정리
-                  import('~/packages/Drawing/services/trailDrawLineService').then(({ TrailDrawLineService }) => {
+                  import('~/assets/Drawing/services/trailDrawLineService').then(({ TrailDrawLineService }) => {
                     TrailDrawLineService.cleanupAll();
                     console.log('🔧 TrailDrawLineService 완전 정리됨');
                     
                     // Trail Draw Line 모드 다시 활성화
-                    import('~/packages/Drawing').then(({ activateTrailDrawLineMode }) => {
+                    import('~/assets/Drawing').then(({ activateTrailDrawLineMode }) => {
                       activateTrailDrawLineMode({
                         showLineTypeSelectorPopup: showLineTypeSelectorPopup,
                         setDrawnFeature: (feature: any) => {
@@ -4178,20 +4980,15 @@ const OSSMAPPage: React.FC = () => {
                   cleanupDrawnFeature();
                   
                   // Advanced Trail Draw Line Service 완전 정리
-                  import('~/packages/Drawing/services/advancedTrailDrawLineService').then(({ AdvancedTrailDrawLineService }) => {
+                  import('~/assets/Drawing/services/advancedTrailDrawLineService').then(({ AdvancedTrailDrawLineService }) => {
                     AdvancedTrailDrawLineService.cleanupAll();
                     console.log('🔧 AdvancedTrailDrawLineService 완전 정리됨');
                     
-                    // all-features-layer 제거
-                    const layers = mapRef.current?.getLayers().getArray() || [];
-                    const allFeaturesLayer = layers.find((layer: any) => layer.get('name') === 'all-features-layer');
-                    if (allFeaturesLayer && mapRef.current) {
-                      mapRef.current.removeLayer(allFeaturesLayer);
-                      console.log('🔧 all-features-layer 제거됨');
-                    }
+                    // all-features-layer 제거하지 않음 (Advanced Select Vector 레이어 보존)
+                    console.log('🔧 Advanced Select Vector 레이어 보존');
                     
                     // Advanced Trail Draw Line 모드 다시 활성화
-                    import('~/packages/Drawing').then(({ activateAdvancedTrailDrawLineMode }) => {
+                    import('~/assets/Drawing').then(({ activateAdvancedTrailDrawLineMode }) => {
                       activateAdvancedTrailDrawLineMode({
                         showLineTypeSelectorPopup: showLineTypeSelectorPopup,
                         setDrawnFeature: (feature: any) => {
@@ -4203,6 +5000,156 @@ const OSSMAPPage: React.FC = () => {
                   });
                 } catch (error) {
                   console.log('🔧 Advanced Trail Draw Line 모드 다시 활성화 중 오류:', error);
+                }
+              }
+            }}
+            style={{
+              position: 'absolute',
+              top: '4px',
+              right: '4px',
+              background: 'none',
+              border: 'none',
+              fontSize: '16px',
+              cursor: 'pointer',
+              color: '#999',
+              padding: '0',
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
+      {/* 폴리곤 타입 선택기 (MainPage와 동일) */}
+      {showPolygonTypeSelector && drawnPolygonPixel && (
+        <div
+          style={{
+            position: 'absolute',
+            left: drawnPolygonPixel[0] + 10,
+            top: drawnPolygonPixel[1] - 10,
+            zIndex: 3000,
+            background: 'white',
+            border: '1px solid #ddd',
+            borderRadius: '6px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
+            padding: '8px',
+            minWidth: '200px',
+            transition: 'all 0.3s ease-out',
+            transform: 'translateY(0) scale(1)',
+          }}
+        >
+          <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
+            Polygon Type:
+          </div>
+          <select
+            value={selectedPolygonType}
+            onChange={(e) => handlePolygonTypeSelect(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '6px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              fontSize: '12px',
+              cursor: 'pointer',
+              marginBottom: '8px',
+            }}
+          >
+            <option value="">Select...</option>
+            {availablePolygonTypes.map((polygonType) => (
+              <option key={polygonType.value} value={polygonType.value}>
+                {polygonType.label}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleSaveClick}
+            disabled={!selectedPolygonType}
+            style={{
+              width: '100%',
+              padding: '6px',
+              border: '1px solid #007bff',
+              borderRadius: '4px',
+              background: selectedPolygonType ? '#007bff' : '#ccc',
+              color: 'white',
+              cursor: selectedPolygonType ? 'pointer' : 'not-allowed',
+              fontSize: '12px',
+            }}
+          >
+            Save
+          </button>
+          <button
+            onClick={() => {
+              console.log('🔧 폴리곤 타입 선택기 취소 버튼 클릭');
+              
+              // 그린 피처만 정리 (cleanupDrawnFeature 호출하지 않음)
+              if (drawnFeatureRef.current) {
+                drawnFeatureRef.current = null;
+              }
+              
+              // 상태 초기화 (팝업만 닫고 서비스는 유지)
+              setShowPolygonTypeSelector(false);
+              setDrawnPolygonCoordinate(null);
+              setDrawnPolygonPixel(null);
+              setSelectedPolygonType('');
+              
+              // activeTool에 따라 다르게 처리
+              if (activeTool === 'drawPolygon') {
+                // Trail Draw Polygon - 이전 그린 폴리곤들 완전 정리 후 모드 다시 활성화
+                try {
+                  // 그린 피처 완전 정리
+                  cleanupDrawnFeature();
+                  
+                  // Trail Draw Polygon Service 완전 정리
+                  import('~/assets/Drawing/services/trailDrawPolygonService').then(({ TrailDrawPolygonService }) => {
+                    TrailDrawPolygonService.cleanupAll();
+                    console.log('🔧 TrailDrawPolygonService 완전 정리됨');
+                    
+                    // Trail Draw Polygon 모드 다시 활성화
+                    import('~/assets/Drawing').then(({ activateTrailDrawPolygonMode }) => {
+                      activateTrailDrawPolygonMode({
+                        showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
+                        setDrawnFeature: (feature: any) => {
+                          drawnFeatureRef.current = feature;
+                        }
+                      });
+                      console.log('🔧 Trail Draw Polygon 모드 다시 활성화됨');
+                    });
+                  });
+                } catch (error) {
+                  console.log('🔧 Trail Draw Polygon 모드 다시 활성화 중 오류:', error);
+                }
+              } else if (activeTool === 'advancedDrawPolygon') {
+                // Advanced Trail Draw Polygon - 이전 그린 폴리곤들 완전 정리 후 모드 다시 활성화
+                try {
+                  // 그린 피처 완전 정리
+                  cleanupDrawnFeature();
+                  
+                  // Advanced Trail Draw Polygon Service 완전 정리
+                  import('~/assets/Drawing/services/advancedTrailDrawPolygonService').then(({ AdvancedTrailDrawPolygonService }) => {
+                    AdvancedTrailDrawPolygonService.cleanupAll();
+                    console.log('🔧 AdvancedTrailDrawPolygonService 완전 정리됨');
+                    
+                    // all-features-layer 제거하지 않음 (Advanced Select Vector 레이어 보존)
+                    console.log('🔧 Advanced Select Vector 레이어 보존');
+                    
+                    // Advanced Trail Draw Polygon Service 다시 활성화
+                    import('~/assets/Drawing').then(({ activateAdvancedTrailDrawPolygonMode }) => {
+                      activateAdvancedTrailDrawPolygonMode({
+                        showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup,
+                        setDrawnFeature: (feature: any) => {
+                          drawnFeatureRef.current = feature;
+                        }
+                      });
+                      console.log('🔧 Advanced Trail Draw Polygon 모드 다시 활성화됨');
+                    });
+                  });
+                } catch (error) {
+                  console.log('🔧 Advanced Trail Draw Polygon 모드 다시 활성화 중 오류:', error);
                 }
               }
             }}

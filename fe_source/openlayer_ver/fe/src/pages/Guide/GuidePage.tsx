@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Feature } from 'ol';
 import { useEffect, useRef, useState } from 'react';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-import { mapDawulayerBase } from '~/packages/OpenLayer/utils/dawulerLayer';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+import { mapDawulayerBase } from '~/assets/OpenLayer/utils/dawulerLayer';
 import { useMapbase } from '~/store/useMapbase';
 import isEmpty from 'lodash/isEmpty';
 import debounce from 'lodash/debounce';
@@ -17,7 +17,7 @@ import {
   createImageLayer,
   createVectorLayer,
   selectedFeatureStyle,
-} from '~/packages/OpenLayer/utils/mvtLayers';
+} from '~/assets/OpenLayer/utils/mvtLayers';
 import { Button } from 'antd';
 import { MyMapRef } from '~/models/MapBase';
 import { LineString, MultiLineString, Point, Polygon } from 'ol/geom';
@@ -27,7 +27,7 @@ import { ModeDraw, ModeOptions, ModeSelector } from '~/models/ModeDraw';
 import { Item, Menu, useContextMenu } from 'react-contexify';
 import { useMapHistoryStore } from '~/store/useHistoryStore';
 import VectorLayer from 'ol/layer/Vector';
-import { FeatureData } from '~/packages/OpenLayer/utils/customVectorLayer';
+import { FeatureData } from '~/assets/OpenLayer/utils/customVectorLayer';
 import { Checkbox } from 'antd';
 import { useLayerStore } from '~/store/useLayer';
 

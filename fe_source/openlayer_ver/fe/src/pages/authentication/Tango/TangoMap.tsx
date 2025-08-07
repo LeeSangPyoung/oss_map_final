@@ -2,17 +2,17 @@ import { Map, MapBrowserEvent } from 'ol';
 import { Coordinate } from 'ol/coordinate';
 import React, { useEffect } from 'react';
 import Toolbar from '~/components/Toolbar/Toolbar';
-import { mapDawulayerBase, onTransformLayer } from '~/packages/OpenLayer/utils/dawulerLayer';
-import BottomControl from '~/packages/Tango/components/BottomControl';
-import { mousePositionControl } from '~/packages/Tango/utils/mouseControl';
+import { mapDawulayerBase, onTransformLayer } from '~/assets/OpenLayer/utils/dawulerLayer';
+import BottomControl from '~/assets/Tango/components/BottomControl';
+import { mousePositionControl } from '~/assets/Tango/utils/mouseControl';
 import { useMapbase } from '~/store/useMapbase';
 import { ZoomSlider } from 'ol/control.js';
 import 'ol/ol.css';
-import '~/packages/Tango/styles/styles.css';
-import RightControl from '~/packages/Tango/components/RightControl';
+import '~/assets/Tango/styles/styles.css';
+import RightControl from '~/assets/Tango/components/RightControl';
 import SearchAddress from '~/components/SearchAddress/SearchAddress';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-import { useGetBuildingInfo } from '~/packages/OpenLayer/services/useGetBuildingInfo';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+import { useGetBuildingInfo } from '~/assets/OpenLayer/services/useGetBuildingInfo';
 import { useFeatureInfoStore } from '~/store/useFeatureInfoStore';
 
 export default function TangoMap() {

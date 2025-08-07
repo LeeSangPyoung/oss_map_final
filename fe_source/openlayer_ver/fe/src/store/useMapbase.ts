@@ -6,12 +6,13 @@ import { MapBase, MapbaseOption } from '~/models/MapBase';
 import { useLayerStore } from './useLayer';
 import { boundingExtent } from 'ol/extent';
 import { useMapHistoryStore } from './useHistoryStore';
-import { CustomVectorTileLayer } from '~/packages/OpenLayer/utils/customTileLayer';
-import { getLayerNameApi } from '~/packages/OpenLayer/services/getLayerName';
+import { CustomVectorTileLayer } from '~/assets/OpenLayer/utils/customTileLayer';
+import { getLayerNameApi } from '~/assets/OpenLayer/services/getLayerName';
 import VectorTileSource from 'ol/source/VectorTile';
 import MVT from 'ol/format/MVT';
 import { LayerModel } from '~/models/Layer';
 import { FeatureBase } from '~/models/Coords';
+import { ModeState, ActiveMode, SelectMode, DrawMode, MeasurementMode, EditMode } from '~/models/ModeDraw';
 
 export const useMapbase = create<MapBase<Map>>((set, get) => ({
   map: null,
@@ -26,6 +27,23 @@ export const useMapbase = create<MapBase<Map>>((set, get) => ({
   defaultStyles: [],
   selectorMode: 'RECT' as 'RECT' | 'POLYGON' | 'CIRCLE',
   isDrawing: false,
+  
+  // 새로운 모드 관리 구조 초기화
+  modeState: {
+    activeMode: 'none',
+    selectMode: 'none',
+    pointDrawMode: 'none',
+    lineDrawMode: 'none',
+    polygonDrawMode: 'none',
+    measurementMode: 'none',
+    editMode: 'none',
+    isSelectActive: false,
+    isPointDrawActive: false,
+    isLineDrawActive: false,
+    isPolygonDrawActive: false,
+    isMeasurementActive: false,
+    isEditActive: false,
+  },
   /**
    * Khởi tạo CustomMap và lưu vào store.
    * @param {string} target - ID của DOM element chứa map.
@@ -282,6 +300,223 @@ export const useMapbase = create<MapBase<Map>>((set, get) => ({
       trailCoords: [],
     });
     useMapHistoryStore.getState().resetHistory?.();
+  },
+  
+  // 새로운 모드 관리 메서드들
+  setActiveMode: (mode: ActiveMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    console.log('🔄 모드 전환:', currentModeState.activeMode, '→', mode);
+    
+    // 모든 모드 비활성화
+    const newModeState: ModeState = {
+      activeMode: mode,
+      selectMode: 'none',
+      pointDrawMode: 'none',
+      lineDrawMode: 'none',
+      polygonDrawMode: 'none',
+      measurementMode: 'none',
+      editMode: 'none',
+      isSelectActive: false,
+      isPointDrawActive: false,
+      isLineDrawActive: false,
+      isPolygonDrawActive: false,
+      isMeasurementActive: false,
+      isEditActive: false,
+    };
+    
+    // 새로운 모드에 따라 해당 모드 활성화
+    switch (mode) {
+      case 'select':
+        newModeState.isSelectActive = true;
+        break;
+      case 'pointDraw':
+        newModeState.isPointDrawActive = true;
+        break;
+      case 'lineDraw':
+        newModeState.isLineDrawActive = true;
+        break;
+      case 'polygonDraw':
+        newModeState.isPolygonDrawActive = true;
+        break;
+      case 'measurement':
+        newModeState.isMeasurementActive = true;
+        break;
+      case 'edit':
+        newModeState.isEditActive = true;
+        break;
+      case 'none':
+      default:
+        // 모든 모드 비활성화
+        break;
+    }
+    
+    set({ modeState: newModeState });
+    console.log('✅ 모드 상태 업데이트 완료:', newModeState);
+  },
+  
+  setSelectMode: (mode: SelectMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    console.log('🔄 Select 모드 전환:', currentModeState.selectMode, '→', mode);
+    
+    // 모든 모드 비활성화
+    const newModeState: ModeState = {
+      activeMode: mode !== 'none' ? 'select' : 'none',
+      selectMode: mode,
+      pointDrawMode: 'none',
+      lineDrawMode: 'none',
+      polygonDrawMode: 'none',
+      measurementMode: 'none',
+      editMode: 'none',
+      isSelectActive: mode !== 'none',
+      isPointDrawActive: false,
+      isLineDrawActive: false,
+      isPolygonDrawActive: false,
+      isMeasurementActive: false,
+      isEditActive: false,
+    };
+    
+    set({ modeState: newModeState });
+    console.log('✅ Select 모드 설정 완료:', mode);
+  },
+  
+  setPointDrawMode: (mode: DrawMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    console.log('🔄 Point Draw 모드 전환:', currentModeState.pointDrawMode, '→', mode);
+    
+    // 모든 모드 비활성화
+    const newModeState: ModeState = {
+      activeMode: mode !== 'none' ? 'pointDraw' : 'none',
+      selectMode: 'none',
+      pointDrawMode: mode,
+      lineDrawMode: 'none',
+      polygonDrawMode: 'none',
+      measurementMode: 'none',
+      editMode: 'none',
+      isSelectActive: false,
+      isPointDrawActive: mode !== 'none',
+      isLineDrawActive: false,
+      isPolygonDrawActive: false,
+      isMeasurementActive: false,
+      isEditActive: false,
+    };
+    
+    set({ modeState: newModeState });
+    console.log('✅ Point Draw 모드 설정 완료:', mode);
+  },
+  
+  setLineDrawMode: (mode: DrawMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    console.log('🔄 Line Draw 모드 전환:', currentModeState.lineDrawMode, '→', mode);
+    
+    // 모든 모드 비활성화
+    const newModeState: ModeState = {
+      activeMode: mode !== 'none' ? 'lineDraw' : 'none',
+      selectMode: 'none',
+      pointDrawMode: 'none',
+      lineDrawMode: mode,
+      polygonDrawMode: 'none',
+      measurementMode: 'none',
+      editMode: 'none',
+      isSelectActive: false,
+      isPointDrawActive: false,
+      isLineDrawActive: mode !== 'none',
+      isPolygonDrawActive: false,
+      isMeasurementActive: false,
+      isEditActive: false,
+    };
+    
+    set({ modeState: newModeState });
+    console.log('✅ Line Draw 모드 설정 완료:', mode);
+  },
+  
+  setPolygonDrawMode: (mode: DrawMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    const newModeState = {
+      ...currentModeState,
+      polygonDrawMode: mode,
+      isPolygonDrawActive: mode !== 'none',
+      activeMode: mode !== 'none' ? 'polygonDraw' : 'none'
+    };
+    
+    set({ modeState: newModeState });
+    console.log('✅ Polygon Draw 모드 설정:', mode);
+  },
+  
+  setMeasurementMode: (mode: MeasurementMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    console.log('🔄 Measurement 모드 전환:', currentModeState.measurementMode, '→', mode);
+    
+    // 모든 모드 비활성화
+    const newModeState: ModeState = {
+      activeMode: mode !== 'none' ? 'measurement' : 'none',
+      selectMode: 'none',
+      pointDrawMode: 'none',
+      lineDrawMode: 'none',
+      polygonDrawMode: 'none',
+      measurementMode: mode,
+      editMode: 'none',
+      isSelectActive: false,
+      isPointDrawActive: false,
+      isLineDrawActive: false,
+      isPolygonDrawActive: false,
+      isMeasurementActive: mode !== 'none',
+      isEditActive: false,
+    };
+    
+    set({ modeState: newModeState });
+    console.log('✅ Measurement 모드 설정 완료:', mode);
+  },
+  
+  setEditMode: (mode: EditMode) => {
+    const currentModeState = get().modeState;
+    if (!currentModeState) return;
+    
+    const newModeState = {
+      ...currentModeState,
+      editMode: mode,
+      isEditActive: mode !== 'none',
+      activeMode: mode !== 'none' ? 'edit' : 'none'
+    };
+    
+    set({ modeState: newModeState });
+    console.log('✅ Edit 모드 설정:', mode);
+  },
+  
+  deactivateAllModes: () => {
+    const newModeState: ModeState = {
+      activeMode: 'none',
+      selectMode: 'none',
+      pointDrawMode: 'none',
+      lineDrawMode: 'none',
+      polygonDrawMode: 'none',
+      measurementMode: 'none',
+      editMode: 'none',
+      isSelectActive: false,
+      isPointDrawActive: false,
+      isLineDrawActive: false,
+      isPolygonDrawActive: false,
+      isMeasurementActive: false,
+      isEditActive: false,
+    };
+    
+    set({ modeState: newModeState });
+    console.log('🔄 모든 모드 비활성화 완료');
+  },
+  
+  getCurrentModeState: () => {
+    return get().modeState;
   },
 }));
 

@@ -1,4 +1,4 @@
-import { updateFeatureViaWFS, insertFeatureViaWFS, deleteFeatureViaWFS } from '../packages/OpenLayer/services/getFeatures';
+import { updateFeatureViaWFS, insertFeatureViaWFS, deleteFeatureViaWFS } from '~/assets/OpenLayer/services/getFeatures';
 
 /**
  * 피처 업데이트 서비스

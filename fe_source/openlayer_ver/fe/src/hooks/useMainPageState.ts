@@ -10,11 +10,11 @@ import {
   initUserLayerSample, 
   deleteUserLayerSample, 
   entireAreaUserLayerSample
-} from '~/packages/codeSampleManage/samples/userLayerSamples';
+} from '~/assets/codeSampleManage/samples/userLayerSamples';
 import {
   defaultContextMenuSample,
   editContextMenuSample
-} from '~/packages/codeSampleManage/samples/contextMenuSamples';
+} from '~/assets/codeSampleManage/samples/contextMenuSamples';
 import {
   setLayerDisplayLevelSample,
   setLayerStyleSample,
@@ -22,8 +22,8 @@ import {
   setLayerOpacitySample,
   getLayerOpacitySample,
   resetLayerOpacitySample
-} from '~/packages/codeSampleManage/samples/layerStyleSamples';
-import { selectSample, advancedSelectSample, rectSelectionSample, circleSelectionSample, polygonSelectionSample, clearSelectLayerSample, getSelectedFeaturesSample } from '~/packages/codeSampleManage/samples/selectionSamples';
+} from '~/assets/codeSampleManage/samples/layerStyleSamples';
+import { selectSample, advancedSelectSample, rectSelectionSample, circleSelectionSample, polygonSelectionSample, clearSelectLayerSample, getSelectedFeaturesSample } from '~/assets/codeSampleManage/samples/selectionSamples';
 import {
   trailDistanceSample,
   trailAreaSample,
@@ -35,9 +35,9 @@ import {
   trailDrawLineSample,
   trailDrawPolygonSample,
   getTrailCoordinateSample,
-} from '~/packages/codeSampleManage/samples/drawingSamples';
-import { trailEditSample, trailDeleteSample } from '~/packages/codeSampleManage/samples/editingSamples';
-import { copyViewSample, exportMapImageSample, selectableFacilitySample, viewLayerInfoSample, setThematicsSample } from '~/packages/codeSampleManage/samples/mapInfoSamples';
+} from '~/assets/codeSampleManage/samples/drawingSamples';
+import { trailEditSample, trailDeleteSample } from '~/assets/codeSampleManage/samples/editingSamples';
+import { copyViewSample, exportMapImageSample, selectableFacilitySample, viewLayerInfoSample, setThematicsSample } from '~/assets/codeSampleManage/samples/mapInfoSamples';
 
 
 // 코드 블록 타입 정의

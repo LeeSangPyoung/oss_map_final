@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { Map } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import ImageLayer from 'ol/layer/Image';
-import { updateFeatureViaWFS, insertFeatureViaWFS, deleteFeatureViaWFS } from '../packages/OpenLayer/services/getFeatures';
+import { updateFeatureViaWFS, insertFeatureViaWFS, deleteFeatureViaWFS } from '~/assets/OpenLayer/services/getFeatures';
 import { useMapbase } from '../store/useMapbase';
 
 interface UseFeatureEditProps {

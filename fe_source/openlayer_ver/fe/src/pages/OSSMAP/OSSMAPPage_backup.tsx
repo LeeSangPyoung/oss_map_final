@@ -7,8 +7,8 @@ import { fromLonLat } from 'ol/proj';
 import { useMapbase } from '~/store/useMapbase';
 
 // 기존 라이브러리 재사용
-import { useMapInfo, useMapPan, useMapHistory, useMapExport } from '~/packages/Navigation';
-import { useLayerInfo, useLayerControl } from '~/packages/LayerManagement';
+import { useMapInfo, useMapPan, useMapHistory, useMapExport } from '~/assets/Navigation';
+import { useLayerInfo, useLayerControl } from '~/assets/LayerManagement';
 import { 
   activateTrailDrawPointMode, 
   activateTrailDrawLineMode, 
@@ -21,7 +21,7 @@ import {
   activateAdvancedTrailDrawPointMode,
   activateAdvancedTrailDrawLineMode,
   activateAdvancedTrailDrawPolygonMode
-} from '~/packages/Drawing';
+} from '~/assets/Drawing';
 import { 
   activateSelectMode, 
   activateAdvancedSelectMode,
@@ -30,8 +30,8 @@ import {
   activatePolygonSelectionMode,
   clearSelectLayer,
   getSelectedFeatures
-} from '~/packages/Selection';
-import { activateTrailEditMode, activateTrailDeleteMode } from '~/packages/Editing';
+} from '~/assets/Selection';
+import { activateTrailEditMode, activateTrailDeleteMode } from '~/assets/Editing';
 
 const OSSMAPPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'mapInfo' | 'layer' | 'drawing' | 'selection' | 'export'>('mapInfo');

@@ -1,6 +1,6 @@
 import { Select } from 'antd';
 import React, { memo, useEffect, useMemo } from 'react';
-import { useGetSggByCode } from '~/packages/Home/services/useGetSggByCode';
+import { useGetSggByCode } from '~/assets/Home/services/useGetSggByCode';
 import { useMapbase } from '~/store/useMapbase';
 
 interface Props {

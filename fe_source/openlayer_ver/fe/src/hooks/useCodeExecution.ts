@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import { Map } from 'ol';
 import { useMapbase } from '~/store/useMapbase';
-import { useUserLayer } from '~/packages/UserLayer';
-import { useLayerDisplay } from '~/packages/LayerStyle/hooks/useLayerDisplay';
-import { useLayerStyle } from '~/packages/LayerStyle/hooks/useLayerStyle';
-import { useLayerOpacity } from '~/packages/LayerStyle/hooks/useLayerOpacity';
-import { useLayerThematics } from '~/packages/LayerStyle/hooks/useLayerThematics';
-import { useLayerInfo, useLayerZoom, useLayerControl } from '~/packages/LayerManagement';
-import { useMapInfo, useMapPan, useMapScale, useMapHistory, useMapExport } from '~/packages/Navigation';
-import { activateSelectMode, activateAdvancedSelectMode, activateRectSelectionMode, activateCircleSelectionMode, activatePolygonSelectionMode, clearSelectLayer, getSelectedFeatures } from '~/packages/Selection';
-import { getTrailCoordinates } from '~/packages/Drawing';
-import { activateTrailSimpleMode } from '~/packages/Drawing';
+import { useUserLayer } from '~/assets/UserLayer';
+import { useLayerDisplay } from '~/assets/LayerStyle/hooks/useLayerDisplay';
+import { useLayerStyle } from '~/assets/LayerStyle/hooks/useLayerStyle';
+import { useLayerOpacity } from '~/assets/LayerStyle/hooks/useLayerOpacity';
+import { useLayerThematics } from '~/assets/LayerStyle/hooks/useLayerThematics';
+import { useLayerInfo, useLayerZoom, useLayerControl } from '~/assets/LayerManagement';
+import { useMapInfo, useMapPan, useMapScale, useMapHistory, useMapExport } from '~/assets/Navigation';
+import { activateSelectMode, activateAdvancedSelectMode, activateRectSelectionMode, activateCircleSelectionMode, activatePolygonSelectionMode, clearSelectLayer, getSelectedFeatures } from '~/assets/Selection';
+import { getTrailCoordinates } from '~/assets/Drawing';
+import { activateTrailSimpleMode } from '~/assets/Drawing';
 import {
   activateTrailDistanceMode,
   activateTrailAreaMode,
@@ -21,8 +21,8 @@ import {
   activateTrailDrawLineMode,
   activateAdvancedTrailDrawLineMode,
   activateTrailDrawPolygonMode,
-} from '~/packages/Drawing';
-import { activateTrailEditMode, activateTrailDeleteMode } from '~/packages/Editing';
+} from '~/assets/Drawing';
+import { activateTrailEditMode, activateTrailDeleteMode } from '~/assets/Editing';
 
 interface UseCodeExecutionProps {
   map: Map | null;
@@ -70,7 +70,7 @@ export const useCodeExecution = ({
     
     try {
       // 신규 라이브러리 사용
-      const { DefaultContextMenuService } = await import('../packages/ContextMenu');
+      const { DefaultContextMenuService } = await import('~/assets/ContextMenu');
       const defaultContextMenuService = new DefaultContextMenuService(map);
       
       const result = defaultContextMenuService.setDefaultContextMenu({
@@ -99,7 +99,7 @@ export const useCodeExecution = ({
     
     try {
       // 신규 라이브러리 사용
-      const { EditContextMenuService } = await import('../packages/ContextMenu');
+      const { EditContextMenuService } = await import('~/assets/ContextMenu');
       const editContextMenuService = new EditContextMenuService(map);
       
       const result = editContextMenuService.setEditContextMenu({
@@ -1059,7 +1059,7 @@ export const useCodeExecution = ({
 
   const handleRunAdvancedTrailDrawPointCode = useCallback(async () => {
     try {
-      const { activateAdvancedTrailDrawPointMode } = await import('../packages/Drawing');
+      const { activateAdvancedTrailDrawPointMode } = await import('~/assets/Drawing');
       await activateAdvancedTrailDrawPointMode({
         showNodeTypeSelectorPopup: showNodeTypeSelectorPopup || ((coordinate: number[], pixel: number[]) => {
           console.log('Advanced 노드 타입 선택기 표시:', coordinate, pixel);
@@ -1091,7 +1091,7 @@ export const useCodeExecution = ({
 
   const handleRunAdvancedTrailDrawPolygonCode = useCallback(async () => {
     try {
-      const { activateAdvancedTrailDrawPolygonMode } = await import('../packages/Drawing/hooks/useAdvancedTrailDrawPolygon');
+      const { activateAdvancedTrailDrawPolygonMode } = await import('~/assets/Drawing/hooks/useAdvancedTrailDrawPolygon');
       await activateAdvancedTrailDrawPolygonMode({
         showPolygonTypeSelectorPopup: showPolygonTypeSelectorPopup || ((coordinate: number[], pixel: number[]) => {
           console.log('Advanced 폴리곤 타입 선택기 표시:', coordinate, pixel);

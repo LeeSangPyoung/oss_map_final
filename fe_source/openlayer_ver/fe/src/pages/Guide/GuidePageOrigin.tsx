@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Collection, Feature, MapBrowserEvent } from 'ol';
 import { useEffect, useRef, useState } from 'react';
-import { useGetLayerList } from '~/packages/Home/services/useGetLayers';
-import { mapDawulayerBase } from '~/packages/OpenLayer/utils/dawulerLayer';
+import { useGetLayerList } from '~/assets/Home/services/useGetLayers';
+import { mapDawulayerBase } from '~/assets/OpenLayer/utils/dawulerLayer';
 import { useMapbase } from '~/store/useMapbase';
 import { isEmpty, debounce } from 'lodash';
 import 'react-contexify/dist/ReactContexify.css';
@@ -17,37 +17,37 @@ import {
   createImageLayer,
   createVectorLayer,
   selectedFeatureStyle,
-} from '~/packages/OpenLayer/utils/mvtLayers';
+} from '~/assets/OpenLayer/utils/mvtLayers';
 import { Button } from 'antd';
 import { MyMapRef } from '~/models/MapBase';
-import { getFeatureById, getFeaturesFromWFS, getListFeaturesInPixel } from '~/packages/OpenLayer/services/getFeatures';
+import { getFeatureById, getFeaturesFromWFS, getListFeaturesInPixel } from '~/assets/OpenLayer/services/getFeatures';
 import { LineString, MultiLineString, Point, Polygon } from 'ol/geom';
 import { FeatureBase } from '~/models/Coords';
 import { centerPointOL, listButton, listButton2 } from '~/utils/common';
-import { useGetLayerStyles } from '~/packages/Home/services/useGetStylesLayers';
+import { useGetLayerStyles } from '~/assets/Home/services/useGetStylesLayers';
 import { ModeDraw, ModeOptions, ModeSelector } from '~/models/ModeDraw';
-import { useRectangleSelection } from '~/packages/Selection';
-import { useCircleSelection } from '~/packages/Selection';
-import { usePolygonSelection } from '~/packages/Selection';
+import { useRectangleSelection } from '~/assets/Selection';
+import { useCircleSelection } from '~/assets/Selection';
+import { usePolygonSelection } from '~/assets/Selection';
 import { LayerModel } from '~/models/Layer';
-import { useTrailDistance } from '~/packages/Drawing';
+import { useTrailDistance } from '~/assets/Drawing';
 import { Draw, Modify, Snap } from 'ol/interaction';
 import { useMapHistoryStore } from '~/store/useHistoryStore';
-import { useTrailArea } from '~/packages/Drawing';
-import { useTrailSimple } from '~/packages/Drawing';
-import { useAreaDraw } from '~/packages/Drawing/hooks/useAreaDraw';
-import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/packages/Drawing/hooks/useTrailDraw';
+import { useTrailArea } from '~/assets/Drawing';
+import { useTrailSimple } from '~/assets/Drawing';
+import { useAreaDraw } from '~/assets/Drawing/hooks/useAreaDraw';
+import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/assets/Drawing/hooks/useTrailDraw';
 import LayerGroup from 'ol/layer/Group';
 import { MyEvents } from '~/main';
-import { FeatureData } from '~/packages/OpenLayer/utils/customVectorLayer';
-import { CustomVectorTileLayer } from '~/packages/OpenLayer/utils/customTileLayer';
+import { FeatureData } from '~/assets/OpenLayer/utils/customVectorLayer';
+import { CustomVectorTileLayer } from '~/assets/OpenLayer/utils/customTileLayer';
 import ModifyFeature from 'ol-ext/interaction/ModifyFeature';
-import { boundaryStyle, nodeStylesTrailEdit, updateFeatureStyle } from '~/packages/OpenLayer/utils/stylesFeature';
+import { boundaryStyle, nodeStylesTrailEdit, updateFeatureStyle } from '~/assets/OpenLayer/utils/stylesFeature';
 import {
   calculateDistance,
   calculateDistanceToSegment,
   generateSegmentsFromPolygon,
-} from '~/packages/OpenLayer/utils/common';
+} from '~/assets/OpenLayer/utils/common';
 import proj4 from 'proj4';
 import { useLayerStore } from '~/store/useLayer';
 import SelectSido from '~/components/SelectSido/SelectSido';
