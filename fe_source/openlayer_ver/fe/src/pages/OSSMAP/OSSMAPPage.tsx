@@ -39,6 +39,9 @@ import { EditContextMenuService } from '~/assets/ContextMenu';
 import { activateTrailEditMode, activateTrailDeleteMode } from '~/assets/Editing';
 import { Modify, Snap, Translate, Draw } from 'ol/interaction';
 import LayerGroup from 'ol/layer/Group';
+import { MapSelector } from '~/components/MapSelector/MapSelector';
+import { env } from '~/env';
+import XYZ from 'ol/source/XYZ';
 
 // geometry 변환 함수 (메인 페이지에서 가져옴)
 function createOLGeometry(geojson: any) {
@@ -194,6 +197,40 @@ const OSSMAPPage: React.FC = () => {
   // 폴리곤 그리기 상태들 (MainPage와 동일)
   const [showPolygonTypeSelector, setShowPolygonTypeSelector] = useState(false);
   const [drawnPolygonCoordinate, setDrawnPolygonCoordinate] = useState<number[] | null>(null);
+  
+  // 맵 선택 상태
+  const [currentMapType, setCurrentMapType] = useState('osm');
+  const [currentTileUrl, setCurrentTileUrl] = useState(env.osmTileUrl || 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png');
+  
+  // 맵 변경 핸들러
+  const handleMapChange = (mapType: string, tileUrl: string) => {
+    console.log('🔧 맵 변경:', mapType, tileUrl);
+    setCurrentMapType(mapType);
+    setCurrentTileUrl(tileUrl);
+    
+    if (mapRef.current) {
+      // 기존 베이스 레이어 제거
+      const layers = mapRef.current.getLayers();
+      const baseLayer = layers.getArray().find(layer => 
+        layer instanceof TileLayer && 
+        (layer.getSource() instanceof OSM || layer.getSource() instanceof XYZ)
+      );
+      
+      if (baseLayer) {
+        layers.remove(baseLayer);
+      }
+      
+      // 새로운 베이스 레이어 추가
+      const newBaseLayer = new TileLayer({
+        source: new XYZ({
+          url: tileUrl
+        })
+      });
+      
+      layers.insertAt(0, newBaseLayer);
+      console.log('✅ 베이스 맵 변경 완료:', mapType);
+    }
+  };
   const [drawnPolygonPixel, setDrawnPolygonPixel] = useState<number[] | null>(null);
   const [selectedPolygonType, setSelectedPolygonType] = useState<string>('');
   const [availablePolygonTypes] = useState([
@@ -659,7 +696,9 @@ const OSSMAPPage: React.FC = () => {
       target: mapContainerRef.current,
       layers: [
         new TileLayer({
-          source: new OSM()
+          source: new XYZ({
+            url: currentTileUrl
+          })
         })
       ],
       view: new View({
@@ -3349,6 +3388,28 @@ const OSSMAPPage: React.FC = () => {
         }}>
           운영 모드
         </span>
+        
+        {/* 맵 선택기 */}
+        <div style={{
+          marginLeft: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}>
+          <span style={{
+            fontSize: '14px',
+            fontWeight: '500',
+            color: '#666'
+          }}>
+            베이스 맵:
+          </span>
+          <div style={{ width: '200px' }}>
+            <MapSelector 
+              onMapChange={handleMapChange}
+              currentMapType={currentMapType}
+            />
+          </div>
+        </div>
       </header>
 
       {/* 메인 컨텐츠 영역 */}

@@ -41,6 +41,9 @@ import { useTrailDraw, useTrailDrawPoint, useTrailDrawPolygon } from '~/assets/D
 import { useAdvancedTrailDrawPolygon } from '~/assets/Drawing/hooks/useAdvancedTrailDrawPolygon';
 import { useAdvancedTrailDrawPoint } from '~/assets/Drawing/hooks/useAdvancedTrailDrawPoint';
 import { Modify, Snap, Translate } from 'ol/interaction';
+import { MapSelector } from '~/components/MapSelector/MapSelector';
+import { env } from '~/env';
+import XYZ from 'ol/source/XYZ';
 
 import { Collection } from 'ol';
 import { useRectangleSelection } from '~/assets/Selection';
@@ -289,6 +292,40 @@ export default function MainPage() {
 
   // Layer Delete 훅 초기화
   const layerDelete = useLayerDelete();
+  
+  // 맵 선택 상태
+  const [currentMapType, setCurrentMapType] = useState('osm');
+  const [currentTileUrl, setCurrentTileUrl] = useState(env.osmTileUrl || 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png');
+  
+  // 맵 변경 핸들러
+  const handleMapChange = (mapType: string, tileUrl: string) => {
+    console.log('🔧 MainPage 맵 변경:', mapType, tileUrl);
+    setCurrentMapType(mapType);
+    setCurrentTileUrl(tileUrl);
+    
+    if (state.mapRef.current) {
+      // 기존 베이스 레이어 제거
+      const layers = state.mapRef.current.getLayers();
+      const baseLayer = layers.getArray().find(layer => 
+        layer instanceof TileLayer && 
+        (layer.getSource() instanceof OSM || layer.getSource() instanceof XYZ)
+      );
+      
+      if (baseLayer) {
+        layers.remove(baseLayer);
+      }
+      
+      // 새로운 베이스 레이어 추가
+      const newBaseLayer = new TileLayer({
+        source: new XYZ({
+          url: tileUrl
+        })
+      });
+      
+      layers.insertAt(0, newBaseLayer);
+      console.log('✅ MainPage 베이스 맵 변경 완료:', mapType);
+    }
+  };
 
 
 
@@ -1746,7 +1783,9 @@ export default function MainPage() {
         target: state.mapContainerRef.current,
         layers: [
           new TileLayer({
-            source: new OSM(),
+            source: new XYZ({
+              url: currentTileUrl
+            }),
           }),
         ],
         view: new View({
@@ -3863,7 +3902,24 @@ export default function MainPage() {
               OSSMap
             </span>
           </div>
-          <div style={{ display: 'flex', gap: 16 }}>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            {/* 맵 선택기 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#666'
+              }}>
+                베이스 맵:
+              </span>
+              <div style={{ width: '180px' }}>
+                <MapSelector 
+                  onMapChange={handleMapChange}
+                  currentMapType={currentMapType}
+                />
+              </div>
+            </div>
+            
             {menuItems.map(item =>
               item.label === '개발자가이드' ? (
                 <button

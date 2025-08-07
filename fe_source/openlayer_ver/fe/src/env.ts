@@ -6,4 +6,7 @@ export const env = {
   dawulHost: import.meta.env.VITE_DAWUL_HOST,
   envBuild: import.meta.env.VITE_ENV,
   backend3dMapUrl: import.meta.env.VITE_APP_3D_MAP_URL,
+  // Map Tile URLs
+  osmTileUrl: import.meta.env.VITE_OSM_TILE_URL,
+  customTileUrl: import.meta.env.VITE_CUSTOM_TILE_URL,
 };
