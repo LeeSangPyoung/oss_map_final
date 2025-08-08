@@ -122,8 +122,48 @@ export const useTrailDistance = ({ onEndDraw }: DrawMapParams) => {
     });
   };
 
+  const stopDrawing = () => {
+    if (!map) return;
+    
+    // Draw 인터랙션 제거
+    const interactions = map
+      .getInteractions()
+      .getArray()
+      .filter(
+        interaction =>
+          interaction instanceof Draw &&
+          interaction.get('id') !== 'circle-selection' &&
+          interaction.get('id') !== 'rect-selection' &&
+          interaction.get('id') !== 'polygon-selection'
+      );
+    
+    interactions.forEach(inter => map.removeInteraction(inter));
+    setDraw(null);
+  };
+
+  const clearMeasurements = () => {
+    if (!map) return;
+    
+    // 측정 레이어 제거
+    const layers = map
+      .getLayers()
+      .getArray()
+      .find(item => item.get('id') === 'trail-distance');
+    
+    if (layers) {
+      map.removeLayer(layers);
+    }
+    
+    // 소스 클리어
+    trailDistanceSource.current.clear();
+    vertexCircleSource.current.clear();
+    isLayerAdded.current = false;
+  };
+
   return {
     startDrawing,
+    stopDrawing,
+    clearMeasurements,
   };
 };
 

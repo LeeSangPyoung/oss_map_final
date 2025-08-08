@@ -434,8 +434,8 @@ export class AdvancedTrailDrawPolygonService {
         return;
       }
 
-      // Advanced Trail Draw Polygon 모드로 명확히 설정
-      useMapbase.getState().setMode('advanced-trail-draw-polygon');
+      // 새로운 스토어 상태 관리 시스템 사용
+      useMapbase.getState().setPolygonDrawMode?.('advanced');
 
       // 기존 정리
       this.cleanup();
@@ -632,5 +632,6 @@ export class AdvancedTrailDrawPolygonService {
     this.currentSnapPoint = null;
     this.snapStartCoordinate = null;
     this.isSnapMode = false;
+    this.allFeaturesLayerCreated = false;
   }
 } 

@@ -22,6 +22,9 @@ import { useTrailDrawPoint } from '~/assets/Drawing/hooks/useTrailDraw';
 import { useAdvancedTrailDrawPoint } from '~/assets/Drawing/hooks/useAdvancedTrailDrawPoint';
 import { useTrailDistance } from '~/assets/Drawing/hooks/useTrailDistance';
 import { useTrailArea } from '~/assets/Drawing/hooks/useTrailArea';
+import { useAdvancedTrailDistance } from '~/assets/Drawing/hooks/useAdvancedTrailDistance';
+import { useAdvancedTrailArea } from '~/assets/Drawing/hooks/useAdvancedTrailArea';
+
 import { activateTrailDistanceMode, activateTrailAreaMode } from '~/assets/Drawing';
 import { activateTrailDrawPointMode, TrailDrawPointService, activateTrailDrawLineMode, TrailDrawLineService, activateAdvancedTrailDrawLineMode, AdvancedTrailDrawLineService, activateAdvancedTrailDrawPointMode, AdvancedTrailDrawPointService, activateTrailDrawPolygonMode, TrailDrawPolygonService, activateAdvancedTrailDrawPolygonMode, AdvancedTrailDrawPolygonService } from '~/assets/Drawing';
 import { Feature } from 'ol';
@@ -122,7 +125,7 @@ const OSSMAPPage: React.FC = () => {
   const [hasMoved, setHasMoved] = useState(false);
 
   // 선택 도구 상태들
-  const [activeTool, setActiveTool] = useState<'select' | 'advancedSelect' | 'rectSelect' | 'circleSelect' | 'polygonSelect' | 'drawPoint' | 'advancedDrawPoint' | 'drawLine' | 'advancedDrawLine' | 'drawPolygon' | 'advancedDrawPolygon' | 'trailDistance' | 'trailArea' | 'pan' | 'zoomIn' | 'zoomOut' | 'reset' | 'rotate'>('select');
+  const [activeTool, setActiveTool] = useState<'select' | 'advancedSelect' | 'rectSelect' | 'circleSelect' | 'polygonSelect' | 'drawPoint' | 'advancedDrawPoint' | 'drawLine' | 'advancedDrawLine' | 'drawPolygon' | 'advancedDrawPolygon' | 'trailDistance' | 'advancedTrailDistance' | 'trailArea' | 'advancedTrailArea' | 'pan' | 'zoomIn' | 'zoomOut' | 'reset' | 'rotate'>('select');
   const activeToolRef = useRef(activeTool);
   useEffect(() => {
     activeToolRef.current = activeTool;
@@ -155,9 +158,9 @@ const OSSMAPPage: React.FC = () => {
   const [selectedLayer, setSelectedLayer] = useState('');
   const [opacityValue, setOpacityValue] = useState(1.0);
   
-  // 측정 도구 상태들
+  // 측정 도구 상태들 (통합)
   const [showMeasurementDropdown, setShowMeasurementDropdown] = useState(false);
-  const [currentMeasurementTool, setCurrentMeasurementTool] = useState<'trailDistance' | 'trailArea'>('trailDistance');
+  const [currentMeasurementTool, setCurrentMeasurementTool] = useState<'trailDistance' | 'advancedTrailDistance' | 'trailArea' | 'advancedTrailArea'>('trailDistance');
   const [isMeasurementModeActive, setIsMeasurementModeActive] = useState(false);
   const isMeasurementModeActiveRef = useRef(isMeasurementModeActive);
   useEffect(() => {
@@ -294,6 +297,14 @@ const OSSMAPPage: React.FC = () => {
       }
     }
   });
+  
+  // 고급 측정 도구 훅들 초기화
+  const advancedTrailDistance = useAdvancedTrailDistance({ 
+    onEndDraw: () => console.log('Advanced Trail Distance ended') 
+  });
+  const advancedTrailArea = useAdvancedTrailArea({ 
+    onEndDraw: () => console.log('Advanced Trail Area ended') 
+  });
 
   // 측정 모드 상태 변경 감지
   useEffect(() => {
@@ -312,6 +323,21 @@ const OSSMAPPage: React.FC = () => {
     if (useMapbase.getState().drawMode?.mode === 'trail-area') {
       console.log('🔧 OSSMAP trail-area 모드 감지 - startDrawing 호출');
       trailArea.startDrawing();
+    }
+  }, [useMapbase.getState().drawMode?.mode]);
+
+  // 고급 측정 도구용 useEffect 추가
+  useEffect(() => {
+    if (useMapbase.getState().drawMode?.mode === 'advanced-trail-distance') {
+      console.log('🔧 OSSMAP advanced-trail-distance 모드 감지 - startDrawing 호출');
+      advancedTrailDistance.startDrawing();
+    }
+  }, [useMapbase.getState().drawMode?.mode]);
+
+  useEffect(() => {
+    if (useMapbase.getState().drawMode?.mode === 'advanced-trail-area') {
+      console.log('🔧 OSSMAP advanced-trail-area 모드 감지 - startDrawing 호출');
+      advancedTrailArea.startDrawing();
     }
   }, [useMapbase.getState().drawMode?.mode]);
 
@@ -1231,9 +1257,23 @@ const OSSMAPPage: React.FC = () => {
       AdvancedTrailDrawPolygonService.cleanupAll();
       
       // 측정 도구에서 전환 시 레이어 정리
-      if (activeTool === 'trailDistance' || activeTool === 'trailArea') {
+      if (activeTool === 'trailDistance' || activeTool === 'trailArea' || 
+          activeTool === 'advancedTrailDistance' || activeTool === 'advancedTrailArea') {
         console.log('🔧 측정 도구에서 Point 도구로 전환 - 측정 레이어 정리');
         cleanupMeasurementLayers();
+        
+        // 측정 도구 정리 및 측정 결과 삭제
+        trailDistance.stopDrawing();
+        trailDistance.clearMeasurements();
+        trailArea.stopDrawing();
+        trailArea.clearMeasurements();
+        advancedTrailDistance.stopDrawing();
+        advancedTrailDistance.clearMeasurements();
+        advancedTrailArea.stopDrawing();
+        advancedTrailArea.clearMeasurements();
+        
+        // 측정 모드 비활성화
+        setIsMeasurementModeActive(false);
       }
       
       console.log('✅ 기존 훅들 비활성화 완료');
@@ -1300,9 +1340,23 @@ const OSSMAPPage: React.FC = () => {
       AdvancedTrailDrawPolygonService.cleanupAll();
       
       // 측정 도구에서 전환 시 레이어 정리
-      if (activeTool === 'trailDistance' || activeTool === 'trailArea') {
+      if (activeTool === 'trailDistance' || activeTool === 'trailArea' || 
+          activeTool === 'advancedTrailDistance' || activeTool === 'advancedTrailArea') {
         console.log('🔧 측정 도구에서 Line 도구로 전환 - 측정 레이어 정리');
         cleanupMeasurementLayers();
+        
+        // 측정 도구 정리 및 측정 결과 삭제
+        trailDistance.stopDrawing();
+        trailDistance.clearMeasurements();
+        trailArea.stopDrawing();
+        trailArea.clearMeasurements();
+        advancedTrailDistance.stopDrawing();
+        advancedTrailDistance.clearMeasurements();
+        advancedTrailArea.stopDrawing();
+        advancedTrailArea.clearMeasurements();
+        
+        // 측정 모드 비활성화
+        setIsMeasurementModeActive(false);
       }
       
       console.log('✅ 기존 훅들 비활성화 완료');
@@ -1369,9 +1423,23 @@ const OSSMAPPage: React.FC = () => {
       AdvancedTrailDrawPolygonService.cleanupAll();
       
       // 측정 도구에서 전환 시 레이어 정리
-      if (activeTool === 'trailDistance' || activeTool === 'trailArea') {
+      if (activeTool === 'trailDistance' || activeTool === 'trailArea' || 
+          activeTool === 'advancedTrailDistance' || activeTool === 'advancedTrailArea') {
         console.log('🔧 측정 도구에서 Polygon 도구로 전환 - 측정 레이어 정리');
         cleanupMeasurementLayers();
+        
+        // 측정 도구 정리 및 측정 결과 삭제
+        trailDistance.stopDrawing();
+        trailDistance.clearMeasurements();
+        trailArea.stopDrawing();
+        trailArea.clearMeasurements();
+        advancedTrailDistance.stopDrawing();
+        advancedTrailDistance.clearMeasurements();
+        advancedTrailArea.stopDrawing();
+        advancedTrailArea.clearMeasurements();
+        
+        // 측정 모드 비활성화
+        setIsMeasurementModeActive(false);
       }
       
       console.log('✅ 기존 훅들 비활성화 완료');
@@ -1555,35 +1623,68 @@ const OSSMAPPage: React.FC = () => {
     setShowMeasurementDropdown(!showMeasurementDropdown);
   };
 
-  const handleMeasurementToolSelect = (tool: 'trailDistance' | 'trailArea') => {
-    setCurrentMeasurementTool(tool);
-    setShowMeasurementDropdown(false);
+  const handleMeasurementToolSelect = (tool: 'trailDistance' | 'advancedTrailDistance' | 'trailArea' | 'advancedTrailArea') => {
+    // 측정 도구 선택
+    
+    // 기존 측정 도구들 정리 및 측정 결과 삭제
+    trailDistance.stopDrawing();
+    trailDistance.clearMeasurements();
+    trailArea.stopDrawing();
+    trailArea.clearMeasurements();
+    advancedTrailDistance.stopDrawing();
+    advancedTrailDistance.clearMeasurements();
+    advancedTrailArea.stopDrawing();
+    advancedTrailArea.clearMeasurements();
+    
+    // 그리기 도구에서 전환 시 그리기 도구 정리
+    if (activeTool === 'drawPoint' || activeTool === 'advancedDrawPoint' || 
+        activeTool === 'drawLine' || activeTool === 'advancedDrawLine' ||
+        activeTool === 'drawPolygon' || activeTool === 'advancedDrawPolygon') {
+      console.log('🔧 그리기 도구에서 측정 도구로 전환 - 그리기 도구 정리');
+      
+      // 모든 그리기 도구 정리
+      TrailDrawPointService.cleanupAll();
+      AdvancedTrailDrawPointService.cleanupAll();
+      TrailDrawLineService.cleanupAll();
+      AdvancedTrailDrawLineService.cleanupAll();
+      TrailDrawPolygonService.cleanupAll();
+      AdvancedTrailDrawPolygonService.cleanupAll();
+      
+      // 스토어 상태 초기화
+      const mapbase = useMapbase.getState();
+      mapbase.setPointDrawMode?.('none');
+      mapbase.setLineDrawMode?.('none');
+      mapbase.setPolygonDrawMode?.('none');
+    }
     
     // 팝업 정리
     cleanupDrawingPopups();
     
-    // 측정 도구 간 전환 시 레이어 정리
-    if ((activeTool === 'trailDistance' && tool === 'trailArea') || 
-        (activeTool === 'trailArea' && tool === 'trailDistance')) {
-      console.log('🔧 측정 도구 간 전환 - 측정 결과 정리');
-      cleanupMeasurementLayers();
-    }
+    setCurrentMeasurementTool(tool);
+    setActiveTool(tool);
+    setIsMeasurementModeActive(true);
     
-    // MainPage 방식으로 수정: useMapbase의 setMode 사용
+    // 스토어 상태 업데이트 및 측정 도구 활성화
     const mapbase = useMapbase.getState();
-    
-    // Measurement 모드 설정 (MainPage와 동일한 방식)
     switch (tool) {
       case 'trailDistance':
-        mapbase.setMode('trail-distance');
+        mapbase.setMeasurementMode?.('distance');
+        trailDistance.startDrawing();
         break;
       case 'trailArea':
-        mapbase.setMode('trail-area');
+        mapbase.setMeasurementMode?.('area');
+        trailArea.startDrawing();
+        break;
+      case 'advancedTrailDistance':
+        mapbase.setMeasurementMode?.('advanced-trail-distance');
+        break;
+      case 'advancedTrailArea':
+        mapbase.setMeasurementMode?.('advanced-trail-area');
         break;
     }
     
-    // UI 상태 업데이트
-    setActiveToolWithLog(tool);
+    // 드롭다운 닫기
+    setShowMeasurementDropdown(false);
   };
 
   // 좌표 입력 모달 핸들러들
@@ -3237,6 +3338,31 @@ const OSSMAPPage: React.FC = () => {
   // setActiveTool 추적용 래퍼 함수 생성
   const setActiveToolWithLog = (tool: typeof activeTool) => {
     console.log('🟢 setActiveTool 호출:', tool, '(이전 activeTool:', activeTool, ')');
+    
+    // 측정 도구에서 다른 도구로 전환할 때 측정 결과 삭제
+    // 단, 고급 그리기 도구들로 전환할 때는 정리하지 않음 (이미 각 handleToolSelect에서 처리됨)
+    if (isMeasurementModeActive && 
+        !['trailDistance', 'advancedTrailDistance', 'trailArea', 'advancedTrailArea'].includes(tool) &&
+        !['advancedDrawLine', 'advancedDrawPoint', 'advancedDrawPolygon'].includes(tool)) {
+      console.log('🔧 측정 도구에서 다른 도구로 전환 - 측정 결과 삭제');
+      
+      // 모든 측정 도구 정리 및 측정 결과 삭제
+      trailDistance.stopDrawing();
+      trailDistance.clearMeasurements();
+      trailArea.stopDrawing();
+      trailArea.clearMeasurements();
+      advancedTrailDistance.stopDrawing();
+      advancedTrailDistance.clearMeasurements();
+      advancedTrailArea.stopDrawing();
+      advancedTrailArea.clearMeasurements();
+      
+      // 측정 도구 레이어 강제 정리
+      cleanupMeasurementLayers();
+      
+      // 측정 모드 비활성화
+      setIsMeasurementModeActive(false);
+    }
+    
     setActiveTool(tool);
   };
 
@@ -3287,7 +3413,8 @@ const OSSMAPPage: React.FC = () => {
       // 일반 레이어에서 측정 도구 레이어 제거
       layers.forEach((layer) => {
         const layerId = layer.get('id');
-        if (layerId === 'trail-distance' || layerId === 'trail-area') {
+        if (layerId === 'trail-distance' || layerId === 'trail-area' || 
+            layerId === 'advanced-trail-distance' || layerId === 'advanced-trail-area') {
           mapRef.current?.removeLayer(layer);
           console.log(`🔧 측정 도구 레이어 제거됨: ${layerId}`);
         }
@@ -3299,7 +3426,8 @@ const OSSMAPPage: React.FC = () => {
           const groupLayers = layer.getLayers().getArray();
           groupLayers.forEach((groupLayer) => {
             const groupLayerId = groupLayer.get('id');
-            if (groupLayerId === 'trail-distance' || groupLayerId === 'trail-area') {
+            if (groupLayerId === 'trail-distance' || groupLayerId === 'trail-area' ||
+                groupLayerId === 'advanced-trail-distance' || groupLayerId === 'advanced-trail-area') {
               layer.getLayers().remove(groupLayer);
               console.log(`🔧 LayerGroup 내 측정 도구 레이어 제거됨: ${groupLayerId}`);
             }
@@ -3315,19 +3443,16 @@ const OSSMAPPage: React.FC = () => {
           const interactionName = interaction.get('name');
           
           // 측정 도구 관련 Draw 인터랙션 제거
-          if (interactionId && (interactionId.includes('trail-distance') || interactionId.includes('trail-area'))) {
+          if (interactionId && (interactionId.includes('trail-distance') || interactionId.includes('trail-area') ||
+                               interactionId.includes('advanced-trail-distance') || interactionId.includes('advanced-trail-area'))) {
             mapRef.current?.removeInteraction(interaction);
             console.log(`🔧 측정 도구 Draw 인터랙션 제거됨: ${interactionId}`);
           }
           // 또는 측정 도구에서 생성된 Draw 인터랙션 (id가 없는 경우)
-          else if (interactionName && (interactionName.includes('trail-distance') || interactionName.includes('trail-area'))) {
+          else if (interactionName && (interactionName.includes('trail-distance') || interactionName.includes('trail-area') ||
+                                      interactionName.includes('advanced-trail-distance') || interactionName.includes('advanced-trail-area'))) {
             mapRef.current?.removeInteraction(interaction);
             console.log(`🔧 측정 도구 Draw 인터랙션 제거됨: ${interactionName}`);
-          }
-          // 또는 모든 Draw 인터랙션 제거 (더 강력한 방법)
-          else {
-            mapRef.current?.removeInteraction(interaction);
-            console.log(`🔧 모든 Draw 인터랙션 제거됨`);
           }
         }
       });
@@ -4092,7 +4217,7 @@ const OSSMAPPage: React.FC = () => {
             )}
           </div>
 
-          {/* 측정 도구 */}
+          {/* 측정 도구 (통합) */}
           <div style={{ position: 'relative' }} className="measurement-dropdown-container">
             <button
               onClick={handleMeasurementDropdownToggle}
@@ -4101,8 +4226,8 @@ const OSSMAPPage: React.FC = () => {
                 height: '40px',
                 border: 'none',
                 borderRadius: '6px',
-                background: (activeTool === 'trailDistance' || activeTool === 'trailArea') ? '#007bff' : '#f8f9fa',
-                color: (activeTool === 'trailDistance' || activeTool === 'trailArea') ? 'white' : '#333',
+                background: (activeTool === 'trailDistance' || activeTool === 'advancedTrailDistance' || activeTool === 'trailArea' || activeTool === 'advancedTrailArea') ? '#007bff' : '#f8f9fa',
+                color: (activeTool === 'trailDistance' || activeTool === 'advancedTrailDistance' || activeTool === 'trailArea' || activeTool === 'advancedTrailArea') ? 'white' : '#333',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -4111,9 +4236,11 @@ const OSSMAPPage: React.FC = () => {
                 transition: 'all 0.2s ease',
                 position: 'relative'
               }}
-              title={currentMeasurementTool === 'trailDistance' ? "길이 측정" : "면적 측정"}
+              title={currentMeasurementTool === 'trailDistance' ? "길이 측정" : 
+                     currentMeasurementTool === 'advancedTrailDistance' ? "고급 길이 측정" :
+                     currentMeasurementTool === 'trailArea' ? "면적 측정" : "고급 면적 측정"}
             >
-              {currentMeasurementTool === 'trailDistance' ? (
+              {currentMeasurementTool === 'trailDistance' || currentMeasurementTool === 'advancedTrailDistance' ? (
                 <FiBarChart />
               ) : (
                 <FiSquare />
@@ -4132,7 +4259,7 @@ const OSSMAPPage: React.FC = () => {
                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 zIndex: 1001,
                 marginTop: '4px',
-                minWidth: '140px',
+                minWidth: '160px',
                 animation: 'slideDown 0.2s ease-out'
               }}>
                 <button
@@ -4158,6 +4285,44 @@ const OSSMAPPage: React.FC = () => {
                   길이 측정
                 </button>
                 <button
+                  onClick={() => handleMeasurementToolSelect('advancedTrailDistance')}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px',
+                    color: '#333',
+                    transition: 'background-color 0.2s ease',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <div style={{
+                    position: 'relative',
+                    width: '16px',
+                    height: '16px'
+                  }}>
+                    <FiBarChart style={{ position: 'absolute', top: 0, left: 0, fontSize: '16px' }} />
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-2px',
+                      right: '-2px',
+                      width: '6px',
+                      height: '6px',
+                      background: '#FF9500',
+                      borderRadius: '50%',
+                      border: '1px solid white'
+                    }} />
+                  </div>
+                  고급 길이 측정
+                </button>
+                <button
                   onClick={() => handleMeasurementToolSelect('trailArea')}
                   style={{
                     width: '100%',
@@ -4178,6 +4343,44 @@ const OSSMAPPage: React.FC = () => {
                 >
                   <FiSquare style={{ fontSize: '16px' }} />
                   면적 측정
+                </button>
+                <button
+                  onClick={() => handleMeasurementToolSelect('advancedTrailArea')}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '14px',
+                    color: '#333',
+                    transition: 'background-color 0.2s ease',
+                    whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                >
+                  <div style={{
+                    position: 'relative',
+                    width: '16px',
+                    height: '16px'
+                  }}>
+                    <FiSquare style={{ position: 'absolute', top: 0, left: 0, fontSize: '16px' }} />
+                    <div style={{
+                      position: 'absolute',
+                      bottom: '-2px',
+                      right: '-2px',
+                      width: '6px',
+                      height: '6px',
+                      background: '#FF9500',
+                      borderRadius: '50%',
+                      border: '1px solid white'
+                    }} />
+                  </div>
+                  고급 면적 측정
                 </button>
               </div>
             )}

@@ -408,11 +408,24 @@ export class AdvancedTrailDrawLineService {
 
   // 클릭 이벤트 처리 (하이라이트 영역 내 클릭 감지)
   private handleClick = (event: any): void => {
-    if (!this.isSnapMode || !this.currentSnapPoint) return;
+    console.log('🔧 AdvancedTrailDrawLine: handleClick 호출됨');
+    console.log('🔧 AdvancedTrailDrawLine: isSnapMode:', this.isSnapMode);
+    console.log('🔧 AdvancedTrailDrawLine: currentSnapPoint:', this.currentSnapPoint);
+    
+    // 이벤트 전파 중단 제거 (Draw interaction과의 충돌 방지)
+    // event.stopPropagation();
+    
+    if (!this.isSnapMode || !this.currentSnapPoint) {
+      console.log('🔧 AdvancedTrailDrawLine: 스냅 모드가 아니거나 스냅 포인트가 없음');
+      return;
+    }
 
     // 클릭한 위치가 하이라이트 영역 내인지 확인
     const mousePixel = event.pixel;
     const clickedCoord = this.map?.getCoordinateFromPixel(mousePixel);
+    
+    console.log('🔧 AdvancedTrailDrawLine: 클릭 픽셀:', mousePixel);
+    console.log('🔧 AdvancedTrailDrawLine: 클릭 좌표:', clickedCoord);
     
     if (clickedCoord && this.currentSnapPoint) {
       // 클릭한 위치와 하이라이트된 포인트 사이의 거리 계산
@@ -424,10 +437,15 @@ export class AdvancedTrailDrawLineService {
       const resolution = this.map?.getView().getResolution() || 1;
       const pixelDistance = distance / resolution;
       
-      // 하이라이트 영역 내에서 클릭한 경우 (8픽셀 이내)
-      if (pixelDistance <= 8) {
+      console.log('🔧 AdvancedTrailDrawLine: 픽셀 거리:', pixelDistance);
+      
+      // 하이라이트 영역 내에서 클릭한 경우 (15픽셀 이내 - 하이라이트와 동일한 톨러런스)
+      if (pixelDistance <= 15) {
         // 하이라이트된 포인트의 정확한 중심점을 시작점으로 설정
         this.snapStartCoordinate = this.currentSnapPoint;
+        console.log('🔧 AdvancedTrailDrawLine: 스냅 좌표 설정됨:', this.snapStartCoordinate);
+      } else {
+        console.log('🔧 AdvancedTrailDrawLine: 픽셀 거리가 15를 초과하여 스냅하지 않음');
       }
     }
   };
@@ -442,8 +460,17 @@ export class AdvancedTrailDrawLineService {
         return;
       }
 
-      // Advanced Trail Draw Line 모드로 명확히 설정
-      useMapbase.getState().setMode('advanced-trail-draw');
+      console.log('🔧 AdvancedTrailDrawLine: 모드 활성화 시작');
+      
+      // 새로운 스토어 상태 관리 시스템 사용
+      useMapbase.getState().setLineDrawMode?.('advanced');
+      console.log('🔧 AdvancedTrailDrawLine: 스토어 상태 업데이트 완료');
+      
+      // 모드 변경 감지를 위한 상태 확인
+      const currentModeState = useMapbase.getState().modeState;
+      console.log('🔧 AdvancedTrailDrawLine: 현재 모드 상태:', currentModeState);
+      console.log('🔧 AdvancedTrailDrawLine: lineDrawMode:', currentModeState?.lineDrawMode);
+      console.log('🔧 AdvancedTrailDrawLine: isLineDrawActive:', currentModeState?.isLineDrawActive);
 
       // 기존 정리
       this.cleanup();
@@ -489,15 +516,19 @@ export class AdvancedTrailDrawLineService {
 
       // 스냅 모드 활성화
       this.isSnapMode = true;
+      console.log('🔧 AdvancedTrailDrawLine: 스냅 모드 활성화');
 
       // 마우스 이동 이벤트 리스너 등록
       this.map.on('pointermove', this.handleMouseMove);
+      console.log('🔧 AdvancedTrailDrawLine: pointermove 이벤트 리스너 등록');
       
-        // 클릭 이벤트 리스너 등록 (하이라이트 영역 내 클릭 감지)
-  this.map.on('click', this.handleClick);
-  
-  // 맵 이동 이벤트 리스너 등록 (all-features-layer 업데이트용)
-  this.map.on('moveend', this.handleMapMove);
+      // 클릭 이벤트 리스너 등록 제거 (Draw interaction과 충돌 방지)
+      // this.map.on('click', this.handleClick);
+      console.log('🔧 AdvancedTrailDrawLine: click 이벤트 리스너 등록 제거됨');
+      
+      // 맵 이동 이벤트 리스너 등록 (all-features-layer 업데이트용)
+      this.map.on('moveend', this.handleMapMove);
+      console.log('🔧 AdvancedTrailDrawLine: moveend 이벤트 리스너 등록');
 
   // 그리기용 레이어 생성
       const drawSource = new VectorSource();
@@ -513,7 +544,7 @@ export class AdvancedTrailDrawLineService {
         })
       });
 
-      // Draw interaction 생성 (스냅 기능 포함)
+      // Draw interaction 생성 (빨간색 스타일 추가)
       this.drawInteraction = new Draw({
         source: drawSource,
         type: 'LineString',
@@ -524,29 +555,41 @@ export class AdvancedTrailDrawLineService {
             fill: new Fill({ color: '#ff0000' }),
             stroke: new Stroke({ color: '#ffffff', width: 2 })
           })
-        }),
-        // 클릭으로 그리기 시작 (기존 trail draw line과 동일)
-        freehandCondition: never,
-        // 일반적인 그리기 (geometryFunction 제거)
+        })
       });
+      
+      // Draw interaction에 ID 설정
+      this.drawInteraction.set('id', 'advanced-trail-draw-line');
+      this.drawInteraction.set('name', '고급 라인 그리기');
+      console.log('🔧 AdvancedTrailDrawLine: Draw interaction 생성됨');
 
       // 그리기 이벤트 리스너
       this.drawInteraction.on('drawstart', (event: any) => {
+        console.log('🔧 AdvancedTrailDrawLine: drawstart 이벤트 호출됨');
+        console.log('🔧 AdvancedTrailDrawLine: snapStartCoordinate:', this.snapStartCoordinate);
+        
         // 첫 번째 점을 스냅 좌표로 설정 (있는 경우)
         if (this.snapStartCoordinate) {
           const geometry = event.feature.getGeometry();
           if (geometry) {
             geometry.setCoordinates([this.snapStartCoordinate]);
+            console.log('🔧 AdvancedTrailDrawLine: 첫 번째 점을 스냅 좌표로 설정됨');
           }
+        } else {
+          console.log('🔧 AdvancedTrailDrawLine: snapStartCoordinate가 없어서 기본 좌표 사용');
         }
       });
 
       // 그리기 완료 이벤트 처리
       this.drawInteraction.on('drawend', (event: any) => {
+        console.log('🔧 AdvancedTrailDrawLine: drawend 이벤트 호출됨');
+        
         // 모든 좌표를 스냅 처리 (PPT 자석 효과)
         const geometry = event.feature.getGeometry();
         if (geometry) {
           const coordinates = geometry.getCoordinates();
+          console.log('🔧 AdvancedTrailDrawLine: 원본 좌표:', coordinates);
+          
           const snappedCoordinates = coordinates.map((coord: number[]) => {
             if (this.map) {
               const pixel = this.map.getPixelFromCoordinate(coord);
@@ -558,12 +601,15 @@ export class AdvancedTrailDrawLineService {
             return coord;
           });
           
+          console.log('🔧 AdvancedTrailDrawLine: 스냅된 좌표:', snappedCoordinates);
+          
           // 스냅된 좌표로 geometry 업데이트
           geometry.setCoordinates(snappedCoordinates);
         }
         
         // 그린 feature를 MainPage.tsx에 저장
         callbacks.setDrawnFeature(event.feature);
+        console.log('🔧 AdvancedTrailDrawLine: 그린 feature 저장됨');
         
         // 그린 feature의 중심점 계산
         if (geometry) {
@@ -576,20 +622,47 @@ export class AdvancedTrailDrawLineService {
           if (centerPixel) {
             // 라인 타입 선택기 표시
             callbacks.showLineTypeSelectorPopup(centerCoord, centerPixel);
+            console.log('🔧 AdvancedTrailDrawLine: 라인 타입 선택기 표시됨');
           }
         }
         
         // 스냅 상태 초기화 (모드는 유지)
         this.currentSnapPoint = null;
         this.snapStartCoordinate = null;
+        console.log('🔧 AdvancedTrailDrawLine: 스냅 상태 초기화됨');
         
         // drawMode는 바꾸지 않음 (계속 advanced-trail-draw 모드 유지)
       });
 
       // Draw interaction과 레이어 추가
-      this.map.addInteraction(this.drawInteraction);
       this.map.addLayer(this.drawLayer);
+      console.log('🔧 AdvancedTrailDrawLine: drawLayer 추가 완료');
+      
+      this.map.addInteraction(this.drawInteraction);
+      console.log('🔧 AdvancedTrailDrawLine: Draw interaction 추가 완료');
+      
+      // Draw interaction 명시적 활성화
+      if (this.drawInteraction) {
+        this.drawInteraction.setActive(true);
+        console.log('🔧 AdvancedTrailDrawLine: Draw interaction 명시적 활성화 완료');
+      }
+      
+      // Draw interaction이 제대로 추가되었는지 확인
+      const interactions = this.map.getInteractions().getArray();
+      const drawInteractions = interactions.filter((interaction: any) => 
+        interaction instanceof Draw && interaction.get('id') === 'advanced-trail-draw-line'
+      );
+      console.log('🔧 AdvancedTrailDrawLine: 활성화된 Draw interaction 수:', drawInteractions.length);
+      
+      // Draw interaction 활성화 상태 확인
+      if (this.drawInteraction) {
+        console.log('🔧 AdvancedTrailDrawLine: Draw interaction 활성화 상태:', this.drawInteraction.getActive());
+        console.log('🔧 AdvancedTrailDrawLine: Draw interaction 이벤트 리스너 등록 완료');
+      }
+      
+      console.log('✅ AdvancedTrailDrawLine: 모드 활성화 완료');
     } catch (error) {
+      console.error('🔧 AdvancedTrailDrawLine: 모드 활성화 중 오류:', error);
       throw error;
     }
   }
@@ -597,45 +670,63 @@ export class AdvancedTrailDrawLineService {
   // 정리 함수
   cleanup(): void {
     if (this.map) {
-      // 마우스 이벤트 리스너 제거
+      console.log('🔧 AdvancedTrailDrawLine: cleanup 시작');
+      
+      // 마우스 이벤트 리스너 제거 (더 강력한 정리)
       this.map.un('pointermove', this.handleMouseMove);
       this.map.un('click', this.handleClick);
       this.map.un('moveend', this.handleMapMove);
+      console.log('🔧 AdvancedTrailDrawLine: 이벤트 리스너 제거 완료');
+      
+      // 모든 Draw interaction 제거
+      const interactions = this.map.getInteractions().getArray();
+      interactions.forEach((interaction: any) => {
+        if (interaction instanceof Draw) {
+          this.map?.removeInteraction(interaction);
+          console.log('🔧 AdvancedTrailDrawLine: Draw interaction 제거됨');
+        }
+      });
       
       // Draw interaction 제거
       if (this.drawInteraction) {
         this.map.removeInteraction(this.drawInteraction);
         this.drawInteraction = null;
+        console.log('🔧 AdvancedTrailDrawLine: 메인 Draw interaction 제거됨');
       }
       
       // 레이어들 제거
       if (this.drawLayer) {
         this.map.removeLayer(this.drawLayer);
         this.drawLayer = null;
+        console.log('🔧 AdvancedTrailDrawLine: drawLayer 제거됨');
       }
       
       if (this.snapHighlightLayer) {
         this.map.removeLayer(this.snapHighlightLayer);
         this.snapHighlightLayer = null;
+        console.log('🔧 AdvancedTrailDrawLine: snapHighlightLayer 제거됨');
       }
       
       if (this.snapHighlightSource) {
         this.snapHighlightSource.clear();
         this.snapHighlightSource = null;
+        console.log('🔧 AdvancedTrailDrawLine: snapHighlightSource 정리됨');
       }
       
       // 타임아웃 정리
       if (this.mouseMoveTimeout) {
         clearTimeout(this.mouseMoveTimeout);
         this.mouseMoveTimeout = null;
+        console.log('🔧 AdvancedTrailDrawLine: 타임아웃 정리됨');
       }
       
       // 상태 초기화
       this.currentSnapPoint = null;
       this.snapStartCoordinate = null;
       this.isSnapMode = false;
-      
-      // drawMode는 바꾸지 않음 (다른 곳에서 필요할 때만 바꿈)
+      this.allFeaturesLayerCreated = false;
+      console.log('🔧 AdvancedTrailDrawLine: 상태 초기화 완료');
+      console.log('✅ AdvancedTrailDrawLine: cleanup 완료');
     }
   }
 } 

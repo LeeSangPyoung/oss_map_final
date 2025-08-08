@@ -36,6 +36,8 @@ export { AdvancedTrailDrawPointService as AdvancedTrailDrawPointCleanup } from '
 // 기존 훅들
 export { useTrailDistance } from './hooks/useTrailDistance';
 export { useTrailArea } from './hooks/useTrailArea';
+export { useAdvancedTrailDistance } from './hooks/useAdvancedTrailDistance';
+export { useAdvancedTrailArea } from './hooks/useAdvancedTrailArea';
 export { useTrailSimple } from './hooks/useTrailSimple';
 export { useAreaDrawRect } from './hooks/useAreaDrawRect';
 export { useAreaDrawCircle } from './hooks/useAreaDrawCircle';

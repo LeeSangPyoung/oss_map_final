@@ -30,9 +30,15 @@ export const MapSelector: React.FC<MapSelectorProps> = ({ onMapChange, currentMa
       url: getRandomOsmUrl()
     },
     {
+      id: 'dawul',
+      name: '다울맵(TANGO)',
+      description: '다울맵 베이스맵',
+      url: `${env.dawulHost}/g2is/3d_vector_tile/{z}/{x}/{y}.pbf`
+    },
+    {
       id: 'custom',
-      name: 'Custom Tile',
-      description: '커스텀 타일 서버',
+      name: '사용자 정의 맵',
+      description: '사용자 정의 맵 타일서버',
       url: env.customTileUrl || ''
     }
   ];

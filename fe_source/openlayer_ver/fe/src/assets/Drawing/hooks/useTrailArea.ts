@@ -91,8 +91,45 @@ export const useTrailArea = ({ onEndDraw }: DrawMapParams) => {
     });
   };
 
+  const stopDrawing = () => {
+    if (!map) return;
+    
+    // Draw 인터랙션 제거
+    const interactions = map
+      .getInteractions()
+      .getArray()
+      .filter(
+        interaction =>
+          interaction instanceof Draw &&
+          interaction.get('id') !== 'circle-selection' &&
+          interaction.get('id') !== 'rect-selection' &&
+          interaction.get('id') !== 'polygon-selection'
+      );
+    
+    interactions.forEach(inter => map.removeInteraction(inter));
+  };
+
+  const clearMeasurements = () => {
+    if (!map) return;
+    
+    // 측정 레이어 제거
+    const layers = map
+      .getLayers()
+      .getArray()
+      .find(item => item.get('id') === 'trail-area');
+    
+    if (layers) {
+      map.removeLayer(layers);
+    }
+    
+    // 소스 클리어
+    trailAreaSource.current.clear();
+  };
+
   return {
     startDrawing,
+    stopDrawing,
+    clearMeasurements,
   };
 };
 

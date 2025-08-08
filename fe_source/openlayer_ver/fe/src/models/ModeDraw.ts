@@ -5,7 +5,9 @@ export type ModeDraw =
   | 'select' 
   | 'advanced-select'
   | 'trail-distance' 
+  | 'advanced-trail-distance'
   | 'trail-area' 
+  | 'advanced-trail-area'
   | 'trail-simple' 
   | 'area-draw' 
   | 'trail-draw' 
@@ -21,7 +23,7 @@ export type ActiveMode = 'none' | 'select' | 'pointDraw' | 'lineDraw' | 'polygon
 // 각 모드의 세부 타입
 export type SelectMode = 'none' | 'basic' | 'advanced' | 'rect' | 'circle' | 'polygon';
 export type DrawMode = 'none' | 'basic' | 'advanced';
-export type MeasurementMode = 'none' | 'distance' | 'area';
+export type MeasurementMode = 'none' | 'distance' | 'area' | 'advanced-trail-distance' | 'advanced-trail-area';
 export type EditMode = 'none' | 'edit' | 'delete';
 
 // 새로운 모드 상태 인터페이스

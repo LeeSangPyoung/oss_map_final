@@ -351,8 +351,8 @@ export class AdvancedTrailDrawPointService {
         return;
       }
 
-      // Advanced Trail Draw Point 모드로 명확히 설정
-      useMapbase.getState().setMode('advanced-trail-draw-point');
+      // 새로운 스토어 상태 관리 시스템 사용
+      useMapbase.getState().setPointDrawMode?.('advanced');
 
       // 기존 정리
       this.cleanup();
@@ -534,9 +534,7 @@ export class AdvancedTrailDrawPointService {
       this.currentSnapPoint = null;
       this.snapStartCoordinate = null;
       this.isSnapMode = false;
-      
-      // 모드를 select로 변경 (정리 시에는 항상 select 모드로)
-      useMapbase.getState().setMode('select');
+      this.allFeaturesLayerCreated = false;
     }
   }
 } 
