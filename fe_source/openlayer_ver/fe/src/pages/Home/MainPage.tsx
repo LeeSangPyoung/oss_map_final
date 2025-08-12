@@ -3854,7 +3854,7 @@ export default function MainPage() {
   }, [useMapbase.getState().selectorMode, useMapbase.getState().layerData]);
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f7f8fa', fontFamily }}>
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f7f8fa', fontFamily, overflow: 'hidden' }}>
       {/* 공통 헤더 */}
               <CommonHeader
           title="OSSMAP"
