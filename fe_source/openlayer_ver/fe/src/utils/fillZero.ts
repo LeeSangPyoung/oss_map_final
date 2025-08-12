@@ -1,10 +1,9 @@
-import { Coords } from '~/models/Coords';
 import { env } from '../env';
 function fillzero(value: number | string, length: number) {
   return value.toString().padStart(length, '0');
 }
-export function getTileUrl(coords: Coords) {
-  const { x, y, z } = coords;
+export function getTileUrl(coords: [number, number, number]) {
+  const [z, x, y] = coords;
 
   // 타일 좌표 변환 (16진수로 변환)
   const tileX = 'C' + fillzero(Math.abs(x).toString(16), 8);

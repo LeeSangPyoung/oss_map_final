@@ -19,7 +19,6 @@ export function getMenuIcon(type: string) {
 export const menuItems = [
   { label: '개발자가이드', href: '/guide' },
   { label: 'OSSMAP', href: '/ossmap' },
-  { label: 'MAP살펴보기', href: '/map' },
 ];
 
 export const treeData = [

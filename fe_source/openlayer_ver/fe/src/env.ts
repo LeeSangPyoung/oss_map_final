@@ -8,5 +8,5 @@ export const env = {
   backend3dMapUrl: import.meta.env.VITE_APP_3D_MAP_URL,
   // Map Tile URLs
   osmTileUrl: import.meta.env.VITE_OSM_TILE_URL,
-  customTileUrl: import.meta.env.VITE_CUSTOM_TILE_URL,
+  customTileUrl: 'http://127.0.0.1:8090/tiles/korea/{z}/{x}/{y}.png',
 };

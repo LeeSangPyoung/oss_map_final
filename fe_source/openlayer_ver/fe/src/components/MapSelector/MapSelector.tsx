@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { env } from '~/env';
+import { getTileUrl } from '~/utils/fillZero';
 
 interface MapSelectorProps {
-  onMapChange: (mapType: string, tileUrl: string) => void;
+  onMapChange: (mapType: string, tileUrl: string, customTileFunction?: any) => void;
   currentMapType: string;
 }
 
@@ -33,13 +34,14 @@ export const MapSelector: React.FC<MapSelectorProps> = ({ onMapChange, currentMa
       id: 'dawul',
       name: '다울맵(TANGO)',
       description: '다울맵 베이스맵',
-      url: `${env.dawulHost}/g2is/3d_vector_tile/{z}/{x}/{y}.pbf`
+      url: 'custom', // getTileUrl 함수를 사용하기 위한 표시
+      customTileFunction: getTileUrl
     },
     {
       id: 'custom',
-      name: '사용자 정의 맵',
+      name: '사용자 정의 맵(로컬)',
       description: '사용자 정의 맵 타일서버',
-      url: env.customTileUrl || ''
+      url: env.customTileUrl
     }
   ];
 
@@ -64,7 +66,7 @@ export const MapSelector: React.FC<MapSelectorProps> = ({ onMapChange, currentMa
               <button
                 key={option.id}
                 onClick={() => {
-                  onMapChange(option.id, option.url);
+                  onMapChange(option.id, option.url, option.customTileFunction);
                   setIsOpen(false);
                 }}
                 className={`block w-full px-4 py-2 text-left text-sm hover:bg-gray-100 ${
