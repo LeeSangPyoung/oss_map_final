@@ -45,6 +45,7 @@ import LayerGroup from 'ol/layer/Group';
 import { MapSelector } from '~/components/MapSelector/MapSelector';
 import { env } from '~/env';
 import XYZ from 'ol/source/XYZ';
+import CommonHeader from '~/components/Header/CommonHeader';
 
 // geometry 변환 함수 (메인 페이지에서 가져옴)
 function createOLGeometry(geojson: any) {
@@ -3485,45 +3486,15 @@ const OSSMAPPage: React.FC = () => {
           }
         `}
       </style>
-      {/* 헤더 */}
-      <header style={{
-        background: '#fff',
-        borderBottom: '1px solid #e0e0e0',
-        padding: '16px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <h1 style={{ 
-          margin: 0, 
-          fontSize: '24px', 
-          fontWeight: '600',
-          color: '#333'
-        }}>
-          OSSMAP - Map Control Center
-        </h1>
-        {/* 맵 선택기 */}
-        <div style={{
-          marginLeft: 'auto',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px'
-        }}>
-          <span style={{
-            fontSize: '14px',
-            fontWeight: '500',
-            color: '#666'
-          }}>
-            베이스 맵:
-          </span>
-          <div style={{ width: '200px' }}>
-            <MapSelector 
-              onMapChange={handleMapChange}
-              currentMapType={currentMapType}
-            />
-          </div>
-        </div>
-      </header>
+      {/* 공통 헤더 */}
+      <CommonHeader 
+        title="OSSMAP"
+        currentPage="ossmap"
+        showNavigation={true}
+        showMapSelector={true}
+        onMapChange={handleMapChange}
+        currentMapType={currentMapType}
+      />
 
       {/* 메인 컨텐츠 영역 */}
       <div style={{ 

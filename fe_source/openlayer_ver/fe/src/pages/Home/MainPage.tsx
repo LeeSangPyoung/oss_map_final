@@ -109,6 +109,7 @@ import { useCodeExecution } from '../../hooks/useCodeExecution';
 import { useMainPageState, CodeBlockType } from '../../hooks/useMainPageState';
 import { Menu, Item, useContextMenu } from 'react-contexify';
 import 'react-contexify/dist/ReactContexify.css';
+import CommonHeader from '~/components/Header/CommonHeader';
 
 const fontFamily = 'Pretendard, Noto Sans KR, Apple SD Gothic Neo, sans-serif';
 const MENU_ID = 'MAINPAGE_CONTEXT_MENU';
@@ -3854,190 +3855,16 @@ export default function MainPage() {
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column', background: '#f7f8fa', fontFamily }}>
-      {/* 상단 헤더 */}
-      <header
-        style={{
-          width: '100%',
-          background: 'rgba(255,255,255,0.85)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid #e5e5e7',
-          color: '#222',
-          fontWeight: 500,
-          position: 'relative',
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          height: 60,
-          boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
-        }}
-      >
-        <nav
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            height: 60,
-            padding: '0 40px',
-            gap: 32,
-            justifyContent: 'space-between',
-          }}
-        >
-          <div
-            style={{
-              fontWeight: 700,
-              fontSize: 22,
-              letterSpacing: 0.5,
-              color: '#111',
-              display: 'flex',
-              alignItems: 'center',
-            }}
-          >
-            {/* 네이비 배경의 둥근 사각형 + 미대륙 글로브 SVG */}
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 44,
-                height: 44,
-                borderRadius: 14,
-                background: '#1a2a3a',
-                marginRight: 12,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-              }}
-            >
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ display: 'block' }}
-              >
-                <rect width="30" height="30" rx="10" fill="#1a2a3a" />
-                {/* 지구본 외곽선 */}
-                <circle cx="15" cy="15" r="11" fill="#1a2a3a" stroke="#fff" strokeWidth="1.7" />
-                {/* 미대륙 실루엣 (단순화) */}
-                <path
-                  d="M13.5 10.5c.5-1.5 2.5-2.5 4-1.5 1.5 1 1 2.5 0 3.5-.5.5-1.5.5-2 .5-.5 0-1.5.5-1.5 1.5s1 1.5 2 1.5c1 0 2 .5 2 1.5s-1 2-2 2c-1.5 0-2.5-1-2.5-2.5 0-1.5.5-2.5 1-3.5z"
-                  fill="#fff"
-                  fillOpacity="0.95"
-                />
-                {/* 경도선/위도선 */}
-                <path d="M15 6a9 9 0 1 1 0 18" stroke="#bfc4cc" strokeWidth="1" fill="none" />
-                <path d="M8 15a7 7 0 0 1 14 0" stroke="#bfc4cc" strokeWidth="0.9" fill="none" />
-              </svg>
-            </span>
-            <span
-              style={{
-                fontWeight: 800,
-                fontSize: 25,
-                letterSpacing: '0.12em',
-                color: '#222',
-                fontFamily: 'SF Pro Display, Pretendard, Noto Sans KR, Apple SD Gothic Neo, sans-serif',
-                textShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                userSelect: 'none',
-                marginLeft: 2,
-              }}
-            >
-              OSSMap
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-            {/* 맵 선택기 */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{
-                fontSize: '14px',
-                fontWeight: '500',
-                color: '#666'
-              }}>
-                베이스 맵:
-              </span>
-              <div style={{ width: '180px' }}>
-                <MapSelector 
-                  onMapChange={handleMapChange}
-                  currentMapType={currentMapType}
-                />
-              </div>
-            </div>
-            
-            {menuItems.map(item =>
-              item.label === '개발자가이드' ? (
-                <button
-                  key={item.href}
-                  type="button"
-                  style={{
-                    fontSize: 16,
-                    color: '#222',
-                    background: 'none',
-                    border: 'none',
-                    borderRadius: 8,
-                    fontWeight: 500,
-                    padding: '8px 22px',
-                    marginLeft: 2,
-                    marginRight: 2,
-                    cursor: 'pointer',
-                    transition: 'background 0.18s, color 0.18s, box-shadow 0.18s',
-                    outline: 'none',
-                    position: 'relative',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.01)',
-                  }}
-                  onClick={() => {
-                    state.setShowMenu(true);
-                    setTimeout(() => state.setIsToggleActivated(true), 500);
-                  }}
-                  onMouseOver={e => {
-                    e.currentTarget.style.background = '#f0f4fa';
-                    e.currentTarget.style.color = '#0071e3';
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-                  }}
-                  onMouseOut={e => {
-                    e.currentTarget.style.background = 'none';
-                    e.currentTarget.style.color = '#222';
-                    e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.01)';
-                  }}
-                >
-                  {item.label}
-                </button>
-              ) : (
-                <button
-                  key={item.href}
-                  type="button"
-                  style={{
-                    fontSize: 16,
-                    color: '#222',
-                    background: 'none',
-                    border: 'none',
-                    borderRadius: 8,
-                    fontWeight: 500,
-                    padding: '8px 22px',
-                    marginLeft: 2,
-                    marginRight: 2,
-                    cursor: 'pointer',
-                    transition: 'background 0.18s, color 0.18s, box-shadow 0.18s',
-                    outline: 'none',
-                    position: 'relative',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.01)',
-                  }}
-                  onClick={() => navigate(item.href)}
-                  onMouseOver={e => {
-                    e.currentTarget.style.background = '#f0f4fa';
-                    e.currentTarget.style.color = '#0071e3';
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.06)';
-                  }}
-                  onMouseOut={e => {
-                    e.currentTarget.style.background = 'none';
-                    e.currentTarget.style.color = '#222';
-                    e.currentTarget.style.boxShadow = '0 1px 4px rgba(0,0,0,0.01)';
-                  }}
-                >
-                  {item.label}
-                </button>
-              ),
-            )}
-          </div>
-        </nav>
-      </header>
+      {/* 공통 헤더 */}
+              <CommonHeader
+          title="OSSMAP"
+          currentPage="main"
+          showNavigation={true}
+          showMapSelector={true}
+          onMapChange={handleMapChange}
+          currentMapType={currentMapType}
+        />
+      
       <div style={{ flex: 1, position: 'relative', minHeight: 0 }}>
         {/* 지도 영역 (항상 100%) */}
         <div
@@ -4368,8 +4195,7 @@ export default function MainPage() {
             </nav>
           </div>
         </aside>
-        {state.isToggleActivated && (
-          <button
+        <button
             onClick={() => state.setShowMenu(v => !v)}
             style={{
               position: 'absolute',
@@ -4403,7 +4229,6 @@ export default function MainPage() {
           >
             {state.showMenu ? <FiChevronLeft size={22} /> : <FiChevronRight size={22} />}
           </button>
-        )}
       </div>
       {state.isCodeBlockVisible && (
         <div

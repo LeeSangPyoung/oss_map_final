@@ -475,9 +475,12 @@ export class AdvancedTrailDrawPointService {
           callbacks.showNodeTypeSelectorPopup(centerCoord, centerPixel);
         }
         
-        // 스냅 상태 초기화 (모드는 유지)
+        // 스냅 상태 완전 초기화 (다음 그리기를 위해)
         this.currentSnapPoint = null;
         this.snapStartCoordinate = null;
+        
+        // 스냅 모드 재설정 (다음 그리기 시 스냅이 정상 작동하도록)
+        this.isSnapMode = true;
         
         // Advanced Trail Draw Line과 동일하게 Draw interaction을 다시 활성화하지 않음
         // 스냅 하이라이트와 마우스 이벤트는 계속 유지됨

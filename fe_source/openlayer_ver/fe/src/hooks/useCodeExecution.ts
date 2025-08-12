@@ -1091,6 +1091,14 @@ export const useCodeExecution = ({
 
   const handleRunAdvancedTrailDrawPointCode = useCallback(async () => {
     try {
+      // useMapbase 상태 확인
+      const mapbaseState = useMapbase.getState();
+      console.log('🔍 MainPage Advanced Trail Draw Point 실행 시 useMapbase 상태:', {
+        map: mapbaseState.map,
+        layerData: mapbaseState.layerData,
+        layerDataLength: mapbaseState.layerData?.length
+      });
+      
       const { activateAdvancedTrailDrawPointMode } = await import('~/assets/Drawing');
       await activateAdvancedTrailDrawPointMode({
         showNodeTypeSelectorPopup: showNodeTypeSelectorPopup || ((coordinate: number[], pixel: number[]) => {

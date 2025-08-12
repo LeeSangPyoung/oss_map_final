@@ -111,8 +111,8 @@ export type CodeBlockType =
 export const useMainPageState = () => {
   // === UI 상태들 ===
   const [open, setOpen] = useState([false, false, false]);
-  const [showMenu, setShowMenu] = useState(false);
-  const [isToggleActivated, setIsToggleActivated] = useState(false);
+  const [showMenu, setShowMenu] = useState(false); // 메인페이지 진입 시 가이드는 닫혀있음
+  const [isToggleActivated, setIsToggleActivated] = useState(true); // 토글 버튼도 활성화 상태로
   const [menuCenter, setMenuCenter] = useState(0);
 
   // === 코드 블록 표시 상태들 ===
