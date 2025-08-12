@@ -150,9 +150,9 @@ export default function CommonHeader({
                 fontWeight: '500',
                 transition: 'all 0.2s ease'
               }}
-              title="사용자가이드로 이동"
+              title="개발자가이드로 이동"
             >
-              사용자가이드
+              개발자가이드
             </button>
             <button
               onClick={() => handleNavigation('ossmap')}
