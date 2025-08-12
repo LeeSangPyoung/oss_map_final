@@ -7,6 +7,20 @@ import { activateTrailDistanceMode } from '~/assets/Drawing';
 activateTrailDistanceMode(map);
 alert('Trail Distance(거리 측정) 모드가 활성화되었습니다.');`;
 
+export const advancedTrailDistanceSample = `// Advanced Trail Distance(고급 거리 측정) 모드 활성화
+import { activateAdvancedTrailDistanceMode } from '~/assets/Drawing';
+
+// map 객체가 필요합니다
+activateAdvancedTrailDistanceMode(map);
+alert('Advanced Trail Distance(고급 거리 측정) 모드가 활성화되었습니다.');`;
+
+export const advancedTrailAreaSample = `// Advanced Trail Area(고급 면적 측정) 모드 활성화
+import { activateAdvancedTrailAreaMode } from '~/assets/Drawing';
+
+// map 객체가 필요합니다
+activateAdvancedTrailAreaMode(map);
+alert('Advanced Trail Area(고급 면적 측정) 모드가 활성화되었습니다.');`;
+
 export const trailAreaSample = `// Trail Area(면적 측정) 모드 활성화
 import { activateTrailAreaMode } from '~/assets/Drawing';
 

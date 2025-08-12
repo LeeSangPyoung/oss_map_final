@@ -41,4 +41,23 @@ export {
   initUserLayerSample,
   deleteUserLayerSample,
   entireAreaUserLayerSample
-} from './samples/userLayerSamples'; 
+} from './samples/userLayerSamples';
+
+// Drawing 관련 샘플 코드들
+export {
+  trailDistanceSample,
+  advancedTrailDistanceSample,
+  advancedTrailAreaSample,
+  trailAreaSample,
+  trailSimpleSample,
+  areaDrawRectSample,
+  areaDrawCircleSample,
+  areaDrawPolygonSample,
+  trailDrawPointSample,
+  advancedTrailDrawPointSample,
+  trailDrawLineSample,
+  advancedTrailDrawLineSample,
+  trailDrawPolygonSample,
+  advancedTrailDrawPolygonSample,
+  getTrailCoordinateSample
+} from './samples/drawingSamples'; 

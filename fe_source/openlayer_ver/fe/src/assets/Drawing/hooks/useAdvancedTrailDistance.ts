@@ -604,4 +604,28 @@ export const useAdvancedTrailDistance = ({ onEndDraw }: DrawMapParams) => {
     stopDrawing,
     clearMeasurements,
   };
+};
+
+// Advanced Trail Distance 모드 활성화 함수 (MainPage에서 사용)
+export const activateAdvancedTrailDistanceMode = (map: any) => {
+  console.log('activateAdvancedTrailDistanceMode 함수 시작');
+  if (!map) {
+    console.log('map이 null입니다');
+    return;
+  }
+  
+  console.log('useMapbase.getState() 호출');
+  const state = useMapbase.getState();
+  console.log('state:', state);
+  
+  const setMeasurementMode = state.setMeasurementMode;
+  console.log('setMeasurementMode:', setMeasurementMode);
+  
+  if (setMeasurementMode) {
+    console.log('setMeasurementMode 호출: advanced-trail-distance');
+    setMeasurementMode('advanced-trail-distance');
+    console.log('setMeasurementMode 호출 완료');
+  } else {
+    console.log('setMeasurementMode가 undefined입니다');
+  }
 }; 

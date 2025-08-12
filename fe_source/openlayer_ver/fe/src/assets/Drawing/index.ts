@@ -54,7 +54,9 @@ export { useGetTrailCoordinate, getTrailCoordinates } from './hooks/useGetTrailC
 
 // 기존 activate 함수들
 export { activateTrailDistanceMode } from './hooks/useTrailDistance';
+export { activateAdvancedTrailDistanceMode } from './hooks/useAdvancedTrailDistance';
 export { activateTrailAreaMode } from './hooks/useTrailArea';
+export { activateAdvancedTrailAreaMode } from './hooks/useAdvancedTrailArea';
 export { activateTrailSimpleMode } from './hooks/useTrailSimple';
 export { activateAreaDrawRectMode } from './hooks/useAreaDrawRect';
 export { activateAreaDrawCircleMode } from './hooks/useAreaDrawCircle';

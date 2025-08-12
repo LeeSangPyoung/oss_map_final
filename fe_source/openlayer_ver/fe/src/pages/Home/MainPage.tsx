@@ -31,7 +31,7 @@ import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import CircleStyle from 'ol/style/Circle';
-import { useTrailArea, activateTrailDistanceMode, activateTrailAreaMode, activateAreaDrawRectMode, activateAreaDrawCircleMode, activateAreaDrawPolygonMode, activateTrailDrawPointMode, activateTrailDrawLineMode, activateAdvancedTrailDrawLineMode, activateTrailDrawPolygonMode, activateAdvancedTrailDrawPolygonMode, activateAdvancedTrailDrawPointMode } from '~/assets/Drawing';
+import { useTrailArea, useAdvancedTrailDistance, useAdvancedTrailArea, activateTrailDistanceMode, activateAdvancedTrailDistanceMode, activateAdvancedTrailAreaMode, activateTrailAreaMode, activateAreaDrawRectMode, activateAreaDrawCircleMode, activateAreaDrawPolygonMode, activateTrailDrawPointMode, activateTrailDrawLineMode, activateAdvancedTrailDrawLineMode, activateTrailDrawPolygonMode, activateAdvancedTrailDrawPolygonMode, activateAdvancedTrailDrawPointMode } from '~/assets/Drawing';
 // CodeExamplePanel import 제거 (fe5 방식으로 되돌림)
 import { getMenuIcon, menuItems, treeData, moveMenu, highlightMoveMenu, blueMoveMenu } from '~/components/MenuSidebar/menuData';
 import { useTrailDistance } from '~/assets/Drawing';
@@ -86,7 +86,7 @@ import {
   entireAreaUserLayerSample
 } from '~/assets/codeSampleManage';
 import { selectSample, advancedSelectSample, rectSelectionSample, circleSelectionSample, polygonSelectionSample, clearSelectLayerSample, getSelectedFeaturesSample } from '~/assets/codeSampleManage/samples/selectionSamples';
-import { areaDrawRectSample, areaDrawCircleSample, areaDrawPolygonSample, trailDrawPointSample, advancedTrailDrawPointSample, trailDrawPolygonSample, advancedTrailDrawPolygonSample, trailDistanceSample, trailAreaSample, trailSimpleSample, trailDrawLineSample, advancedTrailDrawLineSample, getTrailCoordinateSample } from '~/assets/codeSampleManage/samples/drawingSamples';
+import { areaDrawRectSample, areaDrawCircleSample, areaDrawPolygonSample, trailDrawPointSample, advancedTrailDrawPointSample, trailDrawPolygonSample, advancedTrailDrawPolygonSample, trailDistanceSample, advancedTrailDistanceSample, advancedTrailAreaSample, trailAreaSample, trailSimpleSample, trailDrawLineSample, advancedTrailDrawLineSample, getTrailCoordinateSample } from '~/assets/codeSampleManage/samples/drawingSamples';
 
 import { trailEditSample, trailDeleteSample } from '~/assets/codeSampleManage/samples/editingSamples';
 import { setLayerOpacitySample, getLayerOpacitySample, resetLayerOpacitySample, setLayerDisplayLevelSample, setLayerStyleSample, setLayerStyleDefaultSample, setThematicsSample } from '~/assets/codeSampleManage/samples/layerStyleSamples';
@@ -252,6 +252,8 @@ export default function MainPage() {
   const trailDraw = useTrailDraw({ onEndDraw: () => console.log('Trail Draw Line ended') });
   const trailDrawPolygon = useTrailDrawPolygon({ onEndDraw: () => console.log('Trail Draw Polygon ended') });
   const trailDistance = useTrailDistance({ onEndDraw: () => console.log('Trail Distance ended') });
+  const advancedTrailDistance = useAdvancedTrailDistance({ onEndDraw: () => console.log('Advanced Trail Distance ended') });
+  const advancedTrailArea = useAdvancedTrailArea({ onEndDraw: () => console.log('Advanced Trail Area ended') });
   const trailArea = useTrailArea({ onEndDraw: () => console.log('Trail Area ended') });
   
   // Advanced Trail Draw 훅들 초기화
@@ -438,7 +440,9 @@ export default function MainPage() {
     handleRunSelectCode,
     handleRunAdvancedSelectCode,
     handleRunTrailDistanceCode,
-    handleRunTrailSimpleCode,
+      handleRunAdvancedTrailDistanceCode,
+  handleRunAdvancedTrailAreaCode,
+  handleRunTrailSimpleCode,
     handleRunAreaDrawRectCode,
     handleRunAreaDrawCircleCode,
     handleRunAreaDrawPolygonCode,
@@ -3369,6 +3373,8 @@ export default function MainPage() {
     select: { code: selectSample, run: handleRunSelectCode },
     advancedSelect: { code: advancedSelectSample, run: handleRunAdvancedSelectCode },
     trailDistance: { code: trailDistanceSample, run: handleRunTrailDistanceCode },
+    advancedTrailDistance: { code: advancedTrailDistanceSample, run: handleRunAdvancedTrailDistanceCode },
+  advancedTrailArea: { code: advancedTrailAreaSample, run: handleRunAdvancedTrailAreaCode },
     trailArea: { code: trailAreaSample, run: handleRunTrailAreaCode },
     trailSimple: { code: trailSimpleSample, run: handleRunTrailSimpleCode },
     areaDrawRect: { code: areaDrawRectSample, run: handleRunAreaDrawRectCode },
@@ -3747,6 +3753,19 @@ export default function MainPage() {
     else if (state.codeBlockType === 'viewLayerInfo') return viewLayerInfoSample;
     else if (state.codeBlockType === 'toggleDisplayHide') return toggleDisplayHideSample;
     else if (state.codeBlockType === 'refreshLayer') return refreshLayerSample;
+    else if (state.codeBlockType === 'addUserLayer') return addUserLayerSample;
+    else if (state.codeBlockType === 'initUserLayer') return initUserLayerSample;
+    else if (state.codeBlockType === 'deleteUserLayer') return deleteUserLayerSample;
+    else if (state.codeBlockType === 'entireAreaUserLayer') return entireAreaUserLayerSample;
+    else if (state.codeBlockType === 'getLayer') return getLayerSample;
+    else if (state.codeBlockType === 'externalLayerName') return getExternalLayerNameSample;
+    else if (state.codeBlockType === 'tableNameOfLayer') return getTableNameOfLayerSample;
+    else if (state.codeBlockType === 'minDisplayZoomLevel') return getMinDisplayZoomLevelSample;
+    else if (state.codeBlockType === 'maxDisplayZoomLevel') return getMaxDisplayZoomLevelSample;
+    else if (state.codeBlockType === 'selectableFacility') return getSelectableFacilitySample;
+    else if (state.codeBlockType === 'viewLayerInfo') return viewLayerInfoSample;
+    else if (state.codeBlockType === 'toggleDisplayHide') return toggleDisplayHideSample;
+    else if (state.codeBlockType === 'refreshLayer') return refreshLayerSample;
     else if (state.codeBlockType === 'defaultContextMenu') return defaultContextMenuSample;
     else if (state.codeBlockType === 'editContextMenu') return editContextMenuSample;
     else if (state.codeBlockType === 'setLayerDisplayLevel') return setLayerDisplayLevelSample;
@@ -3756,6 +3775,8 @@ export default function MainPage() {
     else if (state.codeBlockType === 'select') return selectSample;
     else if (state.codeBlockType === 'advancedSelect') return advancedSelectSample;
     else if (state.codeBlockType === 'trailDistance') return trailDistanceSample;
+    else if (state.codeBlockType === 'advancedTrailDistance') return advancedTrailDistanceSample;
+    else if (state.codeBlockType === 'advancedTrailArea') return advancedTrailAreaSample;
     else if (state.codeBlockType === 'trailArea') return trailAreaSample;
     else if (state.codeBlockType === 'trailSimple') return trailSimpleSample;
     else if (state.codeBlockType === 'areaDrawRect') return areaDrawRectSample;
@@ -4275,6 +4296,10 @@ export default function MainPage() {
                               openCodeBlock('advancedSelect');
                             } else if (child === 'Trail Distance') {
                               openCodeBlock('trailDistance');
+                            } else if (child === 'Advanced Trail Distance') {
+                              openCodeBlock('advancedTrailDistance');
+                            } else if (child === 'Advanced Trail Area') {
+                              openCodeBlock('advancedTrailArea');
                             } else if (child === 'Trail Area') {
                               openCodeBlock('trailArea');
                             } else if (child === 'Trail Simple') {
@@ -4311,6 +4336,14 @@ export default function MainPage() {
                               openCodeBlock('circleSelection');
                             } else if (child === 'Polygon Selection') {
                               openCodeBlock('polygonSelection');
+                            } else if (child === 'Trail Distance') {
+                              openCodeBlock('trailDistance');
+                            } else if (child === 'Advanced Trail Distance') {
+                              openCodeBlock('advancedTrailDistance');
+                            } else if (child === 'Advanced Trail Area') {
+                              openCodeBlock('advancedTrailArea');
+                            } else if (child === 'Trail Area') {
+                              openCodeBlock('trailArea');
                             }
                           }}
                           onMouseOver={e => {
@@ -4440,8 +4473,10 @@ export default function MainPage() {
             else if (state.codeBlockType === 'setThematics') codeSample = setThematicsSample;
             else if (state.codeBlockType === 'select') codeSample = selectSample;
             else if (state.codeBlockType === 'advancedSelect') codeSample = advancedSelectSample;
-            else if (state.codeBlockType === 'trailDistance') codeSample = trailDistanceSample;
-            else if (state.codeBlockType === 'trailArea') codeSample = trailAreaSample;
+                else if (state.codeBlockType === 'trailDistance') codeSample = trailDistanceSample;
+    else if (state.codeBlockType === 'advancedTrailDistance') codeSample = advancedTrailDistanceSample;
+    else if (state.codeBlockType === 'advancedTrailArea') codeSample = advancedTrailAreaSample;
+    else if (state.codeBlockType === 'trailArea') codeSample = trailAreaSample;
             else if (state.codeBlockType === 'trailSimple') codeSample = trailSimpleSample;
             else if (state.codeBlockType === 'areaDrawRect') codeSample = areaDrawRectSample;
             else if (state.codeBlockType === 'areaDrawCircle') codeSample = areaDrawCircleSample;
@@ -4695,10 +4730,17 @@ else if (state.codeBlockType === 'trailDrawPolygon') codeSample = trailDrawPolyg
                   }
                   else if (state.codeBlockType === 'trailDistance') {
                     try {
-                      activateTrailDistanceMode(state.mapRef.current);
-                      alert('Trail Distance(거리 측정) 모드가 활성화되었습니다.');
+                      handleRunTrailDistanceCode();
                     } catch (error) {
                       console.error('Trail Distance 실행 중 오류:', error);
+                      alert('실행 오류: ' + error);
+                    }
+                  }
+                  else if (state.codeBlockType === 'advancedTrailDistance') {
+                    try {
+                      handleRunAdvancedTrailDistanceCode();
+                    } catch (error) {
+                      console.error('Advanced Trail Distance 실행 중 오류:', error);
                       alert('실행 오류: ' + error);
                     }
                   }
@@ -4708,6 +4750,14 @@ else if (state.codeBlockType === 'trailDrawPolygon') codeSample = trailDrawPolyg
                       alert('Trail Area(면적 측정) 모드가 활성화되었습니다.');
                     } catch (error) {
                       console.error('Trail Area 실행 중 오류:', error);
+                      alert('실행 오류: ' + error);
+                    }
+                  }
+                  else if (state.codeBlockType === 'advancedTrailArea') {
+                    try {
+                      handleRunAdvancedTrailAreaCode();
+                    } catch (error) {
+                      console.error('Advanced Trail Area 실행 중 오류:', error);
                       alert('실행 오류: ' + error);
                     }
                   }

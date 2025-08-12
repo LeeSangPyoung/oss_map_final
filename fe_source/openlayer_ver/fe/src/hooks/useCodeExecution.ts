@@ -13,6 +13,8 @@ import { getTrailCoordinates } from '~/assets/Drawing';
 import { activateTrailSimpleMode } from '~/assets/Drawing';
 import {
   activateTrailDistanceMode,
+  activateAdvancedTrailDistanceMode,
+  activateAdvancedTrailAreaMode,
   activateTrailAreaMode,
   activateAreaDrawRectMode,
   activateAreaDrawCircleMode,
@@ -854,6 +856,36 @@ export const useCodeExecution = ({
     }
   }, [map]);
 
+  const handleRunAdvancedTrailDistanceCode = useCallback(() => {
+    if (!map) return;
+    console.log('Running advanced trail distance code');
+    
+    try {
+      console.log('activateAdvancedTrailDistanceMode 호출 전');
+      // 신규 라이브러리 사용
+      activateAdvancedTrailDistanceMode(map);
+      console.log('activateAdvancedTrailDistanceMode 호출 후');
+      alert('Advanced Trail Distance(고급 거리 측정) 모드가 활성화되었습니다.');
+    } catch (error) {
+      console.error('Advanced Trail Distance 실행 중 오류:', error);
+      alert('실행 오류: ' + error);
+    }
+  }, [map]);
+
+  const handleRunAdvancedTrailAreaCode = useCallback(() => {
+    if (!map) return;
+    console.log('Running advanced trail area code');
+    
+    try {
+      // 신규 라이브러리 사용
+      activateAdvancedTrailAreaMode(map);
+      alert('Advanced Trail Area(고급 면적 측정) 모드가 활성화되었습니다.');
+    } catch (error) {
+      console.error('Advanced Trail Area 실행 중 오류:', error);
+      alert('실행 오류: ' + error);
+    }
+  }, [map]);
+
   const handleRunTrailSimpleCode = useCallback(() => {
     if (!map) return;
     console.log('Running trail simple code');
@@ -1343,6 +1375,8 @@ export const useCodeExecution = ({
     handleRunCircleSelectionCode,
     handleRunPolygonSelectionCode,
     handleRunTrailDistanceCode,
+    handleRunAdvancedTrailDistanceCode,
+    handleRunAdvancedTrailAreaCode,
     handleRunTrailSimpleCode,
     handleRunAreaDrawRectCode,
     handleRunAreaDrawCircleCode,

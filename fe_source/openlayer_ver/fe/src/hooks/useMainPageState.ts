@@ -85,6 +85,8 @@ export type CodeBlockType =
   | 'select'
   | 'advancedSelect'
   | 'trailDistance'
+  | 'advancedTrailDistance'
+  | 'advancedTrailArea'
   | 'trailArea'
   | 'trailEdit'
   | 'trailDelete'

@@ -3502,18 +3502,6 @@ const OSSMAPPage: React.FC = () => {
         }}>
           OSSMAP - Map Control Center
         </h1>
-        <span style={{
-          background: '#e8f5e8',
-          color: '#2e7d32',
-          padding: '4px 12px',
-          borderRadius: '16px',
-          fontSize: '12px',
-          fontWeight: '500',
-          marginLeft: '16px'
-        }}>
-          운영 모드
-        </span>
-        
         {/* 맵 선택기 */}
         <div style={{
           marginLeft: 'auto',
