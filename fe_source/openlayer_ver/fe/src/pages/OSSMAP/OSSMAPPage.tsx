@@ -45,6 +45,7 @@ import LayerGroup from 'ol/layer/Group';
 import { MapSelector } from '~/components/MapSelector/MapSelector';
 import { env } from '~/env';
 import XYZ from 'ol/source/XYZ';
+import TileGrid from 'ol/tilegrid/TileGrid';
 import CommonHeader from '~/components/Header/CommonHeader';
 
 // geometry 변환 함수 (메인 페이지에서 가져옴)
@@ -207,8 +208,8 @@ const OSSMAPPage: React.FC = () => {
   const [currentTileUrl, setCurrentTileUrl] = useState(env.osmTileUrl || 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png');
   
   // 맵 변경 핸들러
-  const handleMapChange = (mapType: string, tileUrl: string) => {
-    console.log('🔧 맵 변경:', mapType, tileUrl);
+  const handleMapChange = (mapType: string, tileUrl: string, customTileFunction?: any) => {
+    console.log('🔧 맵 변경:', mapType, tileUrl, customTileFunction);
     setCurrentMapType(mapType);
     setCurrentTileUrl(tileUrl);
     
@@ -225,11 +226,30 @@ const OSSMAPPage: React.FC = () => {
       }
       
       // 새로운 베이스 레이어 추가
-      const newBaseLayer = new TileLayer({
-        source: new XYZ({
-          url: tileUrl
-        })
-      });
+      let newBaseLayer;
+      
+      if (mapType === 'dawul' && customTileFunction) {
+        // 다울맵: 커스텀 타일 함수 사용
+        newBaseLayer = new TileLayer({
+          source: new XYZ({
+            projection: 'EPSG:5179',
+            tileGrid: new TileGrid({
+              origin: [254440, 2871137],
+              resolutions: [4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5, 0.25, 0.125, 0.0625, 0.03125],
+              tileSize: 400,
+            }),
+            tileSize: 400,
+            tileUrlFunction: customTileFunction
+          })
+        });
+      } else {
+        // 일반 맵: URL 사용
+        newBaseLayer = new TileLayer({
+          source: new XYZ({
+            url: tileUrl
+          })
+        });
+      }
       
       layers.insertAt(0, newBaseLayer);
       console.log('✅ 베이스 맵 변경 완료:', mapType);
@@ -3470,7 +3490,8 @@ const OSSMAPPage: React.FC = () => {
       display: 'flex', 
       flexDirection: 'column',
       background: '#f5f5f5',
-      fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif'
+      fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
+      overflow: 'hidden'
     }}>
       <style>
         {`
