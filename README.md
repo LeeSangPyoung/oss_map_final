@@ -55,3 +55,9 @@ ansible-playbook -i hosts ./install_osm_map.yml   --extra-vars '{"map_kind":"osm
 ## 5. 레이어 목록 백엔드 서비스 실행
 ```powershell
 java -jar /workspace/ossmap_fe/be/be-artifact-0.0.1-SNAPSHOT.jar > /workspace/ossmap_fe/be/be.log 2>&1 &
+```
+## 6. geoserver 점검
+```powershell
+localhost:8089/geoserver 접속
+http://localhost:8089/geoserver/web/wicket/bookmarkable/org.geoserver.web.data.store.DataAccessEditPage?8&storeName=SKCC_REST_STORE&wsName=ne 이동하여,
+Connection Parameters 점검 (port, password 등)
