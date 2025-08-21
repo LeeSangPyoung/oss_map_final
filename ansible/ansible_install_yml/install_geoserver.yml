@@ -1,0 +1,126 @@
+- name: Install GeoServer on target host
+  hosts: all
+  become: true
+  vars:
+    geoserver_version: "{{ geoserver_version }}"
+    geoserver_user: "{{ geoserver_user }}"
+    geoserver_home: "{{ geoserver_home }}"
+    geoserver_port: "{{ geoserver_port }}"
+    java_package: java-11-openjdk
+
+  tasks:
+    - name: "Install Java"
+      yum:
+        name: "{{ java_package }}"
+        state: present
+
+    - name: "Create GeoServer user"
+      user:
+        name: "{{ geoserver_user }}"
+        shell: /sbin/nologin
+        system: yes
+        create_home: no
+
+    - name: "Create GeoServer directory"
+      file:
+        path: "{{ geoserver_home }}"
+        state: directory
+        owner: "{{ geoserver_user }}"
+        group: "{{ geoserver_user }}"
+
+    - name: "Download GeoServer"
+      get_url:
+        url: "https://sourceforge.net/projects/geoserver/files/GeoServer/{{ geoserver_version }}/geoserver-{{ geoserver_version }}-bin.zip/download"
+        dest: "/tmp/geoserver-{{ geoserver_version }}.zip"
+        mode: '0644'
+        timeout: 60
+
+    - name: "Unzip GeoServer"
+      unarchive:
+        src: "/tmp/geoserver-{{ geoserver_version }}.zip"
+        dest: "{{ geoserver_home }}"
+        remote_src: yes
+
+    - name: "Remove nested folder if left over"
+      file:
+        path: "{{ geoserver_home }}/geoserver-{{ geoserver_version }}"
+        state: absent
+
+    - name: "Set ownership"
+      file:
+        path: "{{ geoserver_home }}"
+        state: directory
+        recurse: yes
+        owner: "{{ geoserver_user }}"
+        group: "{{ geoserver_user }}"
+
+    - name: "Set port in start.ini"
+      lineinfile:
+        path: "{{ geoserver_home }}/start.ini"
+        regexp: '^jetty.http.port='
+        line: "jetty.http.port={{ geoserver_port }}"
+        create: yes
+
+    # ---------------------------------------------------
+    # 정확히 들여쓰기 기반으로 MARLIN_JAR 블록 주석 처리
+    # ---------------------------------------------------
+    - name: "Comment out MARLIN_JAR block by indent level"
+      shell: |
+        awk '
+        BEGIN { in_block=0; indent="" }
+        {
+          if (in_block) {
+            print indent "# " substr($0, length(indent)+1)
+            if ($0 ~ "^" indent "fi[ ]*$") {
+              in_block=0
+            }
+            next
+          }
+          if ($0 ~ /^[ ]*if \[ -z "\$\{MARLIN_JAR:-\}" \]; then[ ]*$/) {
+            in_block=1
+            indent = substr($0, 1, match($0, /[^ ]/)-1)
+            print indent "# " substr($0, length(indent)+1)
+            next
+          }
+          print
+        }' "{{ geoserver_home }}/bin/startup.sh" > "{{ geoserver_home }}/bin/startup.sh.tmp" && \
+        mv "{{ geoserver_home }}/bin/startup.sh.tmp" "{{ geoserver_home }}/bin/startup.sh"
+      args:
+        executable: /bin/bash
+
+    - name: "Restore ownership and permissions on startup.sh"
+      file:
+        path: "{{ geoserver_home }}/bin/startup.sh"
+        owner: "{{ geoserver_user }}"
+        group: "{{ geoserver_user }}"
+        mode: '0755'
+    # ---------------------------------------------------
+
+    - name: "Create systemd service"
+      copy:
+        dest: /etc/systemd/system/geoserver.service
+        content: |
+          [Unit]
+          Description=GeoServer
+          After=network.target
+
+          [Service]
+          User={{ geoserver_user }}
+          Group={{ geoserver_user }}
+          WorkingDirectory={{ geoserver_home }}
+          ExecStart={{ geoserver_home }}/bin/startup.sh
+          ExecStop={{ geoserver_home }}/bin/shutdown.sh
+          Restart=on-failure
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: "Reload systemd"
+      command: systemctl daemon-reload
+
+    - name: "Enable and start GeoServer"
+      systemd:
+        name: geoserver
+        enabled: true
+        state: started
+

@@ -1,0 +1,74 @@
+- name: Clone repository with sparse-checkout and apply SQL
+  hosts: all
+  become: yes
+  vars:
+    repo_url: https://github.com/LeeSangPyoung/oss_map_final.git
+    repo_dest: /opt/oss_map_final
+    sparse_dirs:
+      - db_sql/1_table_create
+      - db_sql/3_feature_create
+      - db_sql/2_layer_create            # ✅ layer_create 추가
+    sql_file_path: /opt/oss_map_final/db_sql/1_table_create/feature_table_create.sql
+    sql_folder_feature_create: /opt/oss_map_final/db_sql/3_feature_create
+    sql_folder_layer_create: /opt/oss_map_final/db_sql/2_layer_create   # ✅ layer_create 경로 변수 추가
+    db_name: "{{ db_name }}"
+    db_user: "{{ db_admin_user }}"
+    db_password: "{{ db_admin_password }}"
+    db_host: "{{ hostvars[inventory_hostname]['ansible_host'] }}"
+    db_port: "{{ postgresql_port }}"
+
+  tasks:
+    - name: Ensure git is installed
+      ansible.builtin.yum:
+        name: git
+        state: present
+
+    - name: Empty clone (shallow) of repository
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_dest }}"
+        version: main
+        depth: 1
+        bare: no
+        clone: yes
+        update: no
+
+    - name: Enable sparse-checkout
+      ansible.builtin.command: git sparse-checkout init --cone
+      args:
+        chdir: "{{ repo_dest }}"
+
+    - name: Set sparse-checkout target directories
+      ansible.builtin.command: git sparse-checkout set {{ sparse_dirs | join(' ') }}
+      args:
+        chdir: "{{ repo_dest }}"
+
+    - name: Checkout main branch
+      ansible.builtin.command: git checkout main
+      args:
+        chdir: "{{ repo_dest }}"
+
+    - name: Run feature_table_create.sql on PostgreSQL
+      ansible.builtin.shell: |
+        psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} -f "{{ sql_file_path }}"
+      environment:
+        PGPASSWORD: "{{ db_password }}"
+
+    - name: Run all SQL files in feature_create folder
+      ansible.builtin.shell: |
+        for sql in {{ sql_folder_feature_create }}/*.sql; do
+          echo "Executing $sql"
+          psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} -f "$sql"
+        done
+      environment:
+        PGPASSWORD: "{{ db_password }}"
+
+    - name: Run all SQL files in layer_create folder
+      ansible.builtin.shell: |
+        for sql in {{ sql_folder_layer_create }}/*.sql; do
+          echo "Executing $sql"
+          psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} -f "$sql"
+        done
+      environment:
+        PGPASSWORD: "{{ db_password }}"
+

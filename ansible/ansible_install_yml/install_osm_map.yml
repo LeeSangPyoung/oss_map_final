@@ -1,0 +1,262 @@
+---
+- name: Clean, clone geomap_oss, and run Python scripts
+  hosts: localhost
+  gather_facts: no
+  become: true
+
+  vars:
+    # Survey에서 받아올 변수 예시
+    # map_dir: "/workspace/map"
+    # map_port: 8090
+    # max_zoom: 17
+    # min_zoom: 5
+    # region: ["서울", "부산"]
+    # map_kind: "osm" 또는 "vworld"
+
+  tasks:
+    - name: Delete existing {{ map_dir }} directory
+      ansible.builtin.file:
+        path: "{{ map_dir }}"
+        state: absent
+
+    - name: Clone Git repository to {{ map_dir }}
+      ansible.builtin.git:
+        repo: https://github.com/LeeSangPyoung/geomap_oss.git
+        dest: "{{ map_dir }}"
+        version: main
+
+    - name: Install Python requirements from requirements.txt
+      ansible.builtin.pip:
+        requirements: "{{ map_dir }}/requirements.txt"
+        executable: pip3
+
+    - name: Run download_tiles_geo_json_osm.py (only if map_kind == osm)
+      ansible.builtin.command:
+        cmd: >
+          python3 download_tiles_geo_json_osm.py
+          --max_zoom {{ max_zoom }}
+          --min_zoom {{ min_zoom }}
+          --region {{ region | join(' ') }}
+        chdir: "{{ map_dir }}/src"
+      register: osm_result
+      when: map_kind == 'osm'
+      ignore_errors: true
+
+    - name: Run download_tiles_geo_json_vworld.py (only if map_kind == vworld)
+      ansible.builtin.command:
+        cmd: >
+          python3 download_tiles_geo_json_vworld.py
+          --max_zoom {{ max_zoom }}
+          --min_zoom {{ min_zoom }}
+          --region {{ region | join(' ') }}
+        chdir: "{{ map_dir }}/src"
+      register: vworld_result
+      when: map_kind == 'vworld'
+      ignore_errors: true
+
+    - name: Run download_tiles_geo_json_vworld_satellite.py (only if map_kind == vworld_satellite)
+      ansible.builtin.command:
+        cmd: >
+          python3 download_tiles_geo_json_vworld_satellite.py
+          --max_zoom {{ max_zoom }}
+          --min_zoom {{ min_zoom }}
+          --region {{ region | join(' ') }}
+        chdir: "{{ map_dir }}/src"
+      register: vworld_satellite_result
+      when: map_kind == 'vworld_satellite'
+      ignore_errors: true
+
+    - name: Run download_tiles_geo_json_cartocdn.py (only if map_kind == cartocdn)
+      ansible.builtin.command:
+        cmd: >
+          python3 download_tiles_geo_json_cartocdn_voyager.py
+          --max_zoom {{ max_zoom }}
+          --min_zoom {{ min_zoom }}
+          --region {{ region | join(' ') }}
+        chdir: "{{ map_dir }}/src"
+      register: cartocdn_result
+      when: map_kind == 'cartocdn'
+      ignore_errors: true
+
+
+
+    - name: Run write_mbtils_osm.py (only if map_kind == osm)
+      ansible.builtin.command:
+        cmd: python3 write_mbtils_osm.py
+        chdir: "{{ map_dir }}/src"
+      register: mbtiles_osm_result
+      when: map_kind == 'osm'
+      ignore_errors: true
+
+    - name: Run write_mbtils_vworld.py (only if map_kind == vworld)
+      ansible.builtin.command:
+        cmd: python3 write_mbtils_vworld.py
+        chdir: "{{ map_dir }}/src"
+      register: mbtiles_vworld_result
+      when: map_kind == 'vworld'
+      ignore_errors: true
+
+    - name: Run write_mbtils_vworld_satellite.py (only if map_kind == vworld_satellite)
+      ansible.builtin.command:
+        cmd: python3 write_mbtils_vworld_satellite.py
+        chdir: "{{ map_dir }}/src"
+      register: mbtiles_vworld_satellite_result
+      when: map_kind == 'vworld_satellite'
+      ignore_errors: true
+
+
+    - name: Run write_mbtils_cartocdn.py (only if map_kind == cartocdn)
+      ansible.builtin.command:
+        cmd: python3 write_mbtils_cartocdn_voyager.py
+        chdir: "{{ map_dir }}/src"
+      register: mbtiles_cartocdn_result
+      when: map_kind == 'cartocdn'
+      ignore_errors: true
+
+
+    - name: Print execution summary (only if map_kind == osm)
+      ansible.builtin.debug:
+        msg: |
+          OSM tiles: {{ osm_result.rc }}
+          MBTiles: {{ mbtiles_osm_result.rc }}
+      when: map_kind == 'osm'
+
+    - name: Print execution summary (only if map_kind == vworld)
+      ansible.builtin.debug:
+        msg: |
+          OSM tiles: {{ vworld_result.rc }}
+          MBTiles: {{ mbtiles_vworld_result.rc }}
+      when: map_kind == 'vworld'
+
+
+    - name: Print execution summary (only if map_kind == vworld_satellite)
+      ansible.builtin.debug:
+        msg: |
+          OSM tiles: {{ vworld_satellite_result.rc }}
+          MBTiles: {{ mbtiles_vworld_satellite_result.rc }}
+      when: map_kind == 'vworld_satellite'
+
+
+    - name: Print execution summary (only if map_kind == cartocdn)
+      ansible.builtin.debug:
+        msg: |
+          OSM tiles: {{ cartocdn_result.rc }}
+          MBTiles: {{ mbtiles_cartocdn_result.rc }}
+      when: map_kind == 'cartocdn'
+
+
+    - name: Ensure logs directory exists
+      ansible.builtin.file:
+        path: "{{ map_dir }}/logs"
+        state: directory
+        mode: '0755'
+
+    - name: Kill existing OSM server
+      ansible.builtin.shell: |
+        pgrep -f run_osm_mtileserver.py | xargs -r kill -9
+      when: map_kind == 'osm'
+      ignore_errors: true
+
+    - name: Kill existing VWorld server
+      ansible.builtin.shell: |
+        pgrep -f run_vworld_mtileserver.py | xargs -r kill -9
+      when: map_kind == 'vworld'
+      ignore_errors: true
+
+    - name: Kill existing VWorld satellite  server
+      ansible.builtin.shell: |
+        pgrep -f run_vworld_satellite_mtileserver.py | xargs -r kill -9
+      when: map_kind == 'vworld_satellite'
+      ignore_errors: true
+
+
+    - name: Kill existing cartocdn  server
+      ansible.builtin.shell: |
+        pgrep -f run_cartocdn_voyager_mtileserver.py | xargs -r kill -9
+      when: map_kind == 'cartocdn'
+      ignore_errors: true
+
+    - name: Show command for run_osm_mtileserver.py
+      ansible.builtin.debug:
+        msg: >
+          nohup python3 run_osm_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }} > {{ map_dir }}/logs/osm_server.log 2>&1 &
+      when: map_kind == 'osm'
+
+    - name: Show command for run_vworld_mtileserver.py
+      ansible.builtin.debug:
+        msg: >
+          nohup python3 run_vworld_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }} > {{ map_dir }}/logs/vworld_server.log 2>&1 &
+      when: map_kind == 'vworld'
+
+    - name: Show command for run_vworld_mtileserver.py
+      ansible.builtin.debug:
+        msg: >
+          nohup python3 run_vworld_satellite_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }} > {{ map_dir }}/logs/vworld_satellite_server.log 2>&1 &
+      when: map_kind == 'vworld_satellite'
+
+
+
+    - name: Show command for run_cartocdn_mtileserver.py
+      ansible.builtin.debug:
+        msg: >
+          nohup python3 run_cartocdn_voyager_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }} > {{ map_dir }}/logs/cartocdn_server.log 2>&1 &
+      when: map_kind == 'cartocdn'
+
+
+
+    - name: Run OSM server
+      ansible.builtin.shell: |
+        nohup python3 run_osm_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }} > {{ map_dir }}/logs/osm_server.log 2>&1 &
+      args:
+        chdir: "{{ map_dir }}/src"
+      when: map_kind == 'osm'
+
+    - name: Run VWorld server
+      ansible.builtin.shell: |
+        nohup python3 run_vworld_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }}  > {{ map_dir }}/logs/vworld_server.log 2>&1 &
+      args:
+        /chdir: "{{ map_dir }}/src"
+      when: map_kind == 'vworld'
+
+
+    - name: Run VWorld satellite server
+      ansible.builtin.shell: |
+        nohup python3 run_vworld_satellite_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }}  > {{ map_dir }}/logs/vworld_satellite_server.log 2>&1 &
+      args:
+        chdir: "{{ map_dir }}/src"
+      when: map_kind == 'vworld_satellite'
+
+
+    - name: Run cartocdn server
+      ansible.builtin.shell: |
+        nohup python3 run_cartocdn_voyager_mtileserver.py --map_port {{ map_port }} --min_zoom {{ min_zoom }}  > {{ map_dir }}/logs/cartocdn_voyager_server.log 2>&1 &
+      args:
+        chdir: "{{ map_dir }}/src"
+      when: map_kind == 'cartocdn'
+
+
+    - name: Wait a few seconds for Flask server to start
+      ansible.builtin.pause:
+        seconds: 2
+
+
+    - name: Tail Flask log file
+      ansible.builtin.shell: |
+        tail -n 20 {{ map_dir }}/logs/{{
+          'osm' if map_kind == 'osm'
+          else 'vworld_satellite' if map_kind == 'vworld_satellite'
+          else 'cartocdn_voyager' if map_kind == 'cartocdn'
+          else 'vworld'
+        }}_server.log
+      register: server_log_output
+      ignore_errors: true
+
+
+
+
+
+
+    - name: Show server log output
+      ansible.builtin.debug:
+        var: server_log_output.stdout_lines
+

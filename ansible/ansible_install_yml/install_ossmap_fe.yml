@@ -1,0 +1,146 @@
+- name: Deploy FE and BE Project Using Internal tmp Folder
+  hosts: all
+  become: yes
+  vars:
+    repo_url: https://github.com/LeeSangPyoung/oss_map_final.git
+    install_base_dir: "{{ install_dir }}"  # 예: /workspace/ossmap_fe
+    install_fe_dir: "{{ install_base_dir }}/fe"
+    install_be_dir: "{{ install_base_dir }}/be"
+    temp_clone_dir: "{{ install_base_dir }}/tmp"
+    env_file: "{{ install_fe_dir }}/.env.dev"
+    app_yml_file: "{{ install_be_dir }}/config/application.yml"
+
+    # 외부에서 받을 변수들 (기본값 포함)
+    geoserver_url: "{{ geoserver_url | default('http://localhost:8080/geoserver') }}"
+    db_host: "{{ db_host | default('127.0.0.1') }}"
+    db_port: "{{ db_port | default('5433') }}"
+    db_name: "{{ db_name | default('tesd') }}"
+    db_user: "{{ db_user | default('tesapp') }}"
+    db_password: "{{ db_password | default('experdb12#') }}"
+    be_url: "{{ be_url | default('http://127.0.0.1:8082') }}"
+
+  tasks:
+    - name: Install required packages
+      ansible.builtin.yum:
+        name:
+          - git
+          - nodejs
+          - npm
+        state: present
+
+    - name: Remove existing FE install directory if exists
+      ansible.builtin.file:
+        path: "{{ install_fe_dir }}"
+        state: absent
+
+    - name: Remove existing BE install directory if exists
+      ansible.builtin.file:
+        path: "{{ install_be_dir }}"
+        state: absent
+
+    - name: Remove temp clone dir if exists
+      ansible.builtin.file:
+        path: "{{ temp_clone_dir }}"
+        state: absent
+
+    - name: Clone entire repository into install_dir/tmp
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ temp_clone_dir }}"
+        depth: 1
+
+    - name: Create FE install directory
+      ansible.builtin.file:
+        path: "{{ install_fe_dir }}"
+        state: directory
+        mode: '0755'
+        recurse: yes
+
+    - name: Copy FE source to install directory
+      ansible.builtin.copy:
+        src: "{{ temp_clone_dir }}/fe_source/openlayer_ver/fe/"
+        dest: "{{ install_fe_dir }}/"
+        remote_src: yes
+
+    - name: Create BE install directory
+      ansible.builtin.file:
+        path: "{{ install_be_dir }}"
+        state: directory
+        mode: '0755'
+        recurse: yes
+
+    - name: Copy BE source to install directory
+      ansible.builtin.copy:
+        src: "{{ temp_clone_dir }}/be_source/be/"
+        dest: "{{ install_be_dir }}/"
+        remote_src: yes
+
+    - name: Clean up temp clone directory
+      ansible.builtin.file:
+        path: "{{ temp_clone_dir }}"
+        state: absent
+
+    - name: Set VITE_APP_LAYER_SERVER in .env.dev
+      ansible.builtin.lineinfile:
+        path: "{{ env_file }}"
+        regexp: '^VITE_APP_LAYER_SERVER='
+        line: "VITE_APP_LAYER_SERVER={{ geoserver_url }}"
+        create: yes
+
+    - name: Set VITE_APP_BACKEND in .env.dev
+      ansible.builtin.lineinfile:
+        path: "{{ env_file }}"
+        regexp: '^VITE_APP_BACKEND='
+        line: "VITE_APP_BACKEND={{ be_url }}"
+        create: yes
+
+    - name: Replace DB URL in application.yml
+      ansible.builtin.replace:
+        path: "{{ app_yml_file }}"
+        regexp: '^ *url:.*'
+        replace: "    url: jdbc:postgresql://{{ db_host }}:{{ db_port }}/{{ db_name }}"
+
+    - name: Replace DB_USER default value in application.yml
+      ansible.builtin.replace:
+        path: "{{ app_yml_file }}"
+        regexp: '\$\{DB_USER:[^}]+\}'
+        replace: '${DB_USER:{{ db_user }}}'
+
+    - name: Replace DB_PASSWORD default value in application.yml
+      ansible.builtin.replace:
+        path: "{{ app_yml_file }}"
+        regexp: '\$\{DB_PASSWORD:[^}]+\}'
+        replace: '${DB_PASSWORD:{{ db_password }}}'
+
+    - name: Replace GEO_HOST default value in application.yml
+      ansible.builtin.replace:
+        path: "{{ app_yml_file }}"
+        regexp: '\$\{GEO_HOST:[^}]+\}'
+        replace: '${GEO_HOST:{{ geoserver_url }}}'
+
+    - name: Run npm install in FE directory
+      ansible.builtin.shell: npm install
+      args:
+        chdir: "{{ install_fe_dir }}"
+
+    - name: Run npm dev server in background with logging
+      ansible.builtin.shell: nohup npm run dev > fe.log 2>&1 &
+      args:
+        chdir: "{{ install_fe_dir }}"
+
+    - name: Kill existing BE JAR process if running
+      ansible.builtin.shell: |
+        pids=$(pgrep -f 'be-artifact-0.0.1-SNAPSHOT.jar')
+        if [ -n "$pids" ]; then
+          echo "Killing process: $pids"
+          kill -9 $pids
+        fi
+      args:
+        chdir: "{{ install_be_dir }}"
+      ignore_errors: true
+
+    - name: Run BE JAR in background
+      ansible.builtin.shell: nohup java -jar ./be-artifact-0.0.1-SNAPSHOT.jar > be.log 2>&1 &
+      args:
+        chdir: "{{ install_be_dir }}"
+

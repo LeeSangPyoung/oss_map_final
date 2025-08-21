@@ -1,0 +1,174 @@
+- name: Install and configure PostgreSQL 16 with PostGIS on Rocky Linux
+  hosts: all
+  become: yes
+  collections:
+    - community.postgresql
+  vars:
+    postgresql_port: "{{ db_port }}"
+    postgresql_conf_path: "/var/lib/pgsql/16/data/postgresql.conf"
+    pg_hba_conf_path: "/var/lib/pgsql/16/data/pg_hba.conf"
+    db_name: "{{ db_name }}"
+    db_user: "{{ db_user }}"
+    db_password: "{{ db_password }}"
+    target_schema: tesdev
+    pg_unix_socket_dir: "/var/run/postgresql"
+
+  tasks:
+    - name: Remove existing PostgreSQL 16 if needed
+      ansible.builtin.shell: |
+        systemctl stop postgresql-16
+        dnf -y remove postgresql16-server
+        rm -rf /var/lib/pgsql/16
+      ignore_errors: true
+
+    - name: Download PostgreSQL Yum repo RPM
+      ansible.builtin.get_url:
+        url: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+        dest: /tmp/pgdg-redhat-repo-latest.noarch.rpm
+
+    - name: Install PostgreSQL repo RPM (skip GPG check)
+      ansible.builtin.yum:
+        name: /tmp/pgdg-redhat-repo-latest.noarch.rpm
+        state: present
+        disable_gpg_check: true
+
+    - name: Disable built-in PostgreSQL module
+      ansible.builtin.shell: dnf -qy module disable postgresql
+
+    - name: Install dnf-plugins-core for config-manager
+      ansible.builtin.yum:
+        name: dnf-plugins-core
+        state: present
+        disable_gpg_check: true
+
+    - name: Enable CRB repository (optional deps)
+      ansible.builtin.command: dnf config-manager --set-enabled crb
+      changed_when: false
+      ignore_errors: true
+
+    # === 핵심: EPEL 추가 (의존성 해결) ===
+    - name: Enable EPEL (via direct rpm, skip GPG)
+      ansible.builtin.yum:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+        state: present
+        disable_gpg_check: true
+
+    # PostGIS가 필요로 하는 의존성까지 한 번에 설치
+    - name: Install PostgreSQL 16 + PostGIS + deps (skip GPG check)
+      ansible.builtin.yum:
+        name:
+          - postgresql16-server
+          - postgresql16
+          - postgis35_16
+          - postgis35_16-client
+          - python3-psycopg2
+          - hdf5
+          - xerces-c
+          - gdal-libs
+          - proj
+          - geos
+        state: present
+        disable_gpg_check: true
+
+    - name: Initialize database
+      ansible.builtin.shell: "/usr/pgsql-16/bin/postgresql-16-setup initdb"
+      args:
+        creates: /var/lib/pgsql/16/data/PG_VERSION
+
+    - name: Set PostgreSQL port
+      ansible.builtin.lineinfile:
+        path: "{{ postgresql_conf_path }}"
+        regexp: '^#?port ='
+        line: "port = {{ postgresql_port }}"
+
+    - name: Set PostgreSQL to listen on all addresses
+      ansible.builtin.lineinfile:
+        path: "{{ postgresql_conf_path }}"
+        regexp: '^#?listen_addresses ='
+        line: "listen_addresses = '*'"
+
+    - name: Allow all connections in pg_hba.conf (trust)
+      ansible.builtin.lineinfile:
+        path: "{{ pg_hba_conf_path }}"
+        line: 'host    all    all    0.0.0.0/0    trust'
+        insertafter: EOF
+
+    - name: Ensure local socket trust
+      ansible.builtin.lineinfile:
+        path: "{{ pg_hba_conf_path }}"
+        line: 'local   all    all    trust'
+        insertafter: EOF
+
+    - name: Start and enable PostgreSQL 16
+      ansible.builtin.systemd:
+        name: postgresql-16
+        enabled: true
+        state: started
+
+    - name: Restart PostgreSQL
+      ansible.builtin.systemd:
+        name: postgresql-16
+        state: restarted
+
+    - name: Create PostgreSQL user
+      become_user: postgres
+      community.postgresql.postgresql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
+
+    - name: Create database
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ db_user }}"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
+
+    - name: Enable PostGIS extension
+      become_user: postgres
+      community.postgresql.postgresql_ext:
+        name: postgis
+        db: "{{ db_name }}"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
+
+    - name: Create schema if not exists
+      become_user: postgres
+      community.postgresql.postgresql_query:
+        db: "{{ db_name }}"
+        query: "CREATE SCHEMA IF NOT EXISTS {{ target_schema }} AUTHORIZATION {{ db_user }};"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
+
+    - name: Grant USAGE on schema
+      become_user: postgres
+      community.postgresql.postgresql_privs:
+        db: "{{ db_name }}"
+        privs: USAGE
+        type: schema
+        objs: "{{ target_schema }}"
+        roles: "{{ db_user }}"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
+
+    - name: Grant SELECT on all tables in schema
+      become_user: postgres
+      community.postgresql.postgresql_privs:
+        db: "{{ db_name }}"
+        privs: SELECT
+        type: table
+        objs: ALL_IN_SCHEMA
+        schema: "{{ target_schema }}"
+        roles: "{{ db_user }}"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
+
+    - name: Set search_path for user
+      become_user: postgres
+      community.postgresql.postgresql_query:
+        db: "{{ db_name }}"
+        query: "ALTER ROLE {{ db_user }} SET search_path = {{ target_schema }}, public;"
+        port: "{{ postgresql_port }}"
+        login_unix_socket: "{{ pg_unix_socket_dir }}"
