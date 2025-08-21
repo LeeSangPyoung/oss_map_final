@@ -1,5 +1,0 @@
-<logging>
-  <level>GEOTOOLS_DEVELOPER_LOGGING</level>
-  <location>logs/geoserver.log</location>
-  <stdOutLogging>true</stdOutLogging>
-</logging>
