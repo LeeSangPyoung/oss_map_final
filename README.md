@@ -69,6 +69,7 @@ echo "ansible/ansible_install_yml/*" >> .git/info/sparse-checkout
 git pull origin main
 
 5. yml 파일 실행 (하나씩 순차적으로..)
+cd /workspace/yml/oss_map_final/ansible/ansible_install_yml
 ansible-playbook -i hosts ./install_postgresql16.yml   --extra-vars '{"db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./create_db_data.yml   --extra-vars '{"db_host":"127.0.0.1","db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./install_geoserver.yml   --extra-vars '{"geoserver_version":"2.24.2","geoserver_user":"geoserver","geoserver_home":"/workspace/geo/geoserver","geoserver_port":"8089"}'
