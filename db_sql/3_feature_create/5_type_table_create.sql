@@ -1,6 +1,7 @@
 
 GRANT USAGE ON SCHEMA tesdev TO tesapp;
 GRANT SELECT ON ALL TABLES IN SCHEMA tesdev TO tesapp;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA tesdev TO tesapp;
 ALTER ROLE tesapp SET search_path = tesdev, public;
 
 
