@@ -10,6 +10,10 @@
 
 ## 1. Rocky Linux WSL2 설치 (Windows)
 ```powershell
+wsl --install
+wsl --version
+wsl --set-default-version 2
+
 mkdir D:\rocky_wsl2
 cd D:\rocky_wsl2
 Invoke-WebRequest `
@@ -50,7 +54,28 @@ ansible-playbook -i hosts ./install_postgresql16.yml   --extra-vars '{"db_port":
 ansible-playbook -i hosts ./create_db_data.yml   --extra-vars '{"db_host":"127.0.0.1","db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./install_geoserver.yml   --extra-vars '{"geoserver_version":"2.24.2","geoserver_user":"geoserver","geoserver_home":"/workspace/geo/geoserver","geoserver_port":"8089"}'
 ansible-playbook -i hosts ./install_ossmap_fe.yml   --extra-vars '{"install_dir":"/workspace/ossmap_fe","geoserver_url":"http://localhost:8089","be_url":"http://localhost:8082","db_host":"127.0.0.1","db_port":"5433","db_name":"tesd","db_user":"tesapp","db_password":"experdb12#"}'
+
 ansible-playbook -i hosts ./install_osm_map.yml   --extra-vars '{"map_kind":"osm","map_dir":"/workspace/ossmap","map_port":8090,"min_zoom":12,"max_zoom":15,"region":["서울특별시","부산광역시"]}'
+- min_zoom : 디폴트 zoom을 설정하며, 클수록 다운용량 및 다운시간이 크게 증가한다. (5~17)
+- max_zoom : 설정한 resion의 zoom을 설정하며, 지역이 많을 수록 zoom이 높을 수록 다운용량 및 다운시간이 크게 증가한다. (5~17)
+- resion 목록 
+	- 강원특별자치도
+	- 경기도
+	- 경상남도
+	- 경상북도
+	- 광주광역시
+	- 대구광역시
+	- 부산광역시
+	- 서울특별시
+	- 세종특별자치시
+	- 울산광역시
+	- 인천광역시
+	- 전라남도
+	- 전북특별자치도
+	- 제주특별자치도
+	- 충청남도
+	- 충청북도
+
 ```
 ## 5. 레이어 목록 백엔드 서비스 실행
 ```powershell
