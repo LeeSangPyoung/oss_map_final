@@ -41,17 +41,14 @@ javac -version
 ```
 ## 3. Ansible Playbook 실행 준비
 ```powershell
-mkdir -p /workspace/yml
-cd /workspace/yml
 ansible-galaxy collection install community.postgresql
-sudo tee ./hosts >/dev/null <<EOF
-localhost ansible_connection=local
-EOF
 ```
 ## 4. 서비스 설치 (Ansible Playbook 실행)
 ```powershell
 
 yml 파일 다운로드 방법
+mkdir -p /workspace/yml
+cd /workspace/yml
 
 /workspace/yml 등...특정폴더에서 진행할것
 1. 저장소 초기화
@@ -70,6 +67,10 @@ git pull origin main
 
 5. yml 파일 실행 (하나씩 순차적으로..)
 cd /workspace/yml/oss_map_final/ansible/ansible_install_yml
+sudo tee ./hosts >/dev/null <<EOF
+localhost ansible_connection=local
+EOF
+
 ansible-playbook -i hosts ./install_postgresql16.yml   --extra-vars '{"db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./create_db_data.yml   --extra-vars '{"db_host":"127.0.0.1","db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./install_geoserver.yml   --extra-vars '{"geoserver_version":"2.24.2","geoserver_user":"geoserver","geoserver_home":"/workspace/geo/geoserver","geoserver_port":"8089"}'
