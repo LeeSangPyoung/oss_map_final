@@ -71,6 +71,7 @@ sudo tee ./hosts >/dev/null <<EOF
 localhost ansible_connection=local
 EOF
 
+(아래 수행하면서, 완료될때마다 /opt/oss_map_final) 경로의 파일은 정리해줄 것.
 ansible-playbook -i hosts ./install_postgresql16.yml   --extra-vars '{"db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./create_db_data.yml   --extra-vars '{"db_host":"127.0.0.1","db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./install_geoserver.yml   --extra-vars '{"geoserver_version":"2.24.2","geoserver_user":"geoserver","geoserver_home":"/workspace/geo/geoserver","geoserver_port":"8089"}'
