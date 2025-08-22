@@ -1,0 +1,88 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-1cc994d7:196b284a187:39b0</id>
+  <name>test_geoserver_query_new</name>
+  <nativeName>test_geoserver_query_new</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>test_geoserver_query_new</title>
+  <keywords>
+    <string>features</string>
+    <string>test_geoserver_query_new</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-180.0</minx>
+    <maxx>180.0</maxx>
+    <miny>-90.0</miny>
+    <maxy>90.0</maxy>
+    <crs>EPSG:4326</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.811391</minx>
+    <maxx>127.1708790328</maxx>
+    <miny>37.4464254627</miny>
+    <maxy>37.6776468665</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>test_geoserver_query_new</name>
+        <sql>select json_data&#xd;
+     , geo&#xd;
+     , layrId&#xd;
+     , case when geometrytype(geo) in (&apos;LINESTRING&apos;, &apos;MUTILINESTRING&apos;) then &apos;LINE&apos;&#xd;
+            when geometrytype(geo) in (&apos;POINT&apos;, &apos;MUTIPOINT&apos;) then &apos;POINT&apos;&#xd;
+            when geometrytype(geo) in (&apos;POLYGON&apos;, &apos;MUTIPOLYGON&apos;) then &apos;POLYGON&apos;&#xd;
+            else geometrytype(geo)&#xd;
+       end as geom_type&#xd;
+  from test_geoserver_query_new(&apos;%layernm%&apos;,&#xd;
+COALESCE(NULLIF(&apos;%minx%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%miny%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%maxx%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%maxy%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%zoomlv%&apos;,&apos;&apos;)::integer,12)&#xd;
+)
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geo</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+        <parameter>
+          <name>zoomlv</name>
+        </parameter>
+        <parameter>
+          <name>miny</name>
+        </parameter>
+        <parameter>
+          <name>minx</name>
+        </parameter>
+        <parameter>
+          <name>maxy</name>
+        </parameter>
+        <parameter>
+          <name>maxx</name>
+        </parameter>
+        <parameter>
+          <name>layernm</name>
+        </parameter>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

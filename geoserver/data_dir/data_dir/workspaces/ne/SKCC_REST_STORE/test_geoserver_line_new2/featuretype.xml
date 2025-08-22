@@ -1,0 +1,108 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-435b19e2:1965c57e784:-657e</id>
+  <name>test_geoserver_line_new2</name>
+  <nativeName>test_geoserver_line_new2</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>test_geoserver_line_new2</title>
+  <keywords>
+    <string>features</string>
+    <string>test_geoserver_line_new2</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>126.811391</minx>
+    <maxx>127.1708790328</maxx>
+    <miny>37.4464254627</miny>
+    <maxy>37.6776468665</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.811391</minx>
+    <maxx>127.1708790328</maxx>
+    <miny>37.4464254627</miny>
+    <maxy>37.6776468665</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>test_geoserver_line_new2</name>
+        <sql>select json_data&#xd;
+     , geo&#xd;
+     , (json_data::json-&gt;&gt;&apos;fclt_nm&apos;) as fclt_nm&#xd;
+     , layrId&#xd;
+     , case when geometrytype(geo) in (&apos;LINESTRING&apos;, &apos;MUTILINESTRING&apos;) then &apos;LINE&apos;&#xd;
+            when geometrytype(geo) in (&apos;POINT&apos;, &apos;MUTIPOINT&apos;) then &apos;POINT&apos;&#xd;
+            when geometrytype(geo) in (&apos;POLYGON&apos;, &apos;MUTIPOLYGON&apos;) then &apos;POLYGON&apos;&#xd;
+            else geometrytype(geo)&#xd;
+       end as geom_type&#xd;
+     , style_index&#xd;
+     , is_style&#xd;
+     , color&#xd;
+     , weight&#xd;
+     , capstyle&#xd;
+     , joinstyle&#xd;
+     , dasharray&#xd;
+     , opacity&#xd;
+     , isoutline&#xd;
+     , outlinecolor&#xd;
+     , outlineweight&#xd;
+     , outlineopacity&#xd;
+     , outlinecapstyle&#xd;
+     , outlinejoinstyle&#xd;
+     , outlinedasharray  &#xd;
+  from test_geoserver_line_new2(&#xd;
+CAST(&apos;%layernm%&apos; AS text),&#xd;
+COALESCE(NULLIF(&apos;%minx%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%miny%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%maxx%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%maxy%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%zoomlv%&apos;,&apos;&apos;)::integer,12),&#xd;
+CAST(&apos;%sym_id%&apos; AS text)&#xd;
+)
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geo</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+        <parameter>
+          <name>zoomlv</name>
+        </parameter>
+        <parameter>
+          <name>miny</name>
+        </parameter>
+        <parameter>
+          <name>minx</name>
+        </parameter>
+        <parameter>
+          <name>maxy</name>
+        </parameter>
+        <parameter>
+          <name>maxx</name>
+        </parameter>
+        <parameter>
+          <name>sym_id</name>
+        </parameter>
+        <parameter>
+          <name>layernm</name>
+        </parameter>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

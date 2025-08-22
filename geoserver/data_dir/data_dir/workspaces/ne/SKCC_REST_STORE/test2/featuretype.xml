@@ -1,0 +1,53 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--8d1d17d:19495a7cbd7:756a</id>
+  <name>test2</name>
+  <nativeName>test2</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>test2</title>
+  <keywords>
+    <string>features</string>
+    <string>test2</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>124.66482169155908</minx>
+    <maxx>130.898165652021</maxx>
+    <miny>33.11668426198234</miny>
+    <maxy>38.5690161463126</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>124.66482169155908</minx>
+    <maxx>130.898165652021</maxx>
+    <miny>33.11668426198234</miny>
+    <maxy>38.5690161463126</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>test2</name>
+        <sql>SELECT mtso_mgmt_no id, mtso_mgmt_no, mtso_id,mtso_sk_mgmt_no, mtso_unq_mgmt_no, fclt_nm, ldong_cd, bunji_val, addr_nm, own_cl_dtl_cd, use_cl_cd, own_cl_cd, mtso_knd_cd, mtso_layr_cd, bld_no, ukey_mtso_cd, mtso_detl_typ_cd, scrbr_srvc_no, mgmt_exch_mtso_cd, mgmt_exch_mtso_nm, tlpl_it_no, line_chrr_nm, line_tlno, file_cnt, file_atchd_yn, kepbo_no, bp_id, cstr_cd, op_cl_cd, mtso_cl_cd, ins_date, ins_user_id, edit_date, edit_user_id, mtso_rmk, systm_cl_cd, spa_srno, spa_sty_val, ST_Simplify(geo,0.1) as geo, intg_fclts_cd, bld_nm, ukey_systm_no, prnt_optl_scrbr_mgmt_no, flor_cnt, upr_mtso_cl_cd, ring_reg_yn, scrbr_copop_lcl_cd, scrbr_copop_cl_val, skb_net_cl_cd,  mtso_cntr_typ_cd, instl_loc_cd, fild_tlpl_it_no, tmof_id, site_cd, ins_div_val, tbrd_so_cd_val&#xd;
+FROM tmown.gis_fclt_mtso_bas&#xd;
+where mtso_layr_cd = &apos;BS&apos; and systm_cl_cd = &apos;SK&apos;
+</sql>
+        <escapeSql>false</escapeSql>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

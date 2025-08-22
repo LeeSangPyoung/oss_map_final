@@ -1,0 +1,160 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-1cc994d7:196846b6ec1:-23ba</id>
+  <name>test_geoserver_polygon_new</name>
+  <nativeName>test_geoserver_polygon_new</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>test_geoserver_polygon_new</title>
+  <keywords>
+    <string>features</string>
+    <string>test_geoserver_polygon_new</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>126.811391</minx>
+    <maxx>127.1708790328</maxx>
+    <miny>37.4464254627</miny>
+    <maxy>37.6776468665</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.811391</minx>
+    <maxx>127.1708790328</maxx>
+    <miny>37.4464254627</miny>
+    <maxy>37.6776468665</maxy>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>test_geoserver_polygon_new</name>
+        <sql>select json_data&#xd;
+     , geo&#xd;
+     , (json_data::json-&gt;&gt;&apos;fclt_nm&apos;) as fclt_nm&#xd;
+     , layrId&#xd;
+     , case when geometrytype(geo) in (&apos;LINESTRING&apos;, &apos;MUTILINESTRING&apos;) then &apos;LINE&apos;&#xd;
+            when geometrytype(geo) in (&apos;POINT&apos;, &apos;MUTIPOINT&apos;) then &apos;POINT&apos;&#xd;
+            when geometrytype(geo) in (&apos;POLYGON&apos;, &apos;MUTIPOLYGON&apos;) then &apos;POLYGON&apos;&#xd;
+            else geometrytype(geo)&#xd;
+       end as geom_type&#xd;
+     , (json_data::json-&gt;&gt;&apos;is_style_0&apos;) as is_style_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokecolor_0&apos;) as strokecolor_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokewidth_0&apos;) as strokewidth_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;capstyle_0&apos;) as capStyle_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;joinstyle_0&apos;) as joinStyle_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;dasharray_0&apos;) as dashArray_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;opacity_0&apos;)::float as opacity_0&#xd;
+     , coalesce(json_data::json-&gt;&gt;&apos;is_stroke_0&apos;,&apos;false&apos;) as is_stroke_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;fillColor_0&apos;) as fillColor_0     &#xd;
+     , (json_data::json-&gt;&gt;&apos;is_style_1&apos;) as is_style_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokecolor_1&apos;) as strokecolor_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokewidth_1&apos;) as strokewidth_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;capstyle_1&apos;) as capStyle_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;joinstyle_1&apos;) as joinStyle_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;dasharray_1&apos;) as dashArray_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;opacity_1&apos;)::float as opacity_1&#xd;
+     , coalesce(json_data::json-&gt;&gt;&apos;is_stroke_1&apos;,&apos;false&apos;) as is_stroke_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;fillColor_1&apos;) as fillColor_1     &#xd;
+     , (json_data::json-&gt;&gt;&apos;is_style_2&apos;) as is_style_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokecolor_2&apos;) as strokecolor_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokewidth_2&apos;) as strokewidth_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;capstyle_2&apos;) as capStyle_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;joinstyle_2&apos;) as joinStyle_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;dasharray_2&apos;) as dashArray_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;opacity_2&apos;)::float as opacity_2&#xd;
+     , coalesce(json_data::json-&gt;&gt;&apos;is_stroke_2&apos;,&apos;false&apos;) as is_stroke_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;fillColor_2&apos;) as fillColor_2     &#xd;
+     , (json_data::json-&gt;&gt;&apos;is_style_3&apos;) as is_style_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokecolor_3&apos;) as strokecolor_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokewidth_3&apos;) as strokewidth_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;capstyle_3&apos;) as capStyle_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;joinstyle_3&apos;) as joinStyle_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;dasharray_3&apos;) as dashArray_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;opacity_3&apos;)::float as opacity_3&#xd;
+     , coalesce(json_data::json-&gt;&gt;&apos;is_stroke_3&apos;,&apos;false&apos;) as is_stroke_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;fillColor_3&apos;) as fillColor_3     &#xd;
+     , (json_data::json-&gt;&gt;&apos;is_style_4&apos;) as is_style_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokecolor_4&apos;) as strokecolor_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokewidth_4&apos;) as strokewidth_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;capstyle_4&apos;) as capStyle_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;joinstyle_4&apos;) as joinStyle_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;dasharray_4&apos;) as dashArray_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;opacity_4&apos;)::float as opacity_4&#xd;
+     , coalesce(json_data::json-&gt;&gt;&apos;is_stroke_4&apos;,&apos;false&apos;) as is_stroke_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;fillColor_4&apos;) as fillColor_4     &#xd;
+     , (json_data::json-&gt;&gt;&apos;strokecolor_default&apos;) as strokecolor_default&#xd;
+     , (json_data::json-&gt;&gt;&apos;strokewidth_default&apos;) as strokewidth_default&#xd;
+     , (json_data::json-&gt;&gt;&apos;capstyle_default&apos;) as capStyle_default&#xd;
+     , (json_data::json-&gt;&gt;&apos;joinstyle_default&apos;) as joinStyle_default&#xd;
+     , (json_data::json-&gt;&gt;&apos;dasharray_default&apos;) as dashArray_default&#xd;
+     , (json_data::json-&gt;&gt;&apos;opacity_default&apos;)::float as opacity_default&#xd;
+     , coalesce(json_data::json-&gt;&gt;&apos;is_stroke_default&apos;,&apos;false&apos;) as is_stroke_default&#xd;
+     , (json_data::json-&gt;&gt;&apos;fillColor_default&apos;) as fillColor_default    &#xd;
+     , (json_data::json-&gt;&gt;&apos;labeltext_0&apos;) as labeltext_0&#xd;
+     , (json_data::json-&gt;&gt;&apos;labeltext_1&apos;) as labeltext_1&#xd;
+     , (json_data::json-&gt;&gt;&apos;labeltext_2&apos;) as labeltext_2&#xd;
+     , (json_data::json-&gt;&gt;&apos;labeltext_3&apos;) as labeltext_3&#xd;
+     , (json_data::json-&gt;&gt;&apos;labeltext_4&apos;) as labeltext_4&#xd;
+     , (json_data::json-&gt;&gt;&apos;labeltext_default&apos;) as labeltext_default&#xd;
+  from test_geoserver_polygon_new(&#xd;
+CAST(&apos;%layernm%&apos; AS text),&#xd;
+COALESCE(NULLIF(&apos;%minx%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%miny%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%maxx%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%maxy%&apos;,&apos;&apos;)::double precision,0.0),&#xd;
+COALESCE(NULLIF(&apos;%zoomlv%&apos;,&apos;&apos;)::integer,12),&#xd;
+CAST(&apos;%sym_id%&apos; AS text),&#xd;
+CAST(&apos;%uuid%&apos; AS text),&#xd;
+CAST(lower(&apos;%showlabel%&apos;) = &apos;true&apos; AS boolean)&#xd;
+)
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geo</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+        <parameter>
+          <name>zoomlv</name>
+        </parameter>
+        <parameter>
+          <name>miny</name>
+        </parameter>
+        <parameter>
+          <name>minx</name>
+        </parameter>
+        <parameter>
+          <name>maxy</name>
+        </parameter>
+        <parameter>
+          <name>maxx</name>
+        </parameter>
+        <parameter>
+          <name>sym_id</name>
+        </parameter>
+        <parameter>
+          <name>showlabel</name>
+        </parameter>
+        <parameter>
+          <name>uuid</name>
+        </parameter>
+        <parameter>
+          <name>layernm</name>
+        </parameter>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

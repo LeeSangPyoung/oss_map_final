@@ -1,0 +1,17 @@
+<layer>
+  <name>nodeExcavationSite</name>
+  <id>LayerInfoImpl-4235b3a:193510c9cc4:7498</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-4235b3a:193510c9cc4:7490</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-4235b3a:193510c9cc4:7497</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-22 01:32:46.144 UTC</dateCreated>
+  <dateModified>2024-11-22 01:33:07.310 UTC</dateModified>
+</layer>

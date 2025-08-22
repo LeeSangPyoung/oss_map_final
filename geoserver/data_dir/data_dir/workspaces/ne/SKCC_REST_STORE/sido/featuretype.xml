@@ -1,0 +1,61 @@
+<featureType>
+  <id>FeatureTypeInfoImpl--8d1d17d:194fdd0bd04:-2442</id>
+  <name>sido</name>
+  <nativeName>DAWUL_AM_SIDO_A</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>시도</title>
+  <keywords>
+    <string>features</string>
+    <string>DAWUL_AM_SIDO_A</string>
+  </keywords>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>124.609766393961</minx>
+    <maxx>131.872749651756</maxx>
+    <miny>33.1123691720001</miny>
+    <maxy>38.6220343133163</maxy>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>124.609766393961</minx>
+    <maxx>131.872749651756</maxx>
+    <miny>33.1123691720001</miny>
+    <maxy>38.6220343133163</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>DAWUL_AM_SIDO_A</name>
+        <sql>select * from DAWUL_AM_SIDO_A
+</sql>
+        <escapeSql>false</escapeSql>
+        <geometry>
+          <name>geom</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+        <geometry>
+          <name>geom2</name>
+          <type>Geometry</type>
+          <srid>-1</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>

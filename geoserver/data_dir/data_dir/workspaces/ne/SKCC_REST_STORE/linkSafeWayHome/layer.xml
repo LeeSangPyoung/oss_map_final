@@ -1,0 +1,17 @@
+<layer>
+  <name>linkSafeWayHome</name>
+  <id>LayerInfoImpl-4235b3a:193510c9cc4:41bb</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-4235b3a:193510c9cc4:748b</id>
+  </defaultStyle>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl-4235b3a:193510c9cc4:41ba</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+  <dateCreated>2024-11-21 23:54:54.114 UTC</dateCreated>
+  <dateModified>2024-11-22 01:26:03.570 UTC</dateModified>
+</layer>

@@ -1,0 +1,69 @@
+<featureType>
+  <id>FeatureTypeInfoImpl-ca185cc:19371ca029c:c04</id>
+  <name>gis_fclt_cbl_bas_cm_d</name>
+  <nativeName>gis_fclt_cbl_bas_cm_d</nativeName>
+  <namespace>
+    <id>NamespaceInfoImpl-1c443fee:182c0f3f209:-7ffd</id>
+  </namespace>
+  <title>gis_fclt_cbl_bas_cm_d</title>
+  <keywords>
+    <string>features</string>
+    <string>gis_fclt_cbl_bas_cm_d</string>
+  </keywords>
+  <nativeCRS>GEOGCS[&quot;WGS 84&quot;, 
+  DATUM[&quot;World Geodetic System 1984&quot;, 
+    SPHEROID[&quot;WGS 84&quot;, 6378137.0, 298.257223563, AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]], 
+    AUTHORITY[&quot;EPSG&quot;,&quot;6326&quot;]], 
+  PRIMEM[&quot;Greenwich&quot;, 0.0, AUTHORITY[&quot;EPSG&quot;,&quot;8901&quot;]], 
+  UNIT[&quot;degree&quot;, 0.017453292519943295], 
+  AXIS[&quot;Geodetic longitude&quot;, EAST], 
+  AXIS[&quot;Geodetic latitude&quot;, NORTH], 
+  AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]]</nativeCRS>
+  <srs>EPSG:4326</srs>
+  <nativeBoundingBox>
+    <minx>-180.0</minx>
+    <maxx>180.0</maxx>
+    <miny>-90.0</miny>
+    <maxy>90.0</maxy>
+    <crs>EPSG:4326</crs>
+  </nativeBoundingBox>
+  <latLonBoundingBox>
+    <minx>126.29266353939745</minx>
+    <maxx>129.44621031127693</maxx>
+    <miny>33.24734686262998</miny>
+    <maxy>38.2305507434042</maxy>
+    <crs>EPSG:4326</crs>
+  </latLonBoundingBox>
+  <projectionPolicy>FORCE_DECLARED</projectionPolicy>
+  <enabled>true</enabled>
+  <metadata>
+    <entry key="JDBC_VIRTUAL_TABLE">
+      <virtualTable>
+        <name>gis_fclt_cbl_bas_cm_d</name>
+        <sql>SELECT cbl_mgmt_no id, cbl_mgmt_no, cbl_sk_mgmt_no, cbl_unq_mgmt_no, fclt_nm, ldong_cd, use_cl_cd, own_cl_cd, own_cl_dtl_cd, cbl_ungr_loc_cd, cbl_core_attr_cd, cbl_core_cnt, cnnt_core_cnt, use_core_cnt, loss_gr_cd, unt_cl_cd, cbl_usg_cd, cmpl_distm, map_distm, cbl_mnft_vndr_cd, cdln_mgmt_no, cstr_cd, cmpl_date, core_use_rate, mnft_yr, cbl_wre_brdtr_cd, cbl_mnft_no, svln_no, line_srno, cnst_setl_wkrt_no, deco_matl_cd, acptc_ordft_no, acptc_ordft_srno, cbl_prpty_srno, hdofc_org_id, kepbo_no, bp_id, net_cl_cd, wkrt_no, cnst_work_cl_cd, cnst_setl_pce_srno, cnst_setl_pce_sctn_nm, cbl_repce_yn, cnst_setl_subm_date, op_cl_cd, mtso_lin_typ_cd, kepco_chr_bizr_cd, ins_date, ins_user_id, edit_date, edit_user_id, ofc_rmk, systm_cl_cd, spa_srno, spa_sty_val, geo, crrt_rslt_cd, cbl_cl_cd, mgmt_cstr_typ_cd, bld_inside_wrng_yn, bld_inside_wrng_distm, cbl_lin_typ_cd, mndt_fct_layr_cd, tvrs_typ_cd, sta_fclt_mgmt_no, sta_fclt_cl_cd, sta_fclt_eqp_val, end_fclt_mgmt_no, end_fclt_cl_cd, end_fclt_eqp_val, cbl_gren_cd, ins_div_val, tbrd_so_cd_val&#xd;
+FROM tmown.gis_fclt_cbl_bas&#xd;
+where systm_cl_cd = &apos;CM&apos; and cbl_ungr_loc_cd = &apos;D&apos;
+</sql>
+        <escapeSql>false</escapeSql>
+        <keyColumn>cbl_mgmt_no</keyColumn>
+        <geometry>
+          <name>geo</name>
+          <type>Geometry</type>
+          <srid>4326</srid>
+        </geometry>
+      </virtualTable>
+    </entry>
+  </metadata>
+  <store class="dataStore">
+    <id>DataStoreInfoImpl--57b35a39:193482836be:-8000</id>
+  </store>
+  <serviceConfiguration>false</serviceConfiguration>
+  <simpleConversionEnabled>false</simpleConversionEnabled>
+  <maxFeatures>0</maxFeatures>
+  <numDecimals>0</numDecimals>
+  <padWithZeros>false</padWithZeros>
+  <forcedDecimal>false</forcedDecimal>
+  <overridingServiceSRS>false</overridingServiceSRS>
+  <skipNumberMatched>false</skipNumberMatched>
+  <circularArcPresent>false</circularArcPresent>
+</featureType>
