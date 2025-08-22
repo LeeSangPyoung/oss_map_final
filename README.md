@@ -74,6 +74,7 @@ EOF
 ansible-playbook -i hosts ./install_postgresql16.yml   --extra-vars '{"db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./create_db_data.yml   --extra-vars '{"db_host":"127.0.0.1","db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./install_geoserver.yml   --extra-vars '{"geoserver_version":"2.24.2","geoserver_user":"geoserver","geoserver_home":"/workspace/geo/geoserver","geoserver_port":"8089"}'
+ansible-playbook -i hosts ./configure_geoserver.yml   --extra-vars '{  "geoserver_home": "/workspace/geo/geoserver",  "geoserver_user": "geoserver"}'
 ansible-playbook -i hosts ./install_ossmap_fe.yml   --extra-vars '{"install_dir":"/workspace/ossmap_fe","geoserver_url":"http://localhost:8089","be_url":"http://localhost:8082","db_host":"127.0.0.1","db_port":"5433","db_name":"tesd","db_user":"tesapp","db_password":"experdb12#"}'
 
 ansible-playbook -i hosts ./install_osm_map.yml   --extra-vars '{"map_kind":"osm","map_dir":"/workspace/ossmap","map_port":8090,"min_zoom":12,"max_zoom":15,"region":["서울특별시","부산광역시"]}'
