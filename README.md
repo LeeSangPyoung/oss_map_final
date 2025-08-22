@@ -50,7 +50,23 @@ EOF
 ```
 ## 4. 서비스 설치 (Ansible Playbook 실행)
 ```powershell
-yml 파일 경로 : (본 git주소의 ansible/ansible_install_yml)
+
+yml 파일 다운로드 방법
+1. 저장소 초기화
+git init oss_map_final
+cd oss_map_final
+git remote add origin https://github.com/LeeSangPyoung/oss_map_final.git
+
+2. sparse-checkout 활성화
+git config core.sparseCheckout true
+
+3. 필요한 경로 지정
+echo "ansible/ansible_install_yml/*" >> .git/info/sparse-checkout
+
+4. 특정 브랜치(예: main)에서 가져오기
+git pull origin main
+
+5. yml 파일 실행 (하나씩 순차적으로..)
 ansible-playbook -i hosts ./install_postgresql16.yml   --extra-vars '{"db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./create_db_data.yml   --extra-vars '{"db_host":"127.0.0.1","db_port":"5433","db_user":"tesapp","db_password":"experdb12#","db_name":"tesd"}'
 ansible-playbook -i hosts ./install_geoserver.yml   --extra-vars '{"geoserver_version":"2.24.2","geoserver_user":"geoserver","geoserver_home":"/workspace/geo/geoserver","geoserver_port":"8089"}'
