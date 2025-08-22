@@ -84,7 +84,7 @@ CREATE TABLE tesdev.polygon_hump (
   type VARCHAR DEFAULT 'polygonHump'
 );
 
-
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA tesdev TO tesapp;
 
 -- ✅ node_feature → 분할 테이블
 INSERT INTO tesdev.node_business_plan (property, geom)
