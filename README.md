@@ -55,8 +55,6 @@ yml 파일 다운로드 방법
 
 /workspace/yml 등...특정폴더에서 진행할것
 1. 저장소 초기화
-mkdir -p /workspace/yml
-cd /workspace/yml
 git init oss_map_final
 cd oss_map_final
 git remote add origin https://github.com/LeeSangPyoung/oss_map_final.git
