@@ -14,12 +14,12 @@ wsl --install
 wsl --version
 wsl --set-default-version 2
 
-mkdir D:\rocky_wsl2
-cd D:\rocky_wsl2
+mkdir D:\rocky_wsl3
+cd D:\rocky_wsl3
 Invoke-WebRequest `
    -Uri "https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-WSL-Base.latest.x86_64.wsl" `
    -OutFile "D:\rocky_wsl\Rocky-9-WSL-Base.latest.x86_64.wsl"
-wsl --import Rocky9-1 D:\rocky_wsl\1 D:\rocky_wsl\Rocky-9-WSL-Base.latest.x86_64.wsl --version 2
+wsl --import Rocky9-1 D:\rocky_wsl3\1 D:\rocky_wsl3\Rocky-9-WSL-Base.latest.x86_64.wsl --version 2
 wsl -d Rocky9-1
 ```
 ## 2. Rocky Linux 환경 준비 (Linux 내부)
