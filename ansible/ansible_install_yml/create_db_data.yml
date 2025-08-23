@@ -54,21 +54,43 @@
       environment:
         PGPASSWORD: "{{ db_password }}"
 
-    - name: Run all SQL files in feature_create folder
+    # --- 3_feature_create: 1~4번을 한 트랜잭션으로 묶어서 실행 ---
+    - name: Run 1~4 SQL files in feature_create folder in single transaction
       ansible.builtin.shell: |
-        for sql in {{ sql_folder_feature_create }}/*.sql; do
-          echo "Executing $sql"
-          psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} -f "$sql"
-        done
+        {
+          echo '\set ON_ERROR_STOP on'
+          echo 'SET synchronous_commit = off;'
+          echo 'BEGIN;'
+          echo "\\i '{{ sql_folder_feature_create }}/1_line_feature_itrm.sql'"
+          echo "\\i '{{ sql_folder_feature_create }}/2_link_feature_itrm.sql'"
+          echo "\\i '{{ sql_folder_feature_create }}/3_node_feature_itrm.sql'"
+          echo "\\i '{{ sql_folder_feature_create }}/4_polygon_feature_itrm.sql'"
+          echo 'COMMIT;'
+          echo 'SET synchronous_commit = on;'
+        } | psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} \
+          2>&1 | tee -a /tmp/psql_feature_insert_1to4.log
+      args:
+        executable: /bin/bash
+      environment:
+        PGPASSWORD: "{{ db_password }}"
+
+    # --- 3_feature_create: 5번은 일반 실행 ---
+    - name: Run 5_type_table_create.sql after inserts
+      ansible.builtin.shell: |
+        echo ">>> Executing 5_type_table_create.sql"
+        psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} \
+             -v ON_ERROR_STOP=1 -f "{{ sql_folder_feature_create }}/5_type_table_create.sql" \
+          2>&1 | tee -a /tmp/psql_feature_5_type_table.log
+      args:
+        executable: /bin/bash
       environment:
         PGPASSWORD: "{{ db_password }}"
 
     - name: Run all SQL files in layer_create folder
       ansible.builtin.shell: |
         for sql in {{ sql_folder_layer_create }}/*.sql; do
-          echo "Executing $sql"
+          echo ">>> Executing $sql"
           psql -U {{ db_user }} -d {{ db_name }} -h {{ db_host }} -p {{ db_port }} -f "$sql"
         done
       environment:
         PGPASSWORD: "{{ db_password }}"
-
