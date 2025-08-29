@@ -119,7 +119,7 @@
         replace: '${GEO_HOST:{{ geoserver_url }}}'
 
     - name: Run npm install in FE directory
-      ansible.builtin.shell: npm install
+      ansible.builtin.shell: npm install --force
       args:
         chdir: "{{ install_fe_dir }}"
 
